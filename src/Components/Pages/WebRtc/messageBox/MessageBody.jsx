@@ -10,13 +10,15 @@ import {
     handleAssignTag,
     handleCheckboxChange,
     handleDeleteGroup,
+    handleDeleteMessage,
     handleEditGroupName,
     handlePinMessage,
     handleremoveUserFromGroup,
     handleSearchChange,
     handleSelectAll,
     handleTypingEvent,
-    handleUnassignTag
+    handleUnassignTag,
+    handleUpdateMessage
 } from './MessageFunctions';
 import GroupTyping from '../components/GroupTyping';
 import OneToOneTyping from '../components/OneToOneTyping';
@@ -106,14 +108,20 @@ const MessageBody = ({
     setConferenceToggle,
     conferenceToggle,
     setInternalCaller,
-    typingUserList
+    typingUserList,
+    setIsUpdatedClicked,
+    isUpdatedClicked,
+    setEditedValue,
+    editedValue,
+    setCallStatus,
 }) => {
-
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState("")
     const [selectAll, setSelectAll] = useState(false)
     const [filteredAgents, setFilteredAgents] = useState(allAgents)
     const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
+
+
     const handlePinClick = (messageId) => {
         const selector = `.messageItem.active-${messageId}`;
         const element = document.querySelector(selector);
@@ -136,6 +144,8 @@ const MessageBody = ({
             "group_name": recipient[0],
             "user_id": account?.id,
         })
+        setCallStatus("call-initiated")
+        setInternalCaller(account?.id)
         setToUser(recipient[1])
         setCalling(true)
         setIsConferenceCall(false);
@@ -147,18 +157,18 @@ const MessageBody = ({
         } catch (err) {
             console.log(err)
         } finally {
-            setConferenceInfo({
-                room_id: `${account.id}-${recipient?.[1]}`,
-                extension_id: account?.extension_id,
-                name: account?.username,
-                setactivePage: setactivePage,
-                activePage: activePage,
-                setConferenceToggle: setConferenceToggle,
-                conferenceToggle: conferenceToggle,
-                conferenceId: "",
-                pin: "",
-                isVideoOn: isVideoOn,
-            })
+            // setConferenceInfo({
+            //     room_id: `${account.id}-${recipient?.[1]}`,
+            //     extension_id: account?.extension_id,
+            //     name: account?.username,
+            //     setactivePage: setactivePage,
+            //     activePage: activePage,
+            //     setConferenceToggle: setConferenceToggle,
+            //     conferenceToggle: conferenceToggle,
+            //     conferenceId: "",
+            //     pin: "",
+            //     isVideoOn: isVideoOn,
+            // })
             setTimeout(() => {
                 setCalling(true);
             }, 1000)
@@ -556,6 +566,7 @@ const MessageBody = ({
                                                     type: "SET_INTERNALCALLACTION",
                                                     internalCallAction: null,
                                                 });
+                                                setCallStatus("call-initiated")
                                                 socketSendPeerCallMessage({
                                                     action: "peercallInitiate",
                                                     from: account.id,
@@ -577,6 +588,7 @@ const MessageBody = ({
                                                 setMeetingPage("message");
                                                 setToUser(recipient?.[1]);
                                                 setCalling(true);
+                                                setCallStatus("call-initiated")
                                                 dispatch({
                                                     type: "SET_INTERNALCALLACTION",
                                                     internalCallAction: null,
@@ -649,6 +661,7 @@ const MessageBody = ({
                                                                 )[0].id
                                                             );
                                                             setGroupLeavePopUp(true);
+
                                                         }}
                                                     >
                                                         Leave this group
@@ -656,10 +669,7 @@ const MessageBody = ({
                                                 </li>
                                             )}
 
-                                            {selectedChat === "groupChat" &&
-                                                groups?.find(
-                                                    (group) => group.group_name == recipient?.[0]
-                                                )?.created_by == account?.id ? (
+                                            {selectedChat === "groupChat" && isAdmin && (
                                                 <li>
                                                     <div
                                                         className="dropdown-item text-danger"
@@ -672,16 +682,12 @@ const MessageBody = ({
                                                                 setRecipient,
                                                                 setLoading,
                                                                 groupRefresh
-                                                            )
-                                                        }
+                                                            )}
                                                     >
                                                         Delete this group
                                                     </div>
                                                 </li>
-                                            ) : (
-                                                ""
                                             )}
-
                                             <li>
                                                 <div
                                                     className="dropdown-item text-danger"
@@ -797,58 +803,198 @@ const MessageBody = ({
                                                         <div className={`messageItem sender active-${item?.id}`}>
                                                             <div className="second">
                                                                 <div className="d-flex gap-3 ">
-                                                                    <div className=" ms-3 ">
-                                                                        <h6>
-                                                                            <span>
-                                                                                {item.time
-                                                                                    ?.split(" ")[1]
-                                                                                    ?.split(":")
-                                                                                    .slice(0, 2)
-                                                                                    .join(":")}
-                                                                            </span>{" "}
-                                                                            &nbsp;
-                                                                            {item?.user_name}
-                                                                        </h6>
+                                                                    {
+                                                                        item?.deleted_at == null ?
+                                                                            <>
+                                                                                {
+                                                                                    !item?.hasOwnProperty('id') || isUpdatedClicked?.id != item?.id ?
+                                                                                        <div className=" ms-3 ">
+                                                                                            <h6>
+                                                                                                {
+                                                                                                    item?.edit_status === 1 &&
+                                                                                                    <>Updated</>
+                                                                                                }
+                                                                                                <span>
+                                                                                                    {item.time
+                                                                                                        ?.split(" ")[1]
+                                                                                                        ?.split(":")
+                                                                                                        .slice(0, 2)
+                                                                                                        .join(":")}
+                                                                                                </span>{" "}
+                                                                                                &nbsp;
+                                                                                                {item?.user_name}
+                                                                                            </h6>
 
-                                                                        <div
-                                                                            className={`message-text-container active-${item?.id}`}
-                                                                            style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
-                                                                        >
-                                                                            {/* <div className="dropdown">
-                                                                                <button
-                                                                                    className="clearButton2"
-                                                                                    type="button"
-                                                                                    data-bs-toggle="dropdown"
-                                                                                    aria-expanded="false"
-                                                                                >
-                                                                                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                                                                                </button>
-                                                                                <ul className="dropdown-menu">
-                                                                                    <li>
-                                                                                        <div
-                                                                                            className="dropdown-item"
-                                                                                            href="#"
-                                                                                            onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
-                                                                                        >
-                                                                                            {item?.is_pinned == 1 ? "Unpin" : "Pin"}
+                                                                                            <div
+                                                                                                className={`message-text-container active-${item?.id}`}
+                                                                                                style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}
+                                                                                            >
+                                                                                                <div className="dropdown">
+                                                                                                    <button
+                                                                                                        className="clearButton2"
+                                                                                                        type="button"
+                                                                                                        data-bs-toggle="dropdown"
+                                                                                                        aria-expanded="false"
+                                                                                                    >
+                                                                                                        <i className="fa-solid fa-ellipsis-vertical"></i>
+                                                                                                    </button>
+                                                                                                    <ul className="dropdown-menu">
+                                                                                                        <li>
+                                                                                                            <div
+                                                                                                                className="dropdown-item"
+                                                                                                                href="#"
+                                                                                                                onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
+                                                                                                            >
+                                                                                                                {item?.is_pinned == 1 ? "Unpin" : "Pin"}
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <div
+                                                                                                                className="dropdown-item"
+                                                                                                                href="#"
+                                                                                                                onClick={() => {
+                                                                                                                    setIsUpdatedClicked(item)
+                                                                                                                }}
+                                                                                                            >
+                                                                                                                Update
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                        <li>
+                                                                                                            <div
+                                                                                                                className="dropdown-item"
+                                                                                                                href="#"
+                                                                                                                onClick={() => handleDeleteMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
+                                                                                                            >
+                                                                                                                Delete
+                                                                                                            </div>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                                <div className="videoSize">
+                                                                                                    <DisplayFile
+                                                                                                        key={index}
+                                                                                                        item={item.body}
+                                                                                                        index={index}
+                                                                                                    />
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div> */}
-                                                                            <div className="videoSize">
-                                                                                <DisplayFile
-                                                                                    key={index}
-                                                                                    item={item.body}
-                                                                                    index={index}
-                                                                                />
-                                                                                <div className='pinBox'>
-                                                                                    <button className={`roundPinButton ${item?.is_pinned == 1 ? "pin_bg" : ""}`} onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
-                                                                                        <i className={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
-                                                                                    </button>
-                                                                                </div>
+                                                                                        :
+                                                                                        <div className="message-edit-box">
+                                                                                            <div className="textarea-wrapper position-relative">
+
+                                                                                                {
+                                                                                                    item?.message_type === "text/plain" ?
+                                                                                                        <div className="textarea-border-wrapper position-relative w-100">
+                                                                                                            <textarea
+                                                                                                                rows={2}
+                                                                                                                className="formItem animated-textarea pe-5"
+                                                                                                                value={editedValue ?? item?.message_text ?? ""}
+                                                                                                                onChange={(e) => {
+                                                                                                                    const value = e.target.value;
+                                                                                                                    const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+
+                                                                                                                    if (value.trim() === "") {
+                                                                                                                        setMessageInput((prev) => {
+                                                                                                                            const updated = { ...prev };
+                                                                                                                            delete updated[recipient[0]];
+                                                                                                                            return updated;
+                                                                                                                        });
+                                                                                                                        return;
+                                                                                                                    }
+
+                                                                                                                    if (!isTypingRef.current) {
+                                                                                                                        handleTypingEvent(socketSendMessage, account, recipient, true);
+                                                                                                                        isTypingRef.current = true;
+                                                                                                                    }
+
+                                                                                                                    if (typingTimeoutRef.current) {
+                                                                                                                        clearTimeout(typingTimeoutRef.current);
+                                                                                                                    }
+
+                                                                                                                    typingTimeoutRef.current = setTimeout(() => {
+                                                                                                                        handleTypingEvent(socketSendMessage, account, recipient, false);
+                                                                                                                        isTypingRef.current = false;
+                                                                                                                    }, 5000);
+
+                                                                                                                    if (wordCount <= 7000) {
+                                                                                                                        setEditedValue(value);
+                                                                                                                    } else {
+                                                                                                                        toast.warn("Text is too long!");
+                                                                                                                    }
+                                                                                                                }}
+                                                                                                                onKeyDown={(e) => {
+                                                                                                                    if (e.key === "Enter") {
+                                                                                                                        if (recipient?.[2] === "groupChat") {
+                                                                                                                            sendGroupMessage();
+                                                                                                                        } else {
+                                                                                                                            sendSingleMessage();
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }}
+                                                                                                            />
+                                                                                                            <div className="typingLoader position-absolute end-0 bottom-0 mb-1 me-2">
+                                                                                                                <TypingLoader />
+                                                                                                            </div>
+
+                                                                                                            <div className="textarea-buttons position-absolute end-0 top-50 translate-middle-y d-flex gap-1 me-2">
+
+                                                                                                                <button
+                                                                                                                    className="clearButton2 emoji"
+                                                                                                                    onClick={() => setEmojiOpen(!emojiOpen)}
+                                                                                                                >
+                                                                                                                    <i className="fa-regular fa-face-smile"></i>
+                                                                                                                </button>
+
+                                                                                                                <button
+                                                                                                                    className="ok-button"
+                                                                                                                    onClick={() => {
+                                                                                                                        handleUpdateMessage(
+                                                                                                                            item,
+                                                                                                                            setAllMessage,
+                                                                                                                            allMessage,
+                                                                                                                            recipient,
+                                                                                                                            selectedChat,
+                                                                                                                            editedValue
+                                                                                                                        );
+                                                                                                                        setEditedValue(null);
+                                                                                                                        setIsUpdatedClicked(null);
+                                                                                                                        setEmojiOpen(false);
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <i className="fa-solid fa-paper-plane-top" />
+                                                                                                                </button>
+                                                                                                                <button
+                                                                                                                    className="cancel-button"
+                                                                                                                    onClick={() => {
+                                                                                                                        setEditedValue(null);
+                                                                                                                        setIsUpdatedClicked(null);
+                                                                                                                        setEmojiOpen(false);
+                                                                                                                    }}
+                                                                                                                >
+                                                                                                                    <i className="fa-solid fa-xmark"></i>
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        :
+                                                                                                        <div className="videoSize">
+                                                                                                            <DisplayFile
+                                                                                                                key={index}
+                                                                                                                item={item.body}
+                                                                                                                index={index}
+                                                                                                            />
+                                                                                                        </div>
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                }
+                                                                            </>
+                                                                            :
+                                                                            <div className=" ms-3 ">
+                                                                                Message deleted
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    }
+
                                                                     {item?.profile_picture ? (
                                                                         <div className="profileHolder">
                                                                             <img
@@ -910,14 +1056,14 @@ const MessageBody = ({
                                                                         >
                                                                             <div className="videoSize">
                                                                                 <DisplayFile item={item.body} />
-                                                                                <div className='pinBox'>
+                                                                                {/* <div className='pinBox'>
                                                                                     <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
                                                                                         <i className={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                     </button>
-                                                                                </div>
+                                                                                </div> */}
                                                                             </div>
                                                                             {/* TODO : FIX PIN UI */}
-                                                                            {/* <div className="dropdown">
+                                                                            <div className="dropdown">
                                                                                 <button
                                                                                     className="clearButton2"
                                                                                     type="button"
@@ -936,8 +1082,21 @@ const MessageBody = ({
                                                                                             {item?.is_pinned == 1 ? "Unpin" : "Pin"}
                                                                                         </div>
                                                                                     </li>
+                                                                                    {
+                                                                                        selectedChat == "groupChat" &&
+                                                                                        <li>
+                                                                                            <div
+                                                                                                className="dropdown-item"
+                                                                                                href="#"
+                                                                                                onClick={() => handleDeleteMessage(item, setAllMessage, allMessage, recipient, selectedChat)}
+                                                                                            >
+                                                                                                Delete
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    }
+
                                                                                 </ul>
-                                                                            </div> */}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1590,35 +1749,16 @@ const MessageBody = ({
                                                                             <i className="fa-solid fa-ellipsis-vertical" />
                                                                         </button>
                                                                         <ul className="dropdown-menu light">
-                                                                            {item.is_admin ? (
+
+                                                                            {!item?.is_admin &&
                                                                                 <li>
                                                                                     <div
                                                                                         className="dropdown-item"
                                                                                         onClick={() =>
                                                                                             manageAdmin(
-                                                                                                item.agentId,
-                                                                                                item.group_id,
-                                                                                                item.userId,
-                                                                                                !item.is_admin,
-                                                                                                setLoading,
-                                                                                                setGroupRefresh,
-                                                                                                groupRefresh
-                                                                                            )
-                                                                                        }
-                                                                                    >
-                                                                                        Dismiss Group Admin
-                                                                                    </div>
-                                                                                </li>
-                                                                            ) : (
-                                                                                <li>
-                                                                                    <div
-                                                                                        className="dropdown-item"
-                                                                                        onClick={() =>
-                                                                                            manageAdmin(
-                                                                                                item.agentId,
-                                                                                                item.group_id,
-                                                                                                item.userId,
-                                                                                                !item.is_admin,
+                                                                                                recipient[1],
+                                                                                                item?.userId,
+                                                                                                !item?.is_admin,
                                                                                                 setLoading,
                                                                                                 setGroupRefresh,
                                                                                                 groupRefresh
@@ -1628,7 +1768,8 @@ const MessageBody = ({
                                                                                         Make Group Admin
                                                                                     </div>
                                                                                 </li>
-                                                                            )}
+                                                                            }
+
                                                                             <li>
                                                                                 <div
                                                                                     className="dropdown-item text-danger"
@@ -1754,6 +1895,8 @@ const MessageBody = ({
                                         isVideoOn={isVideoOn}
                                         setConferenceToggle={setConferenceToggle}
                                         conferenceToggle={conferenceToggle}
+                                        setInternalCaller={setInternalCaller}
+                                        setCallStatus={setCallStatus}
                                     />
                                 ) : (
                                     ""
@@ -1765,7 +1908,7 @@ const MessageBody = ({
                 {/* </Panel>
                   </PanelGroup> */}
             </div>
-        </div>
+        </div >
     )
 }
 

@@ -84,9 +84,8 @@ function Navbar() {
                     <Link to="/temporary-dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require(`../assets/images/logo_login${
-                            theme === "dark" ? "2" : "3"
-                          }.png`)}
+                          src={require(`../assets/images/logo_login${theme === "dark" ? "2" : "3"
+                            }.png`)}
                           alt="img"
                         />
                       </div>
@@ -119,9 +118,8 @@ function Navbar() {
                     <Link to="/dashboard" onClick={backToTop}>
                       <div className="imgWrapper">
                         <img
-                          src={require(`../assets/images/logo_login${
-                            theme === "dark" ? "2" : "3"
-                          }.png`)}
+                          src={require(`../assets/images/logo_login${theme === "dark" ? "2" : "3"
+                            }.png`)}
                           alt="img"
                         />
                       </div>
@@ -141,12 +139,48 @@ function Navbar() {
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="">
-                      <button
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse8"
-                        aria-expanded={
-                          isChildActive([
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse8"
+                          aria-expanded={
+                            isChildActive([
+                              "/users-profile",
+                              "/change-password",
+                              "/admin/package",
+                              "/users",
+                              "/users-edit",
+                              "/users-add",
+                              "/users-config",
+                              "/roles",
+                              "/master",
+                              "/extensions",
+                              "/extensions-edit",
+                              "/extensions-add",
+                              "/all-devices",
+                              "/device-provisioning-add",
+                              "/device-provisioning-edit",
+                              "/device-provisioning-new",
+                              "/groups",
+                              "/groups-add",
+                              "/groups-edit",
+                              "/access-control-list",
+                              "/access-control-list-add",
+                              "/access-control-list-edit",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse5"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-user"></i>
+                          </div>
+                          <div className="itemTitle">Accounts</div>
+                        </button>
+                        <div
+                          id="collapse8"
+                          className={`accordion-collapse collapse ${isChildActive([
                             "/users-profile",
                             "/change-password",
                             "/admin/package",
@@ -170,153 +204,104 @@ function Navbar() {
                             "/access-control-list-add",
                             "/access-control-list-edit",
                           ])
-                            ? "true"
-                            : "false"
-                        }
-                        aria-controls="collapse5"
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-user"></i>
-                        </div>
-                        <div className="itemTitle">Accounts</div>
-                      </button>
-                      <div
-                        id="collapse8"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/users-profile",
-                            "/change-password",
-                            "/admin/package",
-                            "/users",
-                            "/users-edit",
-                            "/users-add",
-                            "/users-config",
-                            "/roles",
-                            "/master",
-                            "/extensions",
-                            "/extensions-edit",
-                            "/extensions-add",
-                            "/all-devices",
-                            "/device-provisioning-add",
-                            "/device-provisioning-edit",
-                            "/device-provisioning-new",
-                            "/groups",
-                            "/groups-add",
-                            "/groups-edit",
-                            "/access-control-list",
-                            "/access-control-list-add",
-                            "/access-control-list-edit",
-                          ])
-                            ? "show"
-                            : ""
-                        }`}
-                        data-bs-parent="#sidenNav"
-                      >
-                        <div className="menuWrapper">
-                          <ul className="tabMenu">
-                            <li className="tabItem">
-                              <NavLink
-                                to="/users-profile"
-                                onClick={backToTop}
-                                className="nav-link"
-                              >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-user"></i>
-                                </div> */}
-                                <div className="itemTitle">My Profile</div>
-                              </NavLink>
-                            </li>
-                            {checkViewSidebar(
-                              ["Accounts", "User"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/users"
-                                  // onClick={backToTop}
-                                  type="button"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/users-add",
-                                      "/users-edit",
-                                      "/users-config",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Users</div>
-                                </NavLink>
-                              </li>
-                            ) : null}
-
-                            {checkViewSidebar(
-                              ["Accounts", "Extension"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/extensions"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/extensions-add",
-                                      "/extensions-edit",
-                                      "/all-devices",
-                                      "/device-provisioning-add",
-                                      "/device-provisioning-edit",
-                                      "/device-provisioning-new",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Extensions</div>
-                                </NavLink>
-                              </li>
-                            ) : null}
-
-                            {checkViewSidebar(
-                              ["Accounts", "Role"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
+                              ? "show"
+                              : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
                               <li className="tabItem">
                                 <NavLink
-                                  to="/roles"
+                                  to="/users-profile"
                                   onClick={backToTop}
                                   className="nav-link"
                                 >
-                                  <div className="itemTitle">
-                                    Roles and Permission
-                                  </div>
+                                  {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-user"></i>
+                                </div> */}
+                                  <div className="itemTitle">My Profile</div>
                                 </NavLink>
                               </li>
-                            ) : null}
-                            {accountDetails?.add_on_subscription?.find(
-                              (item) => item?.addon_id == 7
-                            ) ? (
-                              checkViewSidebar(
-                                ["Accounts", "AccessControl"],
+                              {checkViewSidebar(
+                                ["Accounts", "User"],
                                 permissions,
                                 account?.sectionPermissions,
                                 account?.permissions
-                              ) ||
-                              checkViewSidebar(
-                                ["Accounts", "AccessControlNode"],
+                              ) ? (
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/users"
+                                    // onClick={backToTop}
+                                    type="button"
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/users-add",
+                                          "/users-edit",
+                                          "/users-config",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Users</div>
+                                  </NavLink>
+                                </li>
+                              ) : null}
+
+                              {checkViewSidebar(
+                                ["Accounts", "Extension"],
                                 permissions,
                                 account?.sectionPermissions,
                                 account?.permissions
+                              ) ? (
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/extensions"
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/extensions-add",
+                                          "/extensions-edit",
+                                          "/all-devices",
+                                          "/device-provisioning-add",
+                                          "/device-provisioning-edit",
+                                          "/device-provisioning-new",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Extensions</div>
+                                  </NavLink>
+                                </li>
+                              ) : null}
+
+                              {checkViewSidebar(
+                                ["Accounts", "Role"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/roles"
+                                    onClick={backToTop}
+                                    className="nav-link"
+                                  >
+                                    <div className="itemTitle">
+                                      Roles and Permission
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              ) : null}
+                              {accountDetails?.add_on_subscription?.find(
+                                (item) => item?.addon_id == 6
                               ) ? (
                                 <li className="tabItem">
                                   <NavLink
@@ -324,12 +309,12 @@ function Navbar() {
                                     onClick={backToTop}
                                     className={({ isActive }) =>
                                       isActive ||
-                                      [
-                                        "/access-control-list",
-                                        "/access-control-list-add",
-                                      ].some((path) =>
-                                        window.location.pathname.includes(path)
-                                      )
+                                        [
+                                          "/access-control-list",
+                                          "/access-control-list-add",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
                                         ? "nav-link active"
                                         : "nav-link"
                                     }
@@ -339,88 +324,109 @@ function Navbar() {
                                     </div>
                                   </NavLink>
                                 </li>
+
                               ) : (
-                                <></>
-                              )
-                            ) : (
-                              ""
-                            )}
-                            {checkViewSidebar(
-                              ["Accounts", "Group"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/groups"
-                                  onClick={backToTop}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/groups",
-                                      "/groups-add",
-                                      "/groups-edit",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Groups</div>
-                                </NavLink>
-                              </li>
-                            ) : (
-                              ""
-                            )}
+                                ""
+                              )}
+                              {checkViewSidebar(
+                                ["Accounts", "Group"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) ? (
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/groups"
+                                    onClick={backToTop}
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/groups",
+                                          "/groups-add",
+                                          "/groups-edit",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Groups</div>
+                                  </NavLink>
+                                </li>
+                              ) : (
+                                ""
+                              )}
 
-                            {userType === "SupreAdmin" ? (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/admin/package"
-                                  onClick={backToTop}
-                                  className="nav-link"
-                                >
-                                  <div className="itemTitle">
-                                    Manage Services
-                                  </div>
-                                </NavLink>
-                              </li>
-                            ) : (
-                              ""
-                            )}
+                              {userType === "SupreAdmin" ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/admin/package"
+                                    onClick={backToTop}
+                                    className="nav-link"
+                                  >
+                                    <div className="itemTitle">
+                                      Manage Services
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              ) : (
+                                ""
+                              )}
 
-                            {userType === "SupreAdmin" ? (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/master"
-                                  onClick={backToTop}
-                                  className="nav-link"
-                                >
-                                  <div className="itemTitle">Master</div>
-                                </NavLink>
-                              </li>
-                            ) : (
-                              ""
-                            )}
-                          </ul>
+                              {userType === "SupreAdmin" ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/master"
+                                    onClick={backToTop}
+                                    className="nav-link"
+                                  >
+                                    <div className="itemTitle">Master</div>
+                                  </NavLink>
+                                </li>
+                              ) : (
+                                ""
+                              )}
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  )}
+                      </li>
+                    )}
 
                   {checkModulePerm(
                     "Number Management",
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="">
-                      <button
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse10"
-                        aria-expanded={
-                          isChildActive([
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse10"
+                          aria-expanded={
+                            isChildActive([
+                              "/get-did",
+                              "/port-number",
+                              "/port-number-add",
+                              "/port-number-edit",
+                              "/did-listing",
+                              "/management-get-did",
+                              "/number-for-ai",
+                              "/number-compliances",
+                              "/number-compliances/:country",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse10"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-hashtag"></i>
+                          </div>
+                          <div className="itemTitle">Number Management</div>
+                        </button>
+                        <div
+                          id="collapse10"
+                          className={`accordion-collapse collapse ${isChildActive([
                             "/get-did",
                             "/port-number",
                             "/port-number-add",
@@ -431,133 +437,109 @@ function Navbar() {
                             "/number-compliances",
                             "/number-compliances/:country",
                           ])
-                            ? "true"
-                            : "false"
-                        }
-                        aria-controls="collapse10"
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-hashtag"></i>
-                        </div>
-                        <div className="itemTitle">Number Management</div>
-                      </button>
-                      <div
-                        id="collapse10"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/get-did",
-                            "/port-number",
-                            "/port-number-add",
-                            "/port-number-edit",
-                            "/did-listing",
-                            "/management-get-did",
-                            "/number-for-ai",
-                            "/number-compliances",
-                            "/number-compliances/:country",
-                          ])
-                            ? "show"
-                            : ""
-                        }`}
-                        data-bs-parent="#sidenNav"
-                      >
-                        <div className="menuWrapper">
-                          <ul className="tabMenu">
-                            {checkViewSidebar(
-                              ["Number Management", "DidDetail"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
+                              ? "show"
+                              : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              {checkViewSidebar(
+                                ["Number Management", "DidDetail"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem">
+                                    <NavLink
+                                      to="/management-get-did"
+                                      onClick={backToTop}
+                                      className="nav-link"
+                                    >
+                                      <div className="itemTitle">Get Number</div>
+                                    </NavLink>
+                                  </li>
+                                )}
                               <li className="tabItem">
                                 <NavLink
-                                  to="/management-get-did"
+                                  to="/number-for-ai"
                                   onClick={backToTop}
                                   className="nav-link"
                                 >
-                                  <div className="itemTitle">Get Number</div>
+                                  <div className="itemTitle">Number for AI</div>
                                 </NavLink>
                               </li>
-                            )}
-                            <li className="tabItem">
-                              <NavLink
-                                to="/number-for-ai"
-                                onClick={backToTop}
-                                className="nav-link"
-                              >
-                                <div className="itemTitle">Number for AI</div>
-                              </NavLink>
-                            </li>
-                            {checkViewSidebar(
-                              ["Number Management", "Port"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
+                              {checkViewSidebar(
+                                ["Number Management", "Port"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/port-number"
+                                    onClick={backToTop}
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/port-number-add",
+                                          "/port-number-edit",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Port number</div>
+                                  </NavLink>
+                                </li>
+                              ) : null}
+
+                              {checkViewSidebar(
+                                ["Number Management", "DidConfigure"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem">
+                                    <NavLink
+                                      to="/did-listing"
+                                      onClick={backToTop}
+                                      className="nav-link"
+                                    >
+                                      <div className="itemTitle">
+                                        Number Configuration
+                                      </div>
+                                    </NavLink>
+                                  </li>
+                                )}
                               <li className="tabItem">
                                 <NavLink
-                                  to="/port-number"
+                                  to="/number-compliances"
                                   onClick={backToTop}
                                   className={({ isActive }) =>
                                     isActive ||
-                                    [
-                                      "/port-number-add",
-                                      "/port-number-edit",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
+                                      [
+                                        "/number-compliances",
+                                        "/number-compliances/:country",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
                                       ? "nav-link active"
                                       : "nav-link"
                                   }
                                 >
-                                  <div className="itemTitle">Port number</div>
-                                </NavLink>
-                              </li>
-                            ) : null}
-
-                            {checkViewSidebar(
-                              ["Number Management", "DidConfigure"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/did-listing"
-                                  onClick={backToTop}
-                                  className="nav-link"
-                                >
                                   <div className="itemTitle">
-                                    Number Configuration
+                                    Number Compliances
                                   </div>
                                 </NavLink>
                               </li>
-                            )}
-                            <li className="tabItem">
-                              <NavLink
-                                to="/number-compliances"
-                                onClick={backToTop}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  [
-                                    "/number-compliances",
-                                    "/number-compliances/:country",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">
-                                  Number Compliances
-                                </div>
-                              </NavLink>
-                            </li>
-                          </ul>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  )}
+                      </li>
+                    )}
 
                   {checkModulePerm("PBX", permissions, account?.sections) && (
                     <li className="">
@@ -607,39 +589,38 @@ function Navbar() {
                       </button>
                       <div
                         id="collapseOne"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/phone-dashboard",
-                            "/agent-dashboard",
-                            "/did-listing-pbx",
-                            "/did-config",
-                            "/did-add",
-                            "/ring-groups",
-                            "/ring-groups-add",
-                            "/ring-groups-edit",
-                            "/cal-center-queue",
-                            "/cal-center-queue-add",
-                            "/cal-center-queue-edit",
-                            "/call-blocking",
-                            "/call-blocking-add",
-                            "/agents",
-                            "/agents-add",
-                            "/agents-edit",
-                            "/agents-pbx-add",
-                            "/call-dashboard",
-                            "/active-calls",
-                            "/voicemail-report",
-                            "/custom-dashboard",
-                            "/ivr",
-                            "/ivr-add",
-                            "/ivr-edit",
-                            "/click-to-call-listing",
-                            "/click-to-call-add",
-                            "/click-to-call-edit"
-                          ])
+                        className={`accordion-collapse collapse ${isChildActive([
+                          "/phone-dashboard",
+                          "/agent-dashboard",
+                          "/did-listing-pbx",
+                          "/did-config",
+                          "/did-add",
+                          "/ring-groups",
+                          "/ring-groups-add",
+                          "/ring-groups-edit",
+                          "/cal-center-queue",
+                          "/cal-center-queue-add",
+                          "/cal-center-queue-edit",
+                          "/call-blocking",
+                          "/call-blocking-add",
+                          "/agents",
+                          "/agents-add",
+                          "/agents-edit",
+                          "/agents-pbx-add",
+                          "/call-dashboard",
+                          "/active-calls",
+                          "/voicemail-report",
+                          "/custom-dashboard",
+                          "/ivr",
+                          "/ivr-add",
+                          "/ivr-edit",
+                          "/click-to-call-listing",
+                          "/click-to-call-add",
+                          "/click-to-call-edit"
+                        ])
                             ? "show"
                             : ""
-                        }`}
+                          }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
@@ -650,68 +631,68 @@ function Navbar() {
                               account?.sectionPermissions,
                               account?.permissions
                             ) && (
-                              <li className="tabItem ">
-                                <NavLink to="/phone-dashboard">
-                                  <div className="itemTitle">
-                                    Call Dashboard
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem ">
+                                  <NavLink to="/phone-dashboard">
+                                    <div className="itemTitle">
+                                      Call Dashboard
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              )}
                             {checkViewSidebar(
                               ["PBX", "ActiveCall"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions
                             ) && (
-                              <li className="tabItem ">
-                                <NavLink to="/active-calls" onClick={backToTop}>
-                                  <div className="itemTitle">Active Calls</div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem ">
+                                  <NavLink to="/active-calls" onClick={backToTop}>
+                                    <div className="itemTitle">Active Calls</div>
+                                  </NavLink>
+                                </li>
+                              )}
                             {checkViewSidebar(
                               ["PBX", "CustomDashboard"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions
                             ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/custom-dashboard"
-                                  onClick={backToTop}
-                                >
-                                  <div className="itemTitle">
-                                    Custom Dashboard
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/custom-dashboard"
+                                    onClick={backToTop}
+                                  >
+                                    <div className="itemTitle">
+                                      Custom Dashboard
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              )}
                             {checkViewSidebar(
                               ["PBX", "DidConfigure"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions
                             ) && (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/did-listing-pbx"
-                                  onClick={backToTop}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    ["/did-add", "/did-config"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">
-                                    Number Configuration
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/did-listing-pbx"
+                                    onClick={backToTop}
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        ["/did-add", "/did-config"].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">
+                                      Number Configuration
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              )}
                             {/* <li className="tabItem ">
                             <NavLink to="/agent-dashboard">
                               <div className="itemTitle">Agent Dashboard</div>
@@ -723,27 +704,27 @@ function Navbar() {
                               account?.sectionPermissions,
                               account?.permissions
                             ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/agents"
-                                  onClick={() => backToTop()}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/agents-add",
-                                      "/agents-edit",
-                                      "/agents-pbx-add",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Agents</div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/agents"
+                                    onClick={() => backToTop()}
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/agents-add",
+                                          "/agents-edit",
+                                          "/agents-pbx-add",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Agents</div>
+                                  </NavLink>
+                                </li>
+                              )}
                             {checkViewSidebar(
                               ["PBX", "Ringgroup"],
                               permissions,
@@ -757,12 +738,12 @@ function Navbar() {
                                   type="button"
                                   className={({ isActive }) =>
                                     isActive ||
-                                    [
-                                      "/ring-groups-add",
-                                      "/ring-groups-edit",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
+                                      [
+                                        "/ring-groups-add",
+                                        "/ring-groups-edit",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
                                       ? "nav-link active"
                                       : "nav-link"
                                   }
@@ -784,12 +765,12 @@ function Navbar() {
                                   type="button"
                                   className={({ isActive }) =>
                                     isActive ||
-                                    [
-                                      "/cal-center-queue-add",
-                                      "/cal-center-queue-edit",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
+                                      [
+                                        "/cal-center-queue-add",
+                                        "/cal-center-queue-edit",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
                                       ? "nav-link active"
                                       : "nav-link"
                                   }
@@ -805,92 +786,92 @@ function Navbar() {
                               account?.sectionPermissions,
                               account?.permissions
                             ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/call-blocking"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/call-blocking",
-                                      "/call-blocking-add",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                  onClick={backToTop}
-                                  type="button"
-                                >
-                                  <div className="itemTitle">Call Blocking</div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/call-blocking"
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/call-blocking",
+                                          "/call-blocking-add",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                    onClick={backToTop}
+                                    type="button"
+                                  >
+                                    <div className="itemTitle">Call Blocking</div>
+                                  </NavLink>
+                                </li>
+                              )}
                             {checkViewSidebar(
                               ["PBX", "VoicemailRecording"],
                               permissions,
                               account?.sectionPermissions,
                               account?.permissions
                             ) && (
-                              <li className="tabItem ">
-                                <NavLink to="/voicemail-report">
-                                  <div className="itemTitle">Voice Mail</div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem ">
+                                  <NavLink to="/voicemail-report">
+                                    <div className="itemTitle">Voice Mail</div>
+                                  </NavLink>
+                                </li>
+                              )}
 
                             {checkModulePerm(
                               "Interactive Voice Response",
                               permissions,
                               account?.sections
                             ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/ivr"
-                                  onClick={backToTop}
-                                  type="button"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/ivr-add",
-                                      "/ivr-edit",
-                                      "/ivr-options",
-                                      "/call-flow",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">
-                                    {" "}
-                                    Interactive Voice Response
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/ivr"
+                                    onClick={backToTop}
+                                    type="button"
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/ivr-add",
+                                          "/ivr-edit",
+                                          "/ivr-options",
+                                          "/call-flow",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">
+                                      {" "}
+                                      Interactive Voice Response
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              )}
 
                             {accountDetails?.add_on_subscription?.find(
                               (item) => item?.addon_id == 2
                             )
                               ? checkModulePerm(
-                                  "Click To Call",
-                                  permissions,
-                                  account?.sections
-                                ) && (
-                                  <li className="tabItem ">
-                                    <NavLink
-                                      to="/click-to-call-listing"
-                                      onClick={backToTop}
-                                      type="button"
-                                    >
-                                      <div className="itemTitle">
-                                        Click To Call
-                                      </div>
-                                    </NavLink>
-                                  </li>
-                                )
+                                "Click To Call",
+                                permissions,
+                                account?.sections
+                              ) && (
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/click-to-call-listing"
+                                    onClick={backToTop}
+                                    type="button"
+                                  >
+                                    <div className="itemTitle">
+                                      Click To Call
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              )
                               : ""}
                           </ul>
                         </div>
@@ -903,12 +884,39 @@ function Navbar() {
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="">
-                      <button
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse6"
-                        aria-expanded={
-                          isChildActive([
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse6"
+                          aria-expanded={
+                            isChildActive([
+                              "/dialer-dashboard",
+                              "/leads",
+                              "/lead-add",
+                              "/lead-edit",
+                              "/lead-view",
+                              "/campaigns",
+                              "/agents-dialer",
+                              "/call-desposition",
+                              "/agent-disposition-manage",
+                              "/dialer-cdr-report",
+                              "/campaign-create",
+                              "/campaign-edit",
+                              "/did-listing-dialer",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse6"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-grid"></i>
+                          </div>
+                          <div className="itemTitle">Dialer</div>
+                        </button>
+                        <div
+                          id="collapse6"
+                          className={`accordion-collapse collapse ${isChildActive([
                             "/dialer-dashboard",
                             "/leads",
                             "/lead-add",
@@ -923,208 +931,180 @@ function Navbar() {
                             "/campaign-edit",
                             "/did-listing-dialer",
                           ])
-                            ? "true"
-                            : "false"
-                        }
-                        aria-controls="collapse6"
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-grid"></i>
-                        </div>
-                        <div className="itemTitle">Dialer</div>
-                      </button>
-                      <div
-                        id="collapse6"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/dialer-dashboard",
-                            "/leads",
-                            "/lead-add",
-                            "/lead-edit",
-                            "/lead-view",
-                            "/campaigns",
-                            "/agents-dialer",
-                            "/call-desposition",
-                            "/agent-disposition-manage",
-                            "/dialer-cdr-report",
-                            "/campaign-create",
-                            "/campaign-edit",
-                            "/did-listing-dialer",
-                          ])
-                            ? "show"
-                            : ""
-                        }`}
-                        data-bs-parent="#sidenNav"
-                      >
-                        <div className="menuWrapper">
-                          <ul className="tabMenu">
-                            {checkViewSidebar(
-                              ["Dialer", "Dashboard"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/dialer-dashboard"
-                                  onClick={() => backToTop()}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/extensions-add",
-                                      "/extensions-edit",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Dashboard</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Dialer", "Campaign"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/campaigns"
-                                  onClick={() => backToTop()}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    ["/campaign-edit", "/campaign-create"].some(
-                                      (path) =>
-                                        window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Campaign</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Dialer", "Lead"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/leads"
-                                  onClick={() => backToTop()}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/lead-add",
-                                      "/lead-edit",
-                                      "/lead-view",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Leads</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Dialer", "User"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/agents-dialer"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/agents-dialer",
-                                      "/agents-edit",
-                                      "/agents-add",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Agents</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Dialer", "Campaign"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/dialer-cdr-report"
-                                  onClick={() => backToTop()}
-                                >
-                                  <div className="itemTitle">CDR Report</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Dialer", "Disposition"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/agent-disposition-manage"
-                                  onClick={() => backToTop()}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    ["/agent-disposition-manage"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Disposition</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Dialer", "DidDetail"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/did-listing-dialer"
-                                  onClick={() => backToTop()}
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    ["/did-listing-dialer"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">
-                                    Number Configuration
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {/* <li className="tabItem ">
+                              ? "show"
+                              : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              {checkViewSidebar(
+                                ["Dialer", "Dashboard"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/dialer-dashboard"
+                                      onClick={() => backToTop()}
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          [
+                                            "/extensions-add",
+                                            "/extensions-edit",
+                                          ].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Dashboard</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Dialer", "Campaign"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/campaigns"
+                                      onClick={() => backToTop()}
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          ["/campaign-edit", "/campaign-create"].some(
+                                            (path) =>
+                                              window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Campaign</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Dialer", "Lead"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/leads"
+                                      onClick={() => backToTop()}
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          [
+                                            "/lead-add",
+                                            "/lead-edit",
+                                            "/lead-view",
+                                          ].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Leads</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Dialer", "User"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/agents-dialer"
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          [
+                                            "/agents-dialer",
+                                            "/agents-edit",
+                                            "/agents-add",
+                                          ].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Agents</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Dialer", "Campaign"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/dialer-cdr-report"
+                                      onClick={() => backToTop()}
+                                    >
+                                      <div className="itemTitle">CDR Report</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Dialer", "Disposition"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/agent-disposition-manage"
+                                      onClick={() => backToTop()}
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          ["/agent-disposition-manage"].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Disposition</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Dialer", "DidDetail"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/did-listing-dialer"
+                                      onClick={() => backToTop()}
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          ["/did-listing-dialer"].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">
+                                        Number Configuration
+                                      </div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {/* <li className="tabItem ">
                                 <NavLink
                                   to="/call-desposition"
                                   onClick={() => backToTop()}
@@ -1142,50 +1122,49 @@ function Navbar() {
                                   </div>
                                 </NavLink>
                               </li> */}
-                          </ul>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  )}
+                      </li>
+                    )}
                   {checkModulePerm(
                     "Call Tracker",
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="">
-                      <button
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse7"
-                        aria-expanded={
-                          isChildActive([
-                            "/tracker-dashboard",
-                            "/tracker-active-calls",
-                            "/did-listing-tracker",
-                            "/buyers",
-                            "/source",
-                            "/buyer-add",
-                            "/buyer-edit",
-                            "/elastic-trunk",
-                            "/elastic-trunk-add",
-                            "/elastic-trunk-edit",
-                            "/call-forwarding-campaign",
-                            "/call-forwarding-campaign-create",
-                            "/call-forwarding-campaign-edit",
-                          ])
-                            ? "true"
-                            : "false"
-                        }
-                        aria-controls="collapse7"
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-chart-waterfall"></i>
-                        </div>
-                        <div className="itemTitle">Call Tracker</div>
-                      </button>
-                      <div
-                        id="collapse7"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse7"
+                          aria-expanded={
+                            isChildActive([
+                              "/tracker-dashboard",
+                              "/tracker-active-calls",
+                              "/did-listing-tracker",
+                              "/buyers",
+                              "/source",
+                              "/buyer-add",
+                              "/buyer-edit",
+                              "/elastic-trunk",
+                              "/elastic-trunk-add",
+                              "/elastic-trunk-edit",
+                              "/call-forwarding-campaign",
+                              "/call-forwarding-campaign-create",
+                              "/call-forwarding-campaign-edit",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse7"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-chart-waterfall"></i>
+                          </div>
+                          <div className="itemTitle">Call Tracker</div>
+                        </button>
+                        <div
+                          id="collapse7"
+                          className={`accordion-collapse collapse ${isChildActive([
                             "/tracker-dashboard",
                             "/tracker-active-calls",
                             "/did-listing-tracker",
@@ -1201,144 +1180,144 @@ function Navbar() {
                             "/call-forwarding-campaign-edit",
                             "/cdr-tracker",
                           ])
-                            ? "show"
-                            : ""
-                        }`}
-                        data-bs-parent="#sidenNav"
-                      >
-                        <div className="menuWrapper">
-                          <ul className="tabMenu">
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/tracker-dashboard"
-                                onClick={backToTop}
-                              >
-                                <div className="itemTitle">Dashboard</div>
-                              </NavLink>
-                            </li>
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/tracker-active-calls"
-                                onClick={backToTop}
-                              >
-                                <div className="itemTitle">Active Calls</div>
-                              </NavLink>
-                            </li>
+                              ? "show"
+                              : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/tracker-dashboard"
+                                  onClick={backToTop}
+                                >
+                                  <div className="itemTitle">Dashboard</div>
+                                </NavLink>
+                              </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/tracker-active-calls"
+                                  onClick={backToTop}
+                                >
+                                  <div className="itemTitle">Active Calls</div>
+                                </NavLink>
+                              </li>
 
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/did-listing-tracker"
-                                onClick={backToTop}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  ["/did-listing-tracker"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">
-                                  Number Configuration
-                                </div>
-                              </NavLink>
-                            </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/did-listing-tracker"
+                                  onClick={backToTop}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/did-listing-tracker"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">
+                                    Number Configuration
+                                  </div>
+                                </NavLink>
+                              </li>
 
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/call-forwarding-campaign"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  [
-                                    "/call-forwarding-campaign-create",
-                                    "/call-forwarding-campaign-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Campaign</div>
-                              </NavLink>
-                            </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/call-forwarding-campaign"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      [
+                                        "/call-forwarding-campaign-create",
+                                        "/call-forwarding-campaign-edit",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Campaign</div>
+                                </NavLink>
+                              </li>
 
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/buyers"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  ["/buyer-edit", "/buyer-add"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Buyers</div>
-                              </NavLink>
-                            </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/buyers"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/buyer-edit", "/buyer-add"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Buyers</div>
+                                </NavLink>
+                              </li>
 
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/source"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Source</div>
-                              </NavLink>
-                            </li>
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/cdr-tracker"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">CDR Tracker</div>
-                              </NavLink>
-                            </li>
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/elastic-trunk"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  [
-                                    "/elastic-trunk-add",
-                                    "/elastic-trunk-edit",
-                                  ].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Elastic trunk</div>
-                              </NavLink>
-                            </li>
-                          </ul>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/source"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/extensions-add", "/extensions-edit"].some(
+                                        (path) =>
+                                          window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Source</div>
+                                </NavLink>
+                              </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/cdr-tracker"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/extensions-add", "/extensions-edit"].some(
+                                        (path) =>
+                                          window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">CDR Tracker</div>
+                                </NavLink>
+                              </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/elastic-trunk"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      [
+                                        "/elastic-trunk-add",
+                                        "/elastic-trunk-edit",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Elastic trunk</div>
+                                </NavLink>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  )}
+                      </li>
+                    )}
                   {/* {isCustomerAdmin &&
                         <li className="dashboard ">
                           <NavLink
@@ -1429,25 +1408,24 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse14"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/ai-agent-dashboard",
-                            "/all-ai-agent",
-                            "/ai-all-agent",
-                            "/conversations-flow",
-                            "/all-users",
-                            "/ai-knowledge-base",
-                            "/ai-phone-number",
-                            "/ai-call-history",
-                            "/ai-billing",
-                            "/ai-batch-call",
-                            "/ai-agent-add",
-                            "/ai-agent-edit",
-                            "/ai-phone-number",
-                          ])
+                        className={`accordion-collapse collapse ${isChildActive([
+                          "/ai-agent-dashboard",
+                          "/all-ai-agent",
+                          "/ai-all-agent",
+                          "/conversations-flow",
+                          "/all-users",
+                          "/ai-knowledge-base",
+                          "/ai-phone-number",
+                          "/ai-call-history",
+                          "/ai-billing",
+                          "/ai-batch-call",
+                          "/ai-agent-add",
+                          "/ai-agent-edit",
+                          "/ai-phone-number",
+                        ])
                             ? "show"
                             : ""
-                        }`}
+                          }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
@@ -1478,9 +1456,9 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/ai-phone-number"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/ai-phone-number"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1494,10 +1472,10 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/ai-all-agent", "/conversations-flow"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
+                                    ["/ai-all-agent", "/conversations-flow"].some(
+                                      (path) =>
+                                        window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1530,9 +1508,9 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/ai-knowledge-base"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/ai-knowledge-base"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1547,9 +1525,9 @@ function Navbar() {
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                  ["/ai-call-history"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
+                                    ["/ai-call-history"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
                                     ? "nav-link active"
                                     : "nav-link"
                                 }
@@ -1606,27 +1584,27 @@ function Navbar() {
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="dashboard ">
-                      <NavLink
-                        to="/meeting-room"
-                        onClick={backToTop}
-                        type="button"
-                        className={({ isActive }) =>
-                          isActive ||
-                          ["/meeting-room", "/meeting-add"].some((path) =>
-                            window.location.pathname.includes(path)
-                          )
-                            ? "nav-link active"
-                            : "nav-link"
-                        }
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-screen-users"></i>
-                        </div>
-                        <div className="itemTitle">Meeting Rooms</div>
-                      </NavLink>
-                    </li>
-                  )}
+                      <li className="dashboard ">
+                        <NavLink
+                          to="/meeting-room"
+                          onClick={backToTop}
+                          type="button"
+                          className={({ isActive }) =>
+                            isActive ||
+                              ["/meeting-room", "/meeting-add"].some((path) =>
+                                window.location.pathname.includes(path)
+                              )
+                              ? "nav-link active"
+                              : "nav-link"
+                          }
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-screen-users"></i>
+                          </div>
+                          <div className="itemTitle">Meeting Rooms</div>
+                        </NavLink>
+                      </li>
+                    )}
                   <li className="">
                     <button
                       data-bs-toggle="collapse"
@@ -1645,11 +1623,10 @@ function Navbar() {
                     </button>
                     <div
                       id="collapse21"
-                      className={`accordion-collapse collapse ${
-                        isChildActive(["/ai-dashboard", "/ai-search-cdr"])
+                      className={`accordion-collapse collapse ${isChildActive(["/ai-dashboard", "/ai-search-cdr"])
                           ? "show"
                           : ""
-                      }`}
+                        }`}
                       data-bs-parent="#sidenNav"
                     >
                       <div className="menuWrapper">
@@ -1682,12 +1659,33 @@ function Navbar() {
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="">
-                      <button
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse4"
-                        aria-expanded={
-                          isChildActive([
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse4"
+                          aria-expanded={
+                            isChildActive([
+                              "/cdr-report",
+                              "/call-recording",
+                              "/meeting-reports",
+                              "/call-center-report",
+                              "/ring-group-report",
+                              "/agent-report",
+                              "/click-to-call-report",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse4"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-chart-line-up"></i>
+                          </div>
+                          <div className="itemTitle">Reports</div>
+                        </button>
+                        <div
+                          id="collapse4"
+                          className={`accordion-collapse collapse ${isChildActive([
                             "/cdr-report",
                             "/call-recording",
                             "/meeting-reports",
@@ -1696,70 +1694,48 @@ function Navbar() {
                             "/agent-report",
                             "/click-to-call-report",
                           ])
-                            ? "true"
-                            : "false"
-                        }
-                        aria-controls="collapse4"
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-chart-line-up"></i>
-                        </div>
-                        <div className="itemTitle">Reports</div>
-                      </button>
-                      <div
-                        id="collapse4"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/cdr-report",
-                            "/call-recording",
-                            "/meeting-reports",
-                            "/call-center-report",
-                            "/ring-group-report",
-                            "/agent-report",
-                            "/click-to-call-report",
-                          ])
-                            ? "show"
-                            : ""
-                        }`}
-                        data-bs-parent="#sidenNav"
-                      >
-                        <div className="menuWrapper">
-                          <ul className="tabMenu">
-                            {checkViewSidebar(
-                              ["Reports", "ChannelHangupComplete"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/cdr-report"
-                                  onClick={backToTop}
-                                  className="nav-link"
-                                >
-                                  <div className="itemTitle">CDR / CQR</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Reports", "VoicemailRecording"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/call-recording"
-                                  onClick={backToTop}
-                                  className="nav-link"
-                                >
-                                  <div className="itemTitle">
-                                    Call Recording
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {/* <li className="tabItem ">
+                              ? "show"
+                              : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              {checkViewSidebar(
+                                ["Reports", "ChannelHangupComplete"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem">
+                                    <NavLink
+                                      to="/cdr-report"
+                                      onClick={backToTop}
+                                      className="nav-link"
+                                    >
+                                      <div className="itemTitle">CDR / CQR</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Reports", "VoicemailRecording"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem">
+                                    <NavLink
+                                      to="/call-recording"
+                                      onClick={backToTop}
+                                      className="nav-link"
+                                    >
+                                      <div className="itemTitle">
+                                        Call Recording
+                                      </div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {/* <li className="tabItem ">
                               <Link
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
@@ -1803,51 +1779,51 @@ function Navbar() {
                                 <div className="itemTitle">Agent Report</div>
                               </NavLink>
                             </li> */}
-                            {checkViewSidebar(
-                              ["Reports", "CallCenterQueue"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/call-center-report"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    ["/call-center-report"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Call Queues</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Reports", "Ringgroup"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/ring-group-report"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    ["/ring-group-report"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Ring Groups</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {/* <li className="tabItem ">
+                              {checkViewSidebar(
+                                ["Reports", "CallCenterQueue"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/call-center-report"
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          ["/call-center-report"].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Call Queues</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Reports", "Ringgroup"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/ring-group-report"
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          ["/ring-group-report"].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Ring Groups</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {/* <li className="tabItem ">
                               <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
@@ -1884,38 +1860,61 @@ function Navbar() {
                                 <div className="itemTitle">Meeting Reports</div>
                               </Link>
                             </li> */}
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/click-to-call-report"
-                                className={({ isActive }) =>
-                                  isActive ||
-                                  ["/click-to-call-report"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Click To Call </div>
-                              </NavLink>
-                            </li>
-                          </ul>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/click-to-call-report"
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/click-to-call-report"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Click To Call </div>
+                                </NavLink>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  )}
+                      </li>
+                    )}
 
                   {checkModulePerm(
                     "Billings",
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="">
-                      <button
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse9"
-                        aria-expanded={
-                          isChildActive([
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse9"
+                          aria-expanded={
+                            isChildActive([
+                              "/card-details",
+                              "/card-transaction-list",
+                              "/wallet-transaction-list",
+                              "/billing-report",
+                              "/subscription-management",
+                              "/rate-card",
+                              "/billing-card-and-wallet",
+                              "/billing-dashboard",
+                              "/package-details",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse9"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-file-invoice-dollar"></i>
+                          </div>
+                          <div className="itemTitle">Billings</div>
+                        </button>
+                        <div
+                          id="collapse9"
+                          className={`accordion-collapse collapse ${isChildActive([
                             "/card-details",
                             "/card-transaction-list",
                             "/wallet-transaction-list",
@@ -1926,60 +1925,36 @@ function Navbar() {
                             "/billing-dashboard",
                             "/package-details",
                           ])
-                            ? "true"
-                            : "false"
-                        }
-                        aria-controls="collapse9"
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-file-invoice-dollar"></i>
-                        </div>
-                        <div className="itemTitle">Billings</div>
-                      </button>
-                      <div
-                        id="collapse9"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/card-details",
-                            "/card-transaction-list",
-                            "/wallet-transaction-list",
-                            "/billing-report",
-                            "/subscription-management",
-                            "/rate-card",
-                            "/billing-card-and-wallet",
-                            "/billing-dashboard",
-                            "/package-details",
-                          ])
-                            ? "show"
-                            : ""
-                        }`}
-                        data-bs-parent="#sidenNav"
-                      >
-                        <div className="menuWrapper">
-                          <ul className="tabMenu">
-                            {checkViewSidebar(
-                              ["Billings", "CardDetail"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) &&
-                            checkViewSidebar(
-                              ["Billings", "BillingAddress"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/card-details"
-                                  onClick={backToTop}
-                                  className="nav-link"
-                                >
-                                  <div className="itemTitle">Payment Info</div>
-                                </NavLink>
-                              </li>
-                            ) : null}
-                            {/* {checkViewSidebar(
+                              ? "show"
+                              : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              {checkViewSidebar(
+                                ["Billings", "CardDetail"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) &&
+                                checkViewSidebar(
+                                  ["Billings", "BillingAddress"],
+                                  permissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions
+                                ) ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/card-details"
+                                    onClick={backToTop}
+                                    className="nav-link"
+                                  >
+                                    <div className="itemTitle">Payment Info</div>
+                                  </NavLink>
+                                </li>
+                              ) : null}
+                              {/* {checkViewSidebar(
                             "CardDetail",
                             permissions,
                             account?.permissions
@@ -2011,31 +1986,31 @@ function Navbar() {
                             </li>
                           ) : null} */}
 
-                            {checkViewSidebar(
-                              ["Billings", "Ratecard"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/rate-card"
-                                  onClick={backToTop}
-                                  type="button"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    ["/rate-card"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Rate Card</div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {/* <li className="tabItem ">
+                              {checkViewSidebar(
+                                ["Billings", "Ratecard"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/rate-card"
+                                      onClick={backToTop}
+                                      type="button"
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          ["/rate-card"].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Rate Card</div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {/* <li className="tabItem ">
                             <NavLink
                               to="/subscription-management"
                               onClick={() => backToTop()}
@@ -2043,102 +2018,122 @@ function Navbar() {
                               <div className="itemTitle">Subscription</div>
                             </NavLink>
                           </li> */}
-                            {checkViewSidebar(
-                              ["Billings", "WalletTransaction"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) &&
-                            checkViewSidebar(
-                              ["Billings", "Payment"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
-                              <li className="tabItem">
-                                <NavLink
-                                  to="/billing-card-and-wallet"
-                                  onClick={backToTop}
-                                  className="nav-link"
-                                >
-                                  <div className="itemTitle">
-                                    All Transactions
-                                  </div>
-                                </NavLink>
-                              </li>
-                            ) : (
-                              ""
-                            )}
-                            {checkViewSidebar(
-                              ["Billings", "ChannelHangupComplete"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/billing-report"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/extensions-add",
-                                      "/extensions-edit",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Reports</div>
-                                </NavLink>
-                              </li>
-                            )}
+                              {checkViewSidebar(
+                                ["Billings", "WalletTransaction"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) &&
+                                checkViewSidebar(
+                                  ["Billings", "Payment"],
+                                  permissions,
+                                  account?.sectionPermissions,
+                                  account?.permissions
+                                ) ? (
+                                <li className="tabItem">
+                                  <NavLink
+                                    to="/billing-card-and-wallet"
+                                    onClick={backToTop}
+                                    className="nav-link"
+                                  >
+                                    <div className="itemTitle">
+                                      All Transactions
+                                    </div>
+                                  </NavLink>
+                                </li>
+                              ) : (
+                                ""
+                              )}
+                              {checkViewSidebar(
+                                ["Billings", "ChannelHangupComplete"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/billing-report"
+                                      className={({ isActive }) =>
+                                        isActive ||
+                                          [
+                                            "/extensions-add",
+                                            "/extensions-edit",
+                                          ].some((path) =>
+                                            window.location.pathname.includes(path)
+                                          )
+                                          ? "nav-link active"
+                                          : "nav-link"
+                                      }
+                                    >
+                                      <div className="itemTitle">Reports</div>
+                                    </NavLink>
+                                  </li>
+                                )}
 
-                            {checkViewSidebar(
-                              ["Billings", "Dashboard"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink to="/billing-dashboard">
-                                  <div className="itemTitle">
-                                    Billing Dashboard
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {checkViewSidebar(
-                              ["Billings", "Package"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem">
-                                <NavLink to="/package-details">
-                                  <div className="itemTitle">
-                                    Package Details
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
-                          </ul>
+                              {checkViewSidebar(
+                                ["Billings", "Dashboard"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink to="/billing-dashboard">
+                                      <div className="itemTitle">
+                                        Billing Dashboard
+                                      </div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {checkViewSidebar(
+                                ["Billings", "Package"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem">
+                                    <NavLink to="/package-details">
+                                      <div className="itemTitle">
+                                        Package Details
+                                      </div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  )}
+                      </li>
+                    )}
                   {checkModulePerm(
                     "Settings",
                     permissions,
                     account?.sections
                   ) && (
-                    <li className="">
-                      <button
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse5"
-                        aria-expanded={
-                          isChildActive([
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse5"
+                          aria-expanded={
+                            isChildActive([
+                              "/mail-settings",
+                              "/fax-settings",
+                              "/call-recording-settings",
+                              "/voice-music",
+                              "/custom-module",
+                              "/global-permission-config",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse5"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-sliders"></i>
+                          </div>
+                          <div className="itemTitle">Setting</div>
+                        </button>
+                        <div
+                          id="collapse5"
+                          className={`accordion-collapse collapse ${isChildActive([
                             "/mail-settings",
                             "/fax-settings",
                             "/call-recording-settings",
@@ -2146,35 +2141,14 @@ function Navbar() {
                             "/custom-module",
                             "/global-permission-config",
                           ])
-                            ? "true"
-                            : "false"
-                        }
-                        aria-controls="collapse5"
-                      >
-                        <div className="iconHolder">
-                          <i className="fa-regular fa-sliders"></i>
-                        </div>
-                        <div className="itemTitle">Setting</div>
-                      </button>
-                      <div
-                        id="collapse5"
-                        className={`accordion-collapse collapse ${
-                          isChildActive([
-                            "/mail-settings",
-                            "/fax-settings",
-                            "/call-recording-settings",
-                            "/voice-music",
-                            "/custom-module",
-                            "/global-permission-config",
-                          ])
-                            ? "show"
-                            : ""
-                        }`}
-                        data-bs-parent="#sidenNav"
-                      >
-                        <div className="menuWrapper">
-                          <ul className="tabMenu">
-                            {/* <li className="tabItem ">
+                              ? "show"
+                              : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              {/* <li className="tabItem ">
                               <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
@@ -2191,21 +2165,21 @@ function Navbar() {
                                 <div className="itemTitle">General</div>
                               </Link>
                             </li> */}
-                            {checkViewSidebar(
-                              ["Settings", "Sound"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
-                              <li className="tabItem ">
-                                <NavLink to="/voice-music">
-                                  <div className="itemTitle">Add Audio</div>
-                                </NavLink>
-                              </li>
-                            ) : (
-                              ""
-                            )}
-                            {/* <li className="tabItem">
+                              {checkViewSidebar(
+                                ["Settings", "Sound"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) ? (
+                                <li className="tabItem ">
+                                  <NavLink to="/voice-music">
+                                    <div className="itemTitle">Add Audio</div>
+                                  </NavLink>
+                                </li>
+                              ) : (
+                                ""
+                              )}
+                              {/* <li className="tabItem">
                               <NavLink
                                 to="/fax-settings"
                                 onClick={() => backToTop()}
@@ -2221,51 +2195,51 @@ function Navbar() {
                                 <div className="itemTitle">Fax</div>
                               </NavLink>
                             </li> */}
-                            {checkViewSidebar(
-                              ["Settings", "MailSetting"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) ? (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/mail-settings"
-                                  onClick={backToTop}
-                                  type="button"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                    [
-                                      "/mail-settings-add",
-                                      "/mail-settings-edit",
-                                    ].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
-                                >
-                                  <div className="itemTitle">Email</div>
-                                </NavLink>
-                              </li>
-                            ) : null}
-                            {checkViewSidebar(
-                              ["Settings", "Usage"],
-                              permissions,
-                              account?.sectionPermissions,
-                              account?.permissions
-                            ) && (
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/custom-module"
-                                  onClick={() => backToTop()}
-                                >
-                                  <div className="itemTitle">
-                                    Custom Module Integration
-                                  </div>
-                                </NavLink>
-                              </li>
-                            )}
-                            {/* {isCustomerAdmin && (
+                              {checkViewSidebar(
+                                ["Settings", "MailSetting"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) ? (
+                                <li className="tabItem ">
+                                  <NavLink
+                                    to="/mail-settings"
+                                    onClick={backToTop}
+                                    type="button"
+                                    className={({ isActive }) =>
+                                      isActive ||
+                                        [
+                                          "/mail-settings-add",
+                                          "/mail-settings-edit",
+                                        ].some((path) =>
+                                          window.location.pathname.includes(path)
+                                        )
+                                        ? "nav-link active"
+                                        : "nav-link"
+                                    }
+                                  >
+                                    <div className="itemTitle">Email</div>
+                                  </NavLink>
+                                </li>
+                              ) : null}
+                              {checkViewSidebar(
+                                ["Settings", "Usage"],
+                                permissions,
+                                account?.sectionPermissions,
+                                account?.permissions
+                              ) && (
+                                  <li className="tabItem ">
+                                    <NavLink
+                                      to="/custom-module"
+                                      onClick={() => backToTop()}
+                                    >
+                                      <div className="itemTitle">
+                                        Custom Module Integration
+                                      </div>
+                                    </NavLink>
+                                  </li>
+                                )}
+                              {/* {isCustomerAdmin && (
                               <li className="tabItem ">
                                 <NavLink
                                   to="/global-permission-config"
@@ -2277,7 +2251,7 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )} */}
-                            {/* <li className="tabItem ">
+                              {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"
                                 onClick={() => backToTop()}
@@ -2293,11 +2267,11 @@ function Navbar() {
                                 <div className="itemTitle">Call Recording</div>
                               </NavLink>
                             </li> */}
-                          </ul>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  )}
+                      </li>
+                    )}
                   {isCustomerAdmin && (
                     <>
                       <li className="dashboard ">
@@ -2305,12 +2279,12 @@ function Navbar() {
                           to="/add-ons"
                           onClick={backToTop}
                           type="button"
-                          // aria-expanded={
-                          //   isChildActive(["/add-ons", "/store-extension"])
-                          //     ? "true"
-                          //     : "false"
-                          // }
-                          // aria-controls="collapse11"
+                        // aria-expanded={
+                        //   isChildActive(["/add-ons", "/store-extension"])
+                        //     ? "true"
+                        //     : "false"
+                        // }
+                        // aria-controls="collapse11"
                         >
                           <div className="iconHolder">
                             <i className="fa-regular fa-store"></i>
@@ -2426,17 +2400,16 @@ function Navbar() {
                         </button>
                         <div
                           id="collapse12"
-                          className={`accordion-collapse collapse ${
-                            isChildActive([
-                              "/knowledge-base",
-                              "/ticket",
-                              "/live-chat",
-                              "/view-massage",
-                              "/live-chat",
-                            ])
+                          className={`accordion-collapse collapse ${isChildActive([
+                            "/knowledge-base",
+                            "/ticket",
+                            "/live-chat",
+                            "/view-massage",
+                            "/live-chat",
+                          ])
                               ? "show"
                               : ""
-                          }`}
+                            }`}
                           data-bs-parent="#sidenNav"
                         >
                           <div className="menuWrapper">
@@ -2447,9 +2420,9 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                    ["/knowledge-base"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
+                                      ["/knowledge-base"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
                                       ? "nav-link active"
                                       : "nav-link"
                                   }
@@ -2465,9 +2438,9 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                    ["/ticket"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
+                                      ["/ticket"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
                                       ? "nav-link active"
                                       : "nav-link"
                                   }
@@ -2507,9 +2480,9 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                    ["/live-chat"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
+                                      ["/live-chat"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
                                       ? "nav-link active"
                                       : "nav-link"
                                   }

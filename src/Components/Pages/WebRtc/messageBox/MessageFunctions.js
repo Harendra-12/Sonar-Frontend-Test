@@ -349,6 +349,7 @@ export const getAllUser = async (setAllAgents) => {
 export const getGroups = async (
     setLoading,
     setGroups,
+    setGroupList,
     setOriginalGroupsList,
     recipient,
     setRecipient,
@@ -387,6 +388,17 @@ export const getGroups = async (
             },
         }));
         setGroups(updatedFilteredData);
+        setGroupList(apiData?.data?.reverse()?.map((data) => ({
+            ...data,
+            last_message_data: {
+                ...data?.last_message_data,
+                message_text:
+                    checkMessageType(data?.last_message_data?.message_text) ===
+                        "text/plain"
+                        ? data?.last_message_data?.message_text
+                        : checkMessageType(data?.last_message_data?.message_text),
+            },
+        })))
         setOriginalGroupsList(updatedFilteredData);
         const isGroupSelected = apiData.data.find(
             (group) => group.id == recipient?.[1]
@@ -407,8 +419,8 @@ export const getGroups = async (
             setGroupNameEdit(isGroupSelected.group_name);
             setSelectedgroupUsers(isGroupSelected.message_groupusers);
             isGroupSelected.message_groupusers.map((user) => {
-                if (user.user_id === account.id) {
-                    setIsAdmin(user.is_admin);
+                if (user?.user_id === account?.id) {
+                    setIsAdmin(user.is_admin == 1 ? true : false);
                 }
             });
         }
@@ -540,6 +552,60 @@ export const handlePinMessage = async (
     }
 };
 
+export const handleUpdateMessage = async (
+    item,
+    setAllMessage,
+    allMessage,
+    recipient,
+    selectedChat,
+    editedValue
+) => {
+    const conversationKey = recipient[0];
+    const result = await generalPutFunction(selectedChat === "singleChat" ? api_url?.SINGLE_MESSAGE_UPDATE_URL(item?.id) : api_url?.GROUP_MESSAGE_UPDATE_URL(item?.id), { message_type: item?.message_type, message_text: editedValue });
+    if (result?.status) {
+        toast?.success(result?.message);
+        const updatedAllMessage = allMessage[conversationKey]?.map((msg) => {
+            if (msg.id === result?.data?.id) {
+                return { ...msg, message_text: result?.data?.message_text, body: result?.data?.message_text, updated_at: result?.data?.updated_at };
+            } else {
+                return { ...msg }
+            }
+        });
+
+        setAllMessage((prev) => ({
+            ...prev,
+            [conversationKey]: updatedAllMessage
+        }));
+    }
+}
+
+export const handleDeleteMessage = async (
+    item,
+    setAllMessage,
+    allMessage,
+    recipient,
+    selectedChat
+) => {
+    const conversationKey = recipient[0];
+    const result = await generalDeleteFunction(selectedChat === "singleChat" ? api_url?.SINGLE_MESSAGE_DELETE_URL(item?.id) : api_url?.GROUP_MESSAGE_DELETE_URL(item?.id));
+
+    if (result?.status) {
+        toast?.success(result?.message);
+        const updatedAllMessage = allMessage[conversationKey]?.map((msg) => {
+            if (msg.id === item?.id) {
+                return { ...msg, deleted_at: formatDateTime(new Date()), is_pinned: item?.is_pinned == 1 && 0 };
+            } else {
+                return { ...msg }
+            }
+        });
+
+        setAllMessage((prev) => ({
+            ...prev,
+            [conversationKey]: updatedAllMessage
+        }));
+    }
+}
+
 
 export const getAllInternalCallsHistory = async (setLoading, internalCallsPageNumber, setInternalCallHistory, setRawInternalCallHistory, setOriginalInternalCallHistory, setDoomScrollLoading) => {
     setLoading(true);
@@ -583,15 +649,15 @@ export const getAllInternalCallsHistory = async (setLoading, internalCallsPageNu
 };
 
 // Handle logic to make any user admin or remove any user from admin
-export const manageAdmin = async (id, groupId, userId, isAdmin, setLoading, setGroupRefresh, groupRefresh) => {
+export const manageAdmin = async (groupId, userId, isAdmin, setLoading, setGroupRefresh, groupRefresh) => {
     setLoading(true);
     const parsedData = {
         group_id: groupId,
         user_id: userId,
-        is_admin: isAdmin,
+        is_admin: isAdmin ? 1 : 0,
     };
     const apiData = await generalPutFunction(
-        api_url?.CHAT_GROUP_USER_UPDATE_URL(id),
+        api_url?.SET_ADMIN_URL(groupId),
         parsedData
     );
     if (apiData.status) {
@@ -909,13 +975,14 @@ export const handleAddNewMemberToGroup = async (recipient, groupSelecedAgents, s
     }
 };
 
-export const handleremoveUserFromGroup = async (id, setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers) => {
+export const handleremoveUserFromGroup = async (id, setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers, account) => {
     setNewGroupLoader(true);
-    const apiData = await generalDeleteFunction(api_url?.REMOVE_USER_FROM_GROUP_URL(id));
-    if (apiData.status) {
-        toast.success(apiData.message);
+    const apiData = await generalGetFunction(api_url?.REMOVE_USER_FROM_GROUP_URL(id, account?.id));
+    debugger
+    if (apiData?.status) {
+        toast.success(apiData?.message);
         setSelectedgroupUsers(
-            selectedgroupUsers.filter((item) => item.id !== id)
+            selectedgroupUsers?.filter((item) => item.id !== id)
         );
         setNewGroupLoader(false);
     } else {

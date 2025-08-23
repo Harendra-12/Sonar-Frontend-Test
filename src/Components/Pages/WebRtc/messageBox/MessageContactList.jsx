@@ -77,7 +77,8 @@ const MessageContactList = ({
     setIsTyping,
     isGroupCallMessageOpened,
     isSingleCallMessageOpened,
-    typingDetailState
+    typingDetailState,
+    groupsList
 }) => {
     const dispatch = useDispatch()
     const messageRecipient = useSelector((state) => state.messageRecipient)
@@ -191,7 +192,7 @@ const MessageContactList = ({
         });
         item?.message_groupusers?.map((user) => {
             if (user?.user_id === account?.id) {
-                setIsAdmin(user?.is_admin);
+                setIsAdmin(user?.is_admin == 1 ? true : false);
             }
         });
         setAllMessage([]);
@@ -956,7 +957,7 @@ const MessageContactList = ({
                                     </Tippy>
                                 )}
                             </div>
-                            {groups?.map((item, index) => {
+                            {groupsList?.map((item, index) => {
                                 return (
                                     <div
                                         className={
@@ -1004,7 +1005,7 @@ const MessageContactList = ({
                                             });
                                             item?.message_groupusers?.map((user) => {
                                                 if (user.user_id === account?.id) {
-                                                    setIsAdmin(user.is_admin);
+                                                    setIsAdmin(user.is_admin == 1 ? true : false);
                                                 }
                                             });
                                         }}
