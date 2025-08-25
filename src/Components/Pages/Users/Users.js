@@ -515,7 +515,6 @@ const Users = () => {
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Usage</th> */}
-                           
                               {tableKeys.includes("socket_status") && (
                                 <th className="text-center">
                                   {" "}
@@ -538,7 +537,6 @@ const Users = () => {
                                   </select>
                                 </th>
                               )}
-                               <th className="text-center">Verification</th>
                               {checkViewSidebar(
                                 "User",
                                 slugPermissions,
@@ -735,13 +733,6 @@ const Users = () => {
                                                   : "extensionStatus mx-auto"
                                               }
                                             ></span>
-                                          </td>
-                                        )}
-                                         {tableKeys.includes(
-                                          "email_verified_at"
-                                        ) && (
-                                          <td style={{ width: "156px" }}>
-                                            {item.email_verified_at?"Verified":"Not Verify"}
                                           </td>
                                         )}
                                         {checkViewSidebar(
