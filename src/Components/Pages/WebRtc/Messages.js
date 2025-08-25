@@ -547,14 +547,15 @@ function Messages({
           setOriginalContact(newContact);
         }
         if (!extensionExists) {
-          contact.unshift({
-            name: agentDetails?.username,
-            email: agentDetails?.email,
-            id: agentDetails?.id,
-            extension_id: agentDetails?.extension_id,
-            extension: from,
-            last_message_data: { message_text: body, created_at: time },
-          });
+          if (account?.id != incomingMessage?.sender_id)
+            contact.unshift({
+              name: agentDetails?.username,
+              email: agentDetails?.email,
+              id: agentDetails?.id,
+              extension_id: agentDetails?.extension_id,
+              extension: from,
+              last_message_data: { message_text: body, created_at: time },
+            });
         } else {
           // Move the extension object to the beginning of the array
           const index = contact.findIndex((contact) => contact?.id === from);
@@ -605,25 +606,52 @@ function Messages({
           }));
         } else {
           // If it's a text message or other type, render as text
-          setAllMessage((prevState) => ({
-            ...prevState,
-            [from]: [
-              ...(prevState[from] || []),
-              {
-                from,
-                body,
-                time,
-                user_id: agentDetails?.id,
-                user_name: agentDetails?.username,
-                profile_picture: agentDetails?.profile_picture,
-                message_type: contentType,
-              },
-            ],
-          }));
+          if (incomingMessage?.sender_id == account?.id) {
+            setAllMessage((prevState) => {
+              const groupMessages = prevState[recipient[1]] || [];
+              const updatedMessages = groupMessages?.map((msg) => {
+                if (!msg?.id || msg.id === "") {
+                  return {
+                    ...incomingMessage, // overwrite with updated fields from backend
+                    from,
+                    body,
+                    time,
+                    user_id: agentDetails?.id,
+                    user_name: agentDetails?.username,
+                    profile_picture: account?.profile_picture
+                  };
+                }
+                return msg;
+              });
+
+              return {
+                ...prevState,
+                [recipient[1]]: updatedMessages
+              };
+            });
+
+          } else {
+            setAllMessage((prevState) => ({
+              ...prevState,
+              [from]: [
+                ...(prevState[from] || []),
+                {
+                  from,
+                  body,
+                  time,
+                  user_id: agentDetails?.id,
+                  user_name: agentDetails?.username,
+                  profile_picture: agentDetails?.profile_picture,
+                  message_type: contentType,
+                },
+              ],
+            }));
+          }
+
 
           // Play music when message is received
 
-          if (recipient?.[0] !== from) {
+          if (recipient?.[0] !== from && account?.id != from) {
             setUnreadMessage((prevState) => ({
               ...prevState,
               [from]: (prevState[from] || 0) + 1,
@@ -1072,7 +1100,7 @@ function Messages({
       recipient,
       ActionType,
       dispatch,
-      allAgents
+      account
     )
   }, [groupMessage]);
 
