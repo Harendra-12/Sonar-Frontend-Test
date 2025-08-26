@@ -133,6 +133,10 @@ const WebrtcWrapper = () => {
   const audio = new Audio(ringtone);
   const debouncedSearchTerm = useDebounce(callsearchQuery, 1000);
 
+
+
+  console.log(activePage, "activePage")
+
   const { sendMessage } = GoPeerCallSocket();
   useEffect(() => {
     console.log("GoPeerCallSocket initialized");
