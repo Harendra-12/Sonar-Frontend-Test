@@ -166,7 +166,7 @@ function CallCenterQueueEdit() {
           const destructuredData = {
             ...callCenterData.data,
             ...{
-              recording_enabled: recording_enabled === true ? "true" : "false",
+              recording_enabled: recording_enabled === 1 ? "true" : "false",
             },
           };
 
@@ -245,7 +245,7 @@ function CallCenterQueueEdit() {
           const destructuredData = {
             ...callCenterData.data,
             ...{
-              recording_enabled: recording_enabled === true ? "true" : "false",
+              recording_enabled: recording_enabled === 1 ? "true" : "false",
             },
           };
 
@@ -380,7 +380,7 @@ function CallCenterQueueEdit() {
       ...data,
       ...{
         // recording_enabled: record_template === "true" ? 1 : 0,
-        recording_enabled: recording_enabled === "true" ? true : false,
+        recording_enabled: recording_enabled === "true" ? 1 : 0,
         account_id: account.account_id,
         created_by: account.id,
       },
@@ -1171,23 +1171,13 @@ function CallCenterQueueEdit() {
                               <label htmlFor="">Tier Rules Apply</label>
                             </div>
                             <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
-                              {/* <select
+                              <select
                                 {...register("tier_rules_apply")}
                                 className="formItem w-100"
                                 defaultValue={0}
                               >
                                 <option value={1}>True</option>
                                 <option value={0}>False</option>2{" "}
-                              </select> */}
-                              <select
-                                {...register("tier_rules_apply", {
-                                  setValueAs: (value) => value === "true", // convert to boolean
-                                })}
-                                className="formItem w-100"
-                                defaultValue="false"
-                              >
-                                <option value="true">True</option>
-                                <option value="false">False</option>
                               </select>
                             </div>
                           </div>
@@ -1489,7 +1479,9 @@ function CallCenterQueueEdit() {
                               </select> */}
 
                               {errors.queue_announcement && (
-                                <ErrorMessage text={errors.queue_announcement} />
+                                <ErrorMessage
+                                  text={errors.queue_announcement}
+                                />
                               )}
                             </div>
                           </div>
@@ -1571,15 +1563,15 @@ function CallCenterQueueEdit() {
                               <label htmlFor="">Abandoned Resume Allowed</label>
                             </div>
                             <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
-                              {/* <select
+                              <select
                                 {...register("abandoned_resume_allowed")}
                                 className="formItem w-100"
                                 defaultValue={0}
                               >
                                 <option value={1}>True</option>
                                 <option value={0}>False</option>
-                              </select> */}
-                              <select
+                              </select>
+                              {/* <select
                                 {...register("abandoned_resume_allowed", {
                                   setValueAs: (value) => value === "true", // convert to boolean
                                 })}
@@ -1588,7 +1580,7 @@ function CallCenterQueueEdit() {
                               >
                                 <option value="true">True</option>
                                 <option value="false">False</option>
-                              </select>
+                              </select> */}
                             </div>
                           </div>
                         </form>
@@ -3063,17 +3055,17 @@ function CallCenterQueueEdit() {
                     className="formItem me-0"
                     style={{ width: "100%" }}
                     name="reserve_agents"
-                    value={settingsForBulkEdit.reserve_agents.toString()} // convert boolean to string for select value
+                    value={settingsForBulkEdit.reserve_agents}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        reserve_agents: e.target.value === "true", // convert string to boolean
+                        reserve_agents: e.target.value,
                       })
                     }
                     id="selectFormRow"
                   >
-                    <option value="false">False</option>
-                    <option value="true">True</option>
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
                   </select>
                 </div>
 
@@ -3085,17 +3077,17 @@ function CallCenterQueueEdit() {
                     className="formItem me-0"
                     style={{ width: "100%" }}
                     name="truncate_agents_on_load"
-                    value={settingsForBulkEdit.truncate_agents_on_load.toString()}
+                    value={settingsForBulkEdit.truncate_agents_on_load}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        truncate_agents_on_load: e.target.value === "true",
+                        truncate_agents_on_load: e.target.value,
                       })
                     }
                     id="selectFormRow"
                   >
-                    <option value="false">False</option>
-                    <option value="true">True</option>
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
                   </select>
                 </div>
 
@@ -3107,17 +3099,17 @@ function CallCenterQueueEdit() {
                     className="formItem me-0"
                     style={{ width: "100%" }}
                     name="truncate-tiers-on-load"
-                    value={settingsForBulkEdit.truncate_tiers_on_load.toString()} // convert boolean to string
+                    value={settingsForBulkEdit.truncate_tiers_on_load}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        truncate_tiers_on_load: e.target.value === "true", // convert string to boolean
+                        truncate_tiers_on_load: e.target.value,
                       })
                     }
                     id="selectFormRow"
                   >
-                    <option value="false">False</option>
-                    <option value="true">True</option>
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
                   </select>
                 </div>
               </div>

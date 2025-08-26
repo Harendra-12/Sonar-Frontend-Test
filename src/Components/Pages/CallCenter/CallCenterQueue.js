@@ -143,7 +143,7 @@ function CallCenterQueue() {
     setLoading(true);
     const payload = {
       ...selectedCallCenter,
-      status: selectedCallCenter.status == true ? true : false,
+      status: selectedCallCenter.status == 0 ? true : false,
       ...{
         agents: selectedCallCenter?.agents
           .map((item) => {
@@ -205,7 +205,7 @@ function CallCenterQueue() {
         if (item.id === id) {
           return {
             ...item,
-            status: item.status == false ? true : false,
+            status: item.status == 0 ? 1 : 0,
           };
         } else {
           return item;
@@ -548,9 +548,7 @@ function CallCenterQueue() {
                                                   <label className="cl-switch">
                                                     <input
                                                       type="checkbox"
-                                                      checked={
-                                                        item.status == true
-                                                      }
+                                                      checked={item.status == 1}
                                                       onClick={(e) => {
                                                         setSelectedCallCenter(
                                                           item
@@ -676,9 +674,7 @@ function CallCenterQueue() {
                         : "Are you sure you want to delete this queue?"}
                       {selectedCallCenter?.id &&
                         `Are you sure you want to ${
-                          selectedCallCenter?.status == true
-                            ? "disable"
-                            : "enable"
+                          selectedCallCenter?.status == 1 ? "disable" : "enable"
                         } the queue ${selectedCallCenter?.queue_name}?`}
                     </p>
                     <div className="mt-2 d-flex justify-content-center gap-2 mt-3">

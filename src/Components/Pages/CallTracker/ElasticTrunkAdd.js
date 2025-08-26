@@ -224,7 +224,7 @@ const ElasticTrunkAdd = () => {
                             <input
                               type="text"
                               className="formItem"
-                              {...register("state", { ...requiredValidator, })}
+                             {...register("port", { ...requiredValidator, })}
                             />
                             {errors.port && (
                               <ErrorMessage text={errors.port.message} />

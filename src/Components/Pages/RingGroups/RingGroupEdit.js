@@ -1025,14 +1025,14 @@ const RingGroupEdit = () => {
                           className="formItem me-0"
                           style={{ width: "100%" }}
                           {...register("recording_enabled", {
-                            setValueAs: (value) => value === "true", 
+                            // setValueAs: (value) => value === "true", 
                           })}
                           id="selectFormRow"
                           name="recording_enabled"
                           defaultValue="false" 
                         >
-                          <option value="true">True</option>
-                          <option value="false">False</option>
+                          <option value="1">True</option>
+                          <option value="0">False</option>
                         </select>
                       </div>
                     </div>
