@@ -1228,13 +1228,16 @@ function CallCenterQueueEdit() {
                                 <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                                   <select
                                     {...register(
-                                      "tier_rule_wait_multiply_level"
+                                      "tier_rule_wait_multiply_level", {
+                                         setValueAs: (value) => value === "true", // convert to boolean
+                                      }
+                                      
                                     )}
                                     className="formItem w-100"
-                                    defaultValue={0}
+                                    defaultValue="false"
                                   >
-                                    <option value={1}>True</option>
-                                    <option value={0}>False</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
                                   </select>
                                 </div>
                               </div>
@@ -1247,12 +1250,14 @@ function CallCenterQueueEdit() {
                                 </div>
                                 <div className="col-xxl-6 col-xl-12 col-lg-12 col-md-12 col-12">
                                   <select
-                                    {...register("tier_rule_no_agent_no_wait")}
+                                    {...register("tier_rule_no_agent_no_wait", {
+                                       setValueAs: (value) => value === "true", // convert to boolean
+                                    })}
                                     className="formItem w-100"
-                                    defaultValue={0}
+                                    defaultValue="false"
                                   >
-                                    <option value={1}>True</option>
-                                    <option value={0}>False</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
                                   </select>
                                 </div>
                               </div>
