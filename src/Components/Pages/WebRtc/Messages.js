@@ -13,7 +13,7 @@ import {
   awsGeneralPostFunction,
   formatDateTime,
   formatRelativeTime,
-  logout
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 import { ActionType } from "../../Redux/reduxActionType";
@@ -40,7 +40,7 @@ import {
   handleSelectAll,
   handleUpdateTag,
   manageAdmin,
-  receiveGroupMessage
+  receiveGroupMessage,
 } from "./messageBox/MessageFunctions";
 
 function Messages({
@@ -75,20 +75,26 @@ function Messages({
 }) {
   const dispatch = useDispatch();
   const socketSendMessage = useSelector((state) => state.socketSendMessage);
-  const socketSendPeerCallMessage = useSelector((state) => state.socketSendPeerCallMessage);
-  const socketSendPeerGroupCallMessage = useSelector((state) => state.socketSendPeerGroupCallMessage);
+  const socketSendPeerCallMessage = useSelector(
+    (state) => state.socketSendPeerCallMessage
+  );
+  const socketSendPeerGroupCallMessage = useSelector(
+    (state) => state.socketSendPeerGroupCallMessage
+  );
   const { sessionManager, connectStatus } = useSIPProvider();
   const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
   const globalSession = useSelector((state) => state.sessions);
-  const allNotificationState = useSelector((data) => data?.allNotificationState);
+  const allNotificationState = useSelector(
+    (data) => data?.allNotificationState
+  );
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
   const groupMessage = useSelector((state) => state.groupMessage);
   const sessions = useSelector((state) => state.sessions);
   // const [recipient, setRecipient] = useState([]);
   const account = useSelector((state) => state.account);
-  const typingDetails = useSelector((state) => state.typingDetails)
+  const typingDetails = useSelector((state) => state.typingDetails);
   const [allMessage, setAllMessage] = useState([]);
   const [messageInput, setMessageInput] = useState("");
   const [isSIPReady, setIsSIPReady] = useState(false); // Track if SIP provider is ready
@@ -120,7 +126,7 @@ function Messages({
   const [groupChatPopUp, setGroupChatPopUp] = useState(false);
   const [manageGroupChat, setManageGroupChat] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [groupsList, setGroupList] = useState([])
+  const [groupsList, setGroupList] = useState([]);
   const [originalGroupsList, setOriginalGroupsList] = useState([]);
   const [groupRefresh, setGroupRefresh] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -161,16 +167,16 @@ function Messages({
   const [rawInternalCallHistory, setRawInternalCallHistory] = useState([]);
   const [autoReply, setAutoReply] = useState(false);
   const [aiProcessing, setAiProcessing] = useState(false);
-  const [isTyping, setIsTyping] = useState(false)
+  const [isTyping, setIsTyping] = useState(false);
   const [internalCallsPageNumber, setInternalCallsPageNumber] = useState(1);
   const scrollPositionRef = useRef({ scrollTop: 0, scrollHeight: 0 });
   const isUserAtBottomRef = useRef(true);
   const isNewMessageByUserRef = useRef(false);
   const prevRecipient = useRef(null);
-  const messageRecipient = useSelector((state) => state.messageRecipient)
+  const messageRecipient = useSelector((state) => state.messageRecipient);
   const [pageLoader, setPageLoader] = useState(false);
-  const [typingDetailState, setTypingDetailState] = useState(null)
-  const [typingUserList, setTypingUserList] = useState([])
+  const [typingDetailState, setTypingDetailState] = useState(null);
+  const [typingUserList, setTypingUserList] = useState([]);
   const [isUpdatedClicked, setIsUpdatedClicked] = useState(null);
   const [editedValue, setEditedValue] = useState(null);
   // Function to handle logout
@@ -196,7 +202,10 @@ function Messages({
         [recipient[0]]: (prev[recipient[0]] || "") + emojiData.emoji,
       }));
     } else {
-      setEditedValue((prev) => (prev ?? isUpdatedClicked?.message_text ?? "") + emojiData?.emoji);
+      setEditedValue(
+        (prev) =>
+          (prev ?? isUpdatedClicked?.message_text ?? "") + emojiData?.emoji
+      );
     }
   };
 
@@ -218,7 +227,10 @@ function Messages({
     if (isUpdatedClicked?.message_type === "image") {
       setFileUpload(true);
       setFileType("image");
-    } else if (isUpdatedClicked?.message_type === "file" || isUpdatedClicked?.message_type === "video") {
+    } else if (
+      isUpdatedClicked?.message_type === "file" ||
+      isUpdatedClicked?.message_type === "video"
+    ) {
       setFileUpload(true);
       setFileType("all");
     }
@@ -304,20 +316,49 @@ function Messages({
   // Getting messages based on pagination
   useEffect(() => {
     if (recipient?.length > 0 && allAgents?.length > 0) {
-      if (Object.keys(chatHistory).includes(String(recipient?.[0])) && messageListRef.current.scrollHeight > 1000) {
-
-        if (chatHistory[recipient?.[0]]?.last_page_number > chatHistory[recipient?.[0]].pageNumber) {
-          getAllMessageApiFun(chatHistory[recipient?.[0]].pageNumber + 1, recipient, messageListRef, scrollPositionRef, allAgents, setAllMessage, chatHistory, setChatHistory, setPageLoader);
-          setPageLoader(true)
+      if (
+        Object.keys(chatHistory).includes(String(recipient?.[0])) &&
+        messageListRef.current.scrollHeight > 1000
+      ) {
+        if (
+          chatHistory[recipient?.[0]]?.last_page_number >
+          chatHistory[recipient?.[0]].pageNumber
+        ) {
+          getAllMessageApiFun(
+            chatHistory[recipient?.[0]].pageNumber + 1,
+            recipient,
+            messageListRef,
+            scrollPositionRef,
+            allAgents,
+            setAllMessage,
+            chatHistory,
+            setChatHistory,
+            setPageLoader
+          );
+          setPageLoader(true);
         }
       } else {
-        getAllMessageApiFun(1, recipient, messageListRef, scrollPositionRef, allAgents, setAllMessage, chatHistory, setChatHistory, setPageLoader);
+        getAllMessageApiFun(
+          1,
+          recipient,
+          messageListRef,
+          scrollPositionRef,
+          allAgents,
+          setAllMessage,
+          chatHistory,
+          setChatHistory,
+          setPageLoader
+        );
       }
     }
   }, [loadMore, allAgents]);
 
   function sendSingleMessage(selectedUrl) {
-    if (!selectedUrl && (!messageInput[recipient[0]]?.trim || messageInput[recipient[0]].trim() === "")) {
+    if (
+      !selectedUrl &&
+      (!messageInput[recipient[0]]?.trim ||
+        messageInput[recipient[0]].trim() === "")
+    ) {
       return;
     }
     let messageContent;
@@ -661,7 +702,9 @@ function Messages({
         }
       }
     }
-    const isNewMessage = !allNotificationState?.some(data => data?.uuid === incomingMessage?.uuid);
+    const isNewMessage = !allNotificationState?.some(
+      (data) => data?.uuid === incomingMessage?.uuid
+    );
 
     if (isNewMessage) {
       handleIncomingMessage();
@@ -809,7 +852,7 @@ function Messages({
   // }
 
   // Auto scroll
-  // ================ scroll related stuff start here 
+  // ================ scroll related stuff start here
   useEffect(() => {
     const el = messageListRef.current;
     if (!el) return;
@@ -833,7 +876,7 @@ function Messages({
     if (!el) return;
 
     if (el.scrollTop === 0) {
-      setLoadMore(prev => prev + 1);
+      setLoadMore((prev) => prev + 1);
     }
     const isAtBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 50;
     isUserAtBottomRef.current = isAtBottom;
@@ -871,16 +914,22 @@ function Messages({
   //   };
   // }, [messageListRef?.current?.scrollTop === 0]);
 
-  // ================ scroll related stuff end here 
+  // ================ scroll related stuff end here
 
-
-
-  // =============== useEffect stuff start here 
+  // =============== useEffect stuff start here
 
   useEffect(() => {
     setMessageRefresh(true);
     const shouldLoad = true;
-    getContactAndAllTagData(shouldLoad, setLoading, checkMessageType, setContact, setOriginalContact, setMessageRefresh, setAllTags);
+    getContactAndAllTagData(
+      shouldLoad,
+      setLoading,
+      checkMessageType,
+      setContact,
+      setOriginalContact,
+      setMessageRefresh,
+      setAllTags
+    );
     getAllUser(setAllAgents);
   }, []);
 
@@ -895,26 +944,31 @@ function Messages({
   useEffect(() => {
     if (typingDetails?.result?.is_typing) {
       setTypingDetailState(typingDetails);
-      const allTypingUserList = allAgents?.find((agent) =>
-        agent?.id === typingDetails?.result?.user_id
+      const allTypingUserList = allAgents?.find(
+        (agent) => agent?.id === typingDetails?.result?.user_id
       );
       setTypingUserList((prevList) => {
-        const alreadyExists = prevList.some(user => user?.id === allTypingUserList?.id);
+        const alreadyExists = prevList.some(
+          (user) => user?.id === allTypingUserList?.id
+        );
         if (!alreadyExists && allTypingUserList) {
           return [...prevList, allTypingUserList];
         }
         return prevList;
       });
-      const test = typingDetails?.key === "typing_status" ? typingDetails?.result?.user_id === recipient[1] : typingDetails?.result?.group_id === recipient[1]
+      const test =
+        typingDetails?.key === "typing_status"
+          ? typingDetails?.result?.user_id === recipient[1]
+          : typingDetails?.result?.group_id === recipient[1];
       if (test) {
-        setIsTyping(true)
+        setIsTyping(true);
       }
     } else {
-      setIsTyping(false)
-      setTypingDetailState(null)
-      setTypingUserList([])
+      setIsTyping(false);
+      setTypingDetailState(null);
+      setTypingUserList([]);
     }
-  }, [typingDetails?.result])
+  }, [typingDetails?.result]);
 
   useEffect(() => {
     if (loginUser?.length > 0) {
@@ -936,10 +990,23 @@ function Messages({
 
   // Filter out the user from selcted group
   useEffect(() => {
-    getGroups(setLoading, setGroups, setGroupList, setOriginalGroupsList, recipient, setRecipient, allAgents, setSelectedChat, setGroupNameEdit, setSelectedgroupUsers, account, setIsAdmin);
+    getGroups(
+      setLoading,
+      setGroups,
+      setGroupList,
+      setOriginalGroupsList,
+      recipient,
+      setRecipient,
+      allAgents,
+      setSelectedChat,
+      setGroupNameEdit,
+      setSelectedgroupUsers,
+      account,
+      setIsAdmin
+    );
   }, [groupRefresh]);
 
-  // ======================= useEffect stuff End here 
+  // ======================= useEffect stuff End here
 
   // ============================= Tag Related Stuff ======= start here
   useEffect(() => {
@@ -949,7 +1016,8 @@ function Messages({
     //   )
     // );
     const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
-    const defaultTag = allTags?.filter((data) => data?.default == 1);
+    // const defaultTag = allTags?.filter((data) => data?.default == 1);
+    const defaultTag = allTags?.filter((data) => data?.default == true);
 
     const tag = defaultTag?.filter((tag) =>
       userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
@@ -1057,7 +1125,6 @@ function Messages({
     setSelectedUrl(null);
   }
 
-
   // Recieve group message
   useEffect(() => {
     receiveGroupMessage(
@@ -1073,10 +1140,8 @@ function Messages({
       ActionType,
       dispatch,
       allAgents
-    )
+    );
   }, [groupMessage]);
-
-
 
   // Send SMS Function
   // const sendSMSMessage = handleSubmit(async (data) => {
@@ -1102,12 +1167,27 @@ function Messages({
   // })
 
   useEffect(() => {
-    getAllInternalCallsHistory(setLoading, internalCallsPageNumber, setInternalCallHistory, setRawInternalCallHistory, setOriginalInternalCallHistory, setDoomScrollLoading);
+    getAllInternalCallsHistory(
+      setLoading,
+      internalCallsPageNumber,
+      setInternalCallHistory,
+      setRawInternalCallHistory,
+      setOriginalInternalCallHistory,
+      setDoomScrollLoading
+    );
   }, [calling, internalCallsPageNumber]);
 
   const handleRefresh = () => {
     const shouldLoad = false;
-    getContactAndAllTagData(shouldLoad, setLoading, checkMessageType, setContact, setOriginalContact, setMessageRefresh, setAllTags);
+    getContactAndAllTagData(
+      shouldLoad,
+      setLoading,
+      checkMessageType,
+      setContact,
+      setOriginalContact,
+      setMessageRefresh,
+      setAllTags
+    );
     setMessageRefresh(true);
   };
 
@@ -1119,16 +1199,16 @@ function Messages({
     setContact(originalContact);
     setOnlineUser(originalOnlineUser);
     setInternalCallHistory(origInalinternalCallHistory);
-    setManageGroupChat(false)
+    setManageGroupChat(false);
   };
 
   // Adding this coz Recipient was changed from being passed as a prop from WebrtcWrapper to here, need this hack to make P2P Call chat work
   useEffect(() => {
     if (recipient && recipient !== prevRecipient.current) {
-      dispatch(({
+      dispatch({
         type: "SET_MESSAGERECIPIENT",
         messageRecipient: recipient,
-      }));
+      });
       prevRecipient.current = recipient;
     }
   }, [recipient, dispatch]);
@@ -1146,8 +1226,8 @@ function Messages({
     setGroupName("");
     setSearchQuery("");
     setSelectAll(false);
-    setGroupSelecedAgents([])
-  }
+    setGroupSelecedAgents([]);
+  };
 
   return (
     <>
@@ -1196,7 +1276,14 @@ function Messages({
                     disabled={loading}
                     className="panelButton me-0"
                     onClick={() => {
-                      handleNewTag(newTag, setAddNewTag, setNewTag, setAllTags, allTags, setLoading);
+                      handleNewTag(
+                        newTag,
+                        setAddNewTag,
+                        setNewTag,
+                        setAllTags,
+                        allTags,
+                        setLoading
+                      );
                       setAddNewTagPopUp(false);
                     }}
                   >
@@ -1369,7 +1456,9 @@ function Messages({
                 setFileType={setFileType}
                 manageGroupChat={manageGroupChat}
                 groupNameEdit={groupNameEdit}
-                setSaveEditToggleGroupNameChange={setSaveEditToggleGroupNameChange}
+                setSaveEditToggleGroupNameChange={
+                  setSaveEditToggleGroupNameChange
+                }
                 setGroupNameEdit={setGroupNameEdit}
                 setNewGroupLoader={setNewGroupLoader}
                 setAddMember={setAddMember}
@@ -1397,7 +1486,6 @@ function Messages({
                 editedValue={editedValue}
                 setCallStatus={setCallStatus}
               />
-
             </div>
           </div>
           {groupChatPopUp ? (
@@ -1460,30 +1548,43 @@ function Messages({
                               <th>
                                 <input
                                   type="checkbox"
-                                  onChange={() => handleSelectAll(selectAll, setSelectAll, availableUsers, groupSelecedAgents, setGroupSelecedAgents)} // Call handler on change
+                                  onChange={() =>
+                                    handleSelectAll(
+                                      selectAll,
+                                      setSelectAll,
+                                      availableUsers,
+                                      groupSelecedAgents,
+                                      setGroupSelecedAgents
+                                    )
+                                  } // Call handler on change
                                   checked={selectAll ? true : false} // Keep checkbox state in sync
                                 />
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                            {filteredUsers?.filter((data) => data?.id != account?.id)?.map((item, index) => (
-                              <tr key={index}>
-                                <td>{index + 1}.</td>
-                                <td>{item.name}</td>
-                                <td>
-                                  <input
-                                    type="checkbox"
-                                    onChange={() =>
-                                      handleCheckboxChange(item, setGroupSelecedAgents)
-                                    } // Call handler on change
-                                    checked={groupSelecedAgents.some(
-                                      (agent) => agent.name == item.name
-                                    )} // Keep checkbox state in sync
-                                  />
-                                </td>
-                              </tr>
-                            ))}
+                            {filteredUsers
+                              ?.filter((data) => data?.id != account?.id)
+                              ?.map((item, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}.</td>
+                                  <td>{item.name}</td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          item,
+                                          setGroupSelecedAgents
+                                        )
+                                      } // Call handler on change
+                                      checked={groupSelecedAgents.some(
+                                        (agent) => agent.name == item.name
+                                      )} // Keep checkbox state in sync
+                                    />
+                                  </td>
+                                </tr>
+                              ))}
                           </tbody>
                         </table>
                       </div>
@@ -1494,7 +1595,7 @@ function Messages({
                       <button
                         className="panelButton gray ms-0"
                         onClick={() => {
-                          handleGroupChatPopupClose()
+                          handleGroupChatPopupClose();
                         }}
                       >
                         <span className="text">Close</span>
@@ -1516,11 +1617,10 @@ function Messages({
                             setGroupChatPopUp,
                             setGroupSelecedAgents,
                             setLoading,
-                            setGroupName,
-                          )
-                          handleGroupChatPopupClose()
-                        }
-                        }
+                            setGroupName
+                          );
+                          handleGroupChatPopupClose();
+                        }}
                       >
                         <span className="text">Create</span>
                         <span className="icon">
@@ -1555,7 +1655,13 @@ function Messages({
                           disabled={loading}
                           className="panelButton m-0"
                           onClick={() => {
-                            handleremoveUserFromGroup(recipient[1], setNewGroupLoader, setSelectedgroupUsers, selectedgroupUsers, account);
+                            handleremoveUserFromGroup(
+                              recipient[1],
+                              setNewGroupLoader,
+                              setSelectedgroupUsers,
+                              selectedgroupUsers,
+                              account
+                            );
                             setGroupLeavePopUp(false);
                             setRecipient([]);
                             setGroupRefresh(groupRefresh + 1);

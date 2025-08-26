@@ -67,7 +67,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     locationState?.usertype == "Company"
   );
   const [profileImage, setProfileImage] = useState(null);
-  const [passwordMask, setPasswordMask] = useState(false)
+  const [passwordMask, setPasswordMask] = useState(false);
   const {
     register,
     watch,
@@ -120,17 +120,21 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   // Getting user and extension data to check which extension is not assigned
   const getAllUser = async () => {
     const apidataUser = await generalGetFunction(
-      `/user/search?account=${account.account_id}${account.usertype !== 'Company' || account.usertype !== 'SupreAdmin' ? '&section=Accounts' : ""}`
+      `/user/search?account=${account.account_id}${
+        account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+          ? "&section=Accounts"
+          : ""
+      }`
     );
     if (apidataUser?.status) {
       setUser(apidataUser.data);
     }
-  }
+  };
 
   useEffect(() => {
     if (!user) {
       getAllUser();
-    };
+    }
 
     if (extensionAllRefresh > 0) {
       setExtension(extensionAll.data);
@@ -419,7 +423,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         setLoading(false);
       }
     }
-  }
+  };
   return (
     <>
       <style>
@@ -499,7 +503,11 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                   >
                     <div className="row gx-5">
                       <div className="col-xxl-6 col-xl-12 mb-3">
-                        <form action="#" className="row px-2" autoComplete="off">
+                        <form
+                          action="#"
+                          className="row px-2"
+                          autoComplete="off"
+                        >
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
                               <label htmlFor="">
@@ -614,7 +622,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                     border: "none",
                                     backgroundColor: "transparent",
                                     cursor: "pointer",
-                                    padding: '0'
+                                    padding: "0",
                                   }}
                                   onClick={(e) => {
                                     e.preventDefault();
@@ -629,7 +637,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                       position: "relative",
                                       cursor: "pointer",
                                       borderRadius: "50%",
-                                      border: '2px solid var(--border-color)',
+                                      border: "2px solid var(--border-color)",
                                     }}
                                   >
                                     {profileImage ? (
@@ -645,7 +653,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                         //   : profileImage ||
                                         profileImage
                                           ? profileImage
-                                          : require('../../assets/images/placeholder-image.webp')
+                                          : require("../../assets/images/placeholder-image.webp")
                                       }
                                       alt="profile"
                                       style={{
@@ -654,7 +662,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                         objectFit: "cover",
                                         borderRadius: "50%",
                                       }}
-                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                      onError={(e) =>
+                                        (e.target.src = require("../../assets/images/placeholder-image.webp"))
+                                      }
                                     />
                                   </div>
                                 </button>
@@ -758,8 +768,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                       e.target.value === ""
                                         ? ""
                                         : roleName.permissions.map((item) => {
-                                          return item.permission_id;
-                                        })
+                                            return item.permission_id;
+                                          })
                                     );
                                   }}
                                 >
@@ -828,9 +838,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                         option: (provided) => ({
                                           ...provided,
                                           fontSize: "14px",
-                                          paddingTop: '2px',
-                                          paddingBottom: '2px',
-                                          borderBottom: '1px solid var(--border-color)'
+                                          paddingTop: "2px",
+                                          paddingBottom: "2px",
+                                          borderBottom:
+                                            "1px solid var(--border-color)",
                                         }),
                                         placeholder: (provided) => ({
                                           ...provided,
@@ -901,9 +912,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           </div>
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">
-                                Usages
-                              </label>
+                              <label htmlFor="selectFormRow">Usages</label>
                               <label htmlFor="data" className="formItemDesc">
                                 Set usages for the current user
                               </label>
@@ -932,7 +941,12 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               </label>
                             </div>
                             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                              <div style={{ display: "flex", alignItems: "center" }}>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
                                 <input
                                   type={passwordMask ? "text" : "password"}
                                   className="formItem"
@@ -940,7 +954,14 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
                                 />
-                                <i className={`fa-solid fa-eye${passwordMask ? "" : "-slash"} position-static`} onClick={() => setPasswordMask(prev => !prev)} />
+                                <i
+                                  className={`fa-solid fa-eye${
+                                    passwordMask ? "" : "-slash"
+                                  } position-static`}
+                                  onClick={() =>
+                                    setPasswordMask((prev) => !prev)
+                                  }
+                                />
                               </div>
                             </div>
                           </div>
@@ -1089,7 +1110,11 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                         />
                         <button
                           className="clearButton2 xl ms-2"
-                          style={{ position: "absolute", top: "0px", right: "0px" }}
+                          style={{
+                            position: "absolute",
+                            top: "0px",
+                            right: "0px",
+                          }}
                           onClick={() => setNewImage(null)}
                         >
                           <i className="fa-sharp fa-solid fa-trash" />
