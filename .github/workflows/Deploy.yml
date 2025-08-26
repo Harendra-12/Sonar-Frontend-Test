@@ -6,7 +6,7 @@ on:
       - Developement
 
 jobs:
-  deploying-frontend-testing-server:
+  build-and-deploy:
     runs-on: self-hosted
 
     steps:
@@ -14,8 +14,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: |
-           ${{ secrets.SSH_PRIVATE_KEY_TESTING_SERVER_FRONTEND }}
-            
+            ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Add GitHub to known_hosts
         run: ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -23,12 +22,12 @@ jobs:
       - name: Checkout repository using SSH
         uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY_TESTING_SERVER }}
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: SSH Working
         run: |
           
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.TESTING_SERVER_ADDRESS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.DEV_SERVER_TESTING }} << 'EOF'
            #set -e  # Exit immediately if a command exits with a non-zero status
            # set -x  # Uncomment for debugging purposes
 
@@ -40,7 +39,7 @@ jobs:
 
             # Check if the directory is a Git repository
             if [ -d ".git" ]; then
-                echo "Git repository found. Checking out Developement branch and pulling latest changes."
+                echo "Git repository found. Checking out Production branch and pulling latest changes."
             
                 # Ensure we are on the correct branch
                 git checkout Developement

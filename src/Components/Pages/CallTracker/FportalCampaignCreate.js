@@ -1142,12 +1142,12 @@ function FportalCampaignCreate() {
                                   <select
                                     className="formItem"
                                     name=""
-                                    defaultValue={false}
+                                    defaultValue="false"
                                     id="selectFormRow"
                                     {...register("sticky_agent_enable")}
                                   >
-                                    <option value={true}>True</option>
-                                    <option value={false}>False</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
                                   </select>
                                 </div>
 
