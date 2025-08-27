@@ -218,7 +218,7 @@ function Messages({
     if (isUpdatedClicked?.message_type === "image") {
       setFileUpload(true);
       setFileType("image");
-    } else if (isUpdatedClicked?.message_type === "file" || isUpdatedClicked?.message_type === "video") {
+    } else if (isUpdatedClicked?.message_type === "file" || isUpdatedClicked?.message_type === "video" || isUpdatedClicked?.message_type === "audio") {
       setFileUpload(true);
       setFileType("all");
     }

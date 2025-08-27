@@ -337,7 +337,6 @@ export function LoginComponent({ setLanguageChangePopup }) {
 
   // Function to handle login
   const userLogin = useCallback(async () => {
-    debugger
     setCredsError(false);
     if (userName === "") {
       toast.error("Username is required!");
