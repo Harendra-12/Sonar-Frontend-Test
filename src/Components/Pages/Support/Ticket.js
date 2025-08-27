@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../CommonComponents/Header'
-import { useNavigate } from 'react-router-dom'
-import ThreeDotedLoader from '../../Loader/ThreeDotedLoader';
-import { featureUnderdevelopment, formatDateTime, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
-import { toast } from 'react-toastify';
-import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
-import PaginationComponent from '../../CommonComponents/PaginationComponent';
-import EmptyPrompt from '../../Loader/EmptyPrompt';
-import { useSelector } from 'react-redux';
-import ErrorMessage from '../../CommonComponents/ErrorMessage';
-import { useForm } from 'react-hook-form';
-import { requiredValidator } from '../../validations/validation';
-import CircularLoader from '../../Loader/CircularLoader';
-
+import React, { useEffect, useState } from "react";
+import Header from "../../CommonComponents/Header";
+import { useNavigate } from "react-router-dom";
+import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import {
+  featureUnderdevelopment,
+  formatDateTime,
+  generalDeleteFunction,
+  generalGetFunction,
+  generalPostFunction,
+  generalPutFunction,
+} from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
+import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
+import { useSelector } from "react-redux";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import { useForm } from "react-hook-form";
+import { requiredValidator } from "../../validations/validation";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function Ticket() {
   const navigate = useNavigate();
@@ -30,12 +36,12 @@ function Ticket() {
   useEffect(() => {
     getAllTickets();
     getAllClosedTickets();
-  }, [])
+  }, []);
 
   const getAllTickets = async () => {
     setLoading(true);
     try {
-      const apiCall = await generalGetFunction('/ticket/all');
+      const apiCall = await generalGetFunction("/ticket/all");
       if (apiCall.status) {
         setAllTickets(apiCall.data);
         setLoading(false);
@@ -47,7 +53,7 @@ function Ticket() {
       console.log(err);
       setLoading(false);
     }
-  }
+  };
 
   const handleCloseTicket = async (id) => {
     const userConfirmed = await confirm();
@@ -65,12 +71,12 @@ function Ticket() {
         setLoading(false);
       }
     }
-  }
+  };
 
   const getAllClosedTickets = async () => {
     setLoading(true);
     try {
-      const apiCall = await generalGetFunction('/ticket/closed-ticket');
+      const apiCall = await generalGetFunction("/ticket/closed-ticket");
       if (apiCall.status) {
         setAllClosedTickets(apiCall.data);
         setLoading(false);
@@ -82,27 +88,28 @@ function Ticket() {
       console.log(err);
       setLoading(false);
     }
-  }
+  };
 
   const refreshApiCall = () => {
     getAllTickets();
     getAllClosedTickets();
-  }
+  };
 
   return (
     <>
-      <main className='mainContent'>
+      <main className="mainContent">
         <section className="campaignPage">
           <div className="container-fluid">
             <div className="row">
               <Header title="Support" />
-              <div className='overviewTableWrapper'>
-                <div className='overviewTableChild'>
-                  <div className='d-flex flex-wrap'>
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
                     <div className="col-12">
                       <div className="heading mb-0">
                         <div className="content">
-                          <h4>Ticket {" "}
+                          <h4>
+                            Ticket{" "}
                             <button
                               className="clearButton"
                               onClick={refreshApiCall}
@@ -119,20 +126,34 @@ function Ticket() {
                           <p>You can Create ticket of users </p>
                         </div>
                         <div className="buttonGroup">
-                          <button className="panelButton gray" >
+                          <button className="panelButton gray">
                             <span className="text">Back</span>
-                            <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
+                            <span className="icon">
+                              <i className="fa-solid fa-caret-left"></i>
+                            </span>
                           </button>
-                          <button className="panelButton" onClick={() => setCreateTicketPopup(true)}>
+                          <button
+                            className="panelButton"
+                            onClick={() => setCreateTicketPopup(true)}
+                          >
                             <span className="text">Create</span>
-                            <span className="icon"><i className="fa-solid fa-plus"></i></span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
                           </button>
                         </div>
                       </div>
                     </div>
-                    <div className='col-12' style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
+                    <div
+                      className="col-12"
+                      style={{ overflow: "auto", padding: "25px 20px 0px" }}
+                    >
                       <nav className="tangoNavs">
-                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                        <div
+                          className="nav nav-tabs"
+                          id="nav-tab"
+                          role="tablist"
+                        >
                           <button
                             className="nav-link active"
                             id="nav-user-tab"
@@ -166,15 +187,15 @@ function Ticket() {
                           border: "1px solid var(--border-color)",
                           borderTop: "none",
                           borderRadius: "0 0 5px 5px",
-                        }} >
-
+                        }}
+                      >
                         <div
                           className="tab-pane fade show active"
                           id="nav-user"
                           role="tabpanel"
                           aria-labelledby="nav-user-tab"
-                          tabIndex="0" >
-
+                          tabIndex="0"
+                        >
                           <div
                             className="col-12"
                             style={{ overflow: "auto", padding: "10px 20px 0" }}
@@ -201,75 +222,119 @@ function Ticket() {
                               </div>
                             </div> */}
                             <div className="tableContainer">
-                              {loading ? <ThreeDotedLoader /> :
+                              {loading ? (
+                                <ThreeDotedLoader />
+                              ) : (
                                 <table>
                                   <thead>
                                     <tr>
-                                      <th style={{ width: '20px' }}>#</th>
+                                      <th style={{ width: "20px" }}>#</th>
                                       <th>Time stamp</th>
                                       <th>Department</th>
                                       <th>Query Type</th>
                                       <th>Subject</th>
                                       <th>Username</th>
                                       <th>Status</th>
-                                      <th className='text-center'>View Ticket</th>
-                                      <th className='text-center'>Chat</th>
-                                      <th className='text-center'>Close Ticket</th>
+                                      <th className="text-center">
+                                        View Ticket
+                                      </th>
+                                      <th className="text-center">Chat</th>
+                                      <th className="text-center">
+                                        Close Ticket
+                                      </th>
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {allTickets && allTickets?.data?.length > 0 ? allTickets?.data?.map((item, index) => {
-                                      return (
-                                        <tr>
-                                          <td style={{ width: '20px' }}>{index + 1}</td>
-                                          <td>{formatDateTime(item?.created_at)}</td>
-                                          <td>{item.department}</td>
-                                          <td>{item.query_type}</td>
-                                          <td>{item.title}</td>
-                                          <td>{accountDetails.users.find((acc) => acc.id == item.created_by).username}</td>
-                                          <td>
-                                            <div>
-                                              <label className={`tableLabel ${item.status == 'open' ? 'success' : 'fail'}`} style={{ textTransform: 'capitalize' }}>{item.status}</label>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <div className=''>
-                                              <button
-                                                className="tableButton edit mx-auto"
-                                                onClick={() => { setViewTicketPopup(true); setSelectedTicket(item) }}
-                                              >
-                                                <i className="fa-regular fa-eye"></i>
-                                              </button>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <div className=''>
-                                              <button
-                                                className="tableButton mx-auto"
-                                                onClick={() => navigate('/live-chat', {
-                                                  state: item.id,
-                                                })}
-                                              >
-                                                <i className="fa-regular fa-robot"></i>
-                                              </button>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <div className='d-flex align-items-center justify-content-start'>
-                                              <button
-                                                className="tableButton delete me-12 mx-auto"
-                                                onClick={() => handleCloseTicket(item.id)}
-                                              >
-                                                <i className="fa-solid fa-x"></i>
-                                              </button>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      )
-                                    }) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>}
+                                    {allTickets &&
+                                    allTickets?.data?.length > 0 ? (
+                                      allTickets?.data?.map((item, index) => {
+                                        return (
+                                          <tr>
+                                            <td style={{ width: "20px" }}>
+                                              {index + 1}
+                                            </td>
+                                            <td>
+                                              {formatDateTime(item?.created_at)}
+                                            </td>
+                                            <td>{item.department}</td>
+                                            <td>{item.query_type}</td>
+                                            <td>{item.title}</td>
+                                            <td>
+                                              {
+                                                accountDetails.users.find(
+                                                  (acc) =>
+                                                    acc.id == item.created_by
+                                                ).username
+                                              }
+                                            </td>
+                                            <td>
+                                              <div>
+                                                <label
+                                                  className={`tableLabel ${
+                                                    item.status == "open"
+                                                      ? "success"
+                                                      : "fail"
+                                                  }`}
+                                                  style={{
+                                                    textTransform: "capitalize",
+                                                  }}
+                                                >
+                                                  {item.status}
+                                                </label>
+                                              </div>
+                                            </td>
+                                            <td>
+                                              <div className="">
+                                                <button
+                                                  className="tableButton edit mx-auto"
+                                                  onClick={() => {
+                                                    setViewTicketPopup(true);
+                                                    setSelectedTicket(item);
+                                                  }}
+                                                >
+                                                  <i className="fa-regular fa-eye"></i>
+                                                </button>
+                                              </div>
+                                            </td>
+                                            <td>
+                                              <div className="">
+                                                <button
+                                                  className="tableButton mx-auto"
+                                                  onClick={() =>
+                                                    navigate("/live-chat", {
+                                                      state: item.id,
+                                                    })
+                                                  }
+                                                >
+                                                  <i className="fa-regular fa-robot"></i>
+                                                </button>
+                                              </div>
+                                            </td>
+                                            <td>
+                                              <div className="d-flex align-items-center justify-content-start">
+                                                <button
+                                                  className="tableButton delete me-12 mx-auto"
+                                                  onClick={() =>
+                                                    handleCloseTicket(item.id)
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-x"></i>
+                                                </button>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })
+                                    ) : (
+                                      <tr>
+                                        <td colSpan={99}>
+                                          <EmptyPrompt generic={true} />
+                                        </td>
+                                      </tr>
+                                    )}
                                   </tbody>
                                 </table>
-                              }
+                              )}
                             </div>
                             <div className="tableHeader mb-3">
                               <PaginationComponent
@@ -318,57 +383,95 @@ function Ticket() {
                               <table>
                                 <thead>
                                   <tr>
-                                    <th style={{ width: '20px' }}>#</th>
+                                    <th style={{ width: "20px" }}>#</th>
                                     <th>Time stamp</th>
                                     <th>Department</th>
                                     <th>Query Type</th>
                                     <th>Subject</th>
                                     <th>Username</th>
                                     <th>Status</th>
-                                    <th className='text-center'>View Ticket</th>
-                                    <th className='text-center'>Chat</th>
+                                    <th className="text-center">View Ticket</th>
+                                    <th className="text-center">Chat</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {allClosedTickets && allClosedTickets?.data?.length > 0 ? allClosedTickets?.data?.map((item, index) => {
-                                    return (
-                                      <tr>
-                                        <td style={{ width: '20px' }}>{index + 1}</td>
-                                        <td>{formatDateTime(item?.created_at)}</td>
-                                        <td>{item.department}</td>
-                                        <td>{item.query_type}</td>
-                                        <td>{item.title}</td>
-                                        <td>{accountDetails.users.find((acc) => acc.id == item.created_by).username}</td>
-                                        <td>
-                                          <div>
-                                            <label className={`tableLabel ${item.status == 'open' ? 'success' : 'fail'}`} style={{ textTransform: 'capitalize' }}>{item.status}</label>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div className=''>
-                                            <button
-                                              className="tableButton edit mx-auto"
-                                              onClick={() => { setViewTicketPopup(true); setSelectedTicket(item) }}
-                                            >
-                                              <i className="fa-regular fa-eye"></i>
-                                            </button>
-                                          </div>
-                                        </td>
-                                        <td>
-                                          <div className=''>
-                                            <button
-                                              className="tableButton mx-auto"
-                                              onClick={() => navigate('/live-chat', {
-                                                state: item.id,
-                                              })}
-                                            >
-                                              <i className="fa-regular fa-robot"></i>
-                                            </button>
-                                          </div>
-                                        </td>
-                                      </tr>
+                                  {allClosedTickets &&
+                                  allClosedTickets?.data?.length > 0 ? (
+                                    allClosedTickets?.data?.map(
+                                      (item, index) => {
+                                        return (
+                                          <tr>
+                                            <td style={{ width: "20px" }}>
+                                              {index + 1}
+                                            </td>
+                                            <td>
+                                              {formatDateTime(item?.created_at)}
+                                            </td>
+                                            <td>{item.department}</td>
+                                            <td>{item.query_type}</td>
+                                            <td>{item.title}</td>
+                                            <td>
+                                              {
+                                                accountDetails.users.find(
+                                                  (acc) =>
+                                                    acc.id == item.created_by
+                                                ).username
+                                              }
+                                            </td>
+                                            <td>
+                                              <div>
+                                                <label
+                                                  className={`tableLabel ${
+                                                    item.status == "open"
+                                                      ? "success"
+                                                      : "fail"
+                                                  }`}
+                                                  style={{
+                                                    textTransform: "capitalize",
+                                                  }}
+                                                >
+                                                  {item.status}
+                                                </label>
+                                              </div>
+                                            </td>
+                                            <td>
+                                              <div className="">
+                                                <button
+                                                  className="tableButton edit mx-auto"
+                                                  onClick={() => {
+                                                    setViewTicketPopup(true);
+                                                    setSelectedTicket(item);
+                                                  }}
+                                                >
+                                                  <i className="fa-regular fa-eye"></i>
+                                                </button>
+                                              </div>
+                                            </td>
+                                            <td>
+                                              <div className="">
+                                                <button
+                                                  className="tableButton mx-auto"
+                                                  onClick={() =>
+                                                    navigate("/live-chat", {
+                                                      state: item.id,
+                                                    })
+                                                  }
+                                                >
+                                                  <i className="fa-regular fa-robot"></i>
+                                                </button>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
                                     )
-                                  }) : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>}
+                                  ) : (
+                                    <tr>
+                                      <td colSpan={99}>
+                                        <EmptyPrompt generic={true} />
+                                      </td>
+                                    </tr>
+                                  )}
                                 </tbody>
                               </table>
                             </div>
@@ -386,8 +489,23 @@ function Ticket() {
                       </div>
                     </div>
 
-                    {createTicketPopup && <CreateTicketPopup setPopup={setCreateTicketPopup} setLoading={setLoading} refresh={refreshApiCall} loading={loading} />}
-                    {viewTicketPopup && <ViewTicketPopup setPopup={setViewTicketPopup} loading={loading} setLoading={setLoading} ticketData={selectedTicket} setTicketData={setSelectedTicket} />}
+                    {createTicketPopup && (
+                      <CreateTicketPopup
+                        setPopup={setCreateTicketPopup}
+                        setLoading={setLoading}
+                        refresh={refreshApiCall}
+                        loading={loading}
+                      />
+                    )}
+                    {viewTicketPopup && (
+                      <ViewTicketPopup
+                        setPopup={setViewTicketPopup}
+                        loading={loading}
+                        setLoading={setLoading}
+                        ticketData={selectedTicket}
+                        setTicketData={setSelectedTicket}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -397,13 +515,18 @@ function Ticket() {
         <ModalComponent task={"close"} reference={"Ticket"} />
       </main>
     </>
-  )
+  );
 }
 
-export default Ticket
+export default Ticket;
 
 export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
-  const { register, formState: { errors }, reset, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    reset,
+    handleSubmit,
+  } = useForm();
 
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
@@ -431,8 +554,9 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
           <div className="col-xl-12">
             <div
               className="tableContainer0"
-              style={{ maxHeight: "calc(100vh - 100px)" }}>
-              <div className='from-group'>
+              style={{ maxHeight: "calc(100vh - 100px)" }}
+            >
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Title</label>
                 </div>
@@ -441,14 +565,12 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("title", { ...requiredValidator, })}
+                    {...register("title", { ...requiredValidator })}
                   />
-                  {errors.title && (
-                    <ErrorMessage text={errors.title.message} />
-                  )}
+                  {errors.title && <ErrorMessage text={errors.title.message} />}
                 </div>
               </div>
-              <div className='from-group'>
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Department</label>
                 </div>
@@ -457,14 +579,14 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("department", { ...requiredValidator, })}
+                    {...register("department", { ...requiredValidator })}
                   />
                   {errors.department && (
                     <ErrorMessage text={errors.department.message} />
                   )}
                 </div>
               </div>
-              <div className='from-group'>
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Query Type: </label>
                 </div>
@@ -473,14 +595,14 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
                     type="text"
                     name="extension"
                     className="formItem"
-                    {...register("query_type", { ...requiredValidator, })}
+                    {...register("query_type", { ...requiredValidator })}
                   />
                   {errors.query_type && (
                     <ErrorMessage text={errors.query_type.message} />
                   )}
                 </div>
               </div>
-              <div className='from-group'>
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Message</label>
                 </div>
@@ -490,7 +612,7 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
                     name="extension"
                     className="formItem h-auto"
                     rows={2}
-                    {...register("description", { ...requiredValidator, })}
+                    {...register("description", { ...requiredValidator })}
                   />
                   {errors.description && (
                     <ErrorMessage text={errors.description.message} />
@@ -510,10 +632,7 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
                   <i className="fa-solid fa-caret-left" />
                 </span>
               </button>
-              <button
-                className="panelButton me-0"
-                onClick={handleFormSubmit}
-              >
+              <button className="panelButton me-0" onClick={handleFormSubmit}>
                 <span className="text">Done</span>
                 <span className="icon">
                   <i className="fa-solid fa-check" />
@@ -524,11 +643,21 @@ export function CreateTicketPopup({ setPopup, setLoading, refresh, loading }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, setTicketData }) {
-  const { register, formState: { errors }, reset } = useForm();
+export function ViewTicketPopup({
+  setPopup,
+  loading,
+  setLoading,
+  ticketData,
+  setTicketData,
+}) {
+  const {
+    register,
+    formState: { errors },
+    reset,
+  } = useForm();
 
   useEffect(() => {
     if (ticketData) {
@@ -541,7 +670,7 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
     setPopup(false);
     setTicketData();
     reset();
-  }
+  };
 
   return (
     <div className="backdropContact">
@@ -555,8 +684,9 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
           <div className="col-xl-12">
             <div
               className="tableContainer0"
-              style={{ maxHeight: "calc(100vh - 100px)" }}>
-              <div className='from-group'>
+              style={{ maxHeight: "calc(100vh - 100px)" }}
+            >
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Title</label>
                 </div>
@@ -568,12 +698,10 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
                     disabled={true}
                     {...register("title")}
                   />
-                  {errors.title && (
-                    <ErrorMessage text={errors.title.message} />
-                  )}
+                  {errors.title && <ErrorMessage text={errors.title.message} />}
                 </div>
               </div>
-              <div className='from-group'>
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Department</label>
                 </div>
@@ -590,7 +718,7 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
                   )}
                 </div>
               </div>
-              <div className='from-group'>
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Query Type: </label>
                 </div>
@@ -607,7 +735,7 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
                   )}
                 </div>
               </div>
-              <div className='from-group'>
+              <div className="from-group">
                 <div className="formLabel">
                   <label htmlFor="">Message</label>
                 </div>
@@ -643,5 +771,5 @@ export function ViewTicketPopup({ setPopup, loading, setLoading, ticketData, set
         </div>
       </div>
     </div>
-  )
+  );
 }

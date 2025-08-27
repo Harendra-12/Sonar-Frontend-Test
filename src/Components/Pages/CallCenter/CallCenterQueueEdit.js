@@ -109,9 +109,10 @@ function CallCenterQueueEdit() {
       async function getData() {
         setLoading(true);
         const userData = await generalGetFunction(
-          `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+          `/user/search?account=${account.account_id}${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "&section=Accounts"
+              : ""
           }`
         );
         const callCenterData = await generalGetFunction(
@@ -187,9 +188,10 @@ function CallCenterQueueEdit() {
       async function getData() {
         setLoading(true);
         const userData = await generalGetFunction(
-          `/user/search?account=${account.account_id}${account.usertype !== "Company" || account.usertype !== "SupreAdmin"
-            ? "&section=Accounts"
-            : ""
+          `/user/search?account=${account.account_id}${
+            account.usertype !== "Company" || account.usertype !== "SupreAdmin"
+              ? "&section=Accounts"
+              : ""
           }`
         );
         const callCenterData = await generalGetFunction(
@@ -521,7 +523,6 @@ function CallCenterQueueEdit() {
     }
   }
 
-  
   // Function to delete selected destination
   async function deleteSelectedDestination() {
     if (selectedAgentToEdit.length > 1) {
@@ -1463,8 +1464,24 @@ function CallCenterQueueEdit() {
                                 <option value="1">Enable</option>
                                 <option value="0">Disable</option>
                               </select>
-                              {errors.queue_description && (
-                                <ErrorMessage text={errors.queue_description} />
+                              {/* <select
+                                name="queue_announcement"
+                                defaultValue="false"
+                                className="formItem"
+                                {...register("queue_announcement", {
+                                  ...noSpecialCharactersValidator,
+                                  setValueAs: (value) => value === "true", // convert to boolean
+                                })}
+                                onKeyDown={restrictToAllowedChars}
+                              >
+                                <option value="true">Enable</option>
+                                <option value="false">Disable</option>
+                              </select> */}
+
+                              {errors.queue_announcement && (
+                                <ErrorMessage
+                                  text={errors.queue_announcement}
+                                />
                               )}
                             </div>
                           </div>
@@ -1554,6 +1571,16 @@ function CallCenterQueueEdit() {
                                 <option value={1}>True</option>
                                 <option value={0}>False</option>
                               </select>
+                              {/* <select
+                                {...register("abandoned_resume_allowed", {
+                                  setValueAs: (value) => value === "true", // convert to boolean
+                                })}
+                                className="formItem w-100"
+                                defaultValue="false"
+                              >
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                              </select> */}
                             </div>
                           </div>
                         </form>
@@ -1615,16 +1642,16 @@ function CallCenterQueueEdit() {
                         "delete"
                       )
                         ? selectedAgentToEdit.length > 1 && (
-                          <button
-                            className="panelButton delete"
-                            onClick={deleteSelectedDestination}
-                          >
-                            <span className="text">Delete</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-trash"></i>
-                            </span>
-                          </button>
-                        )
+                            <button
+                              className="panelButton delete"
+                              onClick={deleteSelectedDestination}
+                            >
+                              <span className="text">Delete</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-trash"></i>
+                              </span>
+                            </button>
+                          )
                         : ""}
                       {checkViewSidebar(
                         "CallCenterAgent",
@@ -1634,35 +1661,35 @@ function CallCenterQueueEdit() {
                         "edit"
                       )
                         ? agent.length > 0 &&
-                        (selectedAgentToEdit.length > 0 &&
+                          (selectedAgentToEdit.length > 0 &&
                           selectedAgentToEdit.length != agent.length ? (
-                          <button
-                            type="button"
-                            className="panelButton"
-                            onClick={() => {
-                              setBulkEditPopup(true);
-                            }}
-                          >
-                            <span className="text">Edit</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            className="panelButton edit"
-                            onClick={() => {
-                              setSelectedAgentToEdit(agent);
-                              setBulkEditPopup(true);
-                            }}
-                          >
-                            <span className="text">Edit All</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-pen"></i>
-                            </span>
-                          </button>
-                        ))
+                            <button
+                              type="button"
+                              className="panelButton"
+                              onClick={() => {
+                                setBulkEditPopup(true);
+                              }}
+                            >
+                              <span className="text">Edit</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="panelButton edit"
+                              onClick={() => {
+                                setSelectedAgentToEdit(agent);
+                                setBulkEditPopup(true);
+                              }}
+                            >
+                              <span className="text">Edit All</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-pen"></i>
+                              </span>
+                            </button>
+                          ))
                         : ""}
                       {checkViewSidebar(
                         "CallCenterAgent",
@@ -1671,21 +1698,21 @@ function CallCenterQueueEdit() {
                         account?.permissions,
                         "add"
                       ) && (
-                          <button
-                            type="button"
-                            className="panelButton"
-                            onClick={() => {
-                              if (user.length !== agent?.length)
-                                setBulkAddPopUp(true);
-                              else toast.warn("All agent selected");
-                            }}
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        )}
+                        <button
+                          type="button"
+                          className="panelButton"
+                          onClick={() => {
+                            if (user.length !== agent?.length)
+                              setBulkAddPopUp(true);
+                            else toast.warn("All agent selected");
+                          }}
+                        >
+                          <span className="text">Add</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-plus"></i>
+                          </span>
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -1740,14 +1767,18 @@ function CallCenterQueueEdit() {
                                     <label>{index + 1}.</label>
                                   </div>
                                   <div
-                                    className={`row mb-2 col-${advance.includes(item?.id)
-                                      ? "11"
-                                      : "xxl-5 col-xl-11"
-                                      }`}
+                                    className={`row mb-2 col-${
+                                      advance.includes(item?.id)
+                                        ? "11"
+                                        : "xxl-5 col-xl-11"
+                                    }`}
                                   >
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-5 col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6 mb-2" : " col-xxl-5 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 mb-2"
-                                        } ps-0 pe-2`}
+                                      className={`${
+                                        advance.includes(item.id)
+                                          ? "col-xxl-5 col-xl-4 col-lg-3 col-md-4 col-sm-6 col-6 mb-2"
+                                          : " col-xxl-5 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 mb-2"
+                                      } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1778,8 +1809,11 @@ function CallCenterQueueEdit() {
                                       </div>
                                     </div>
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 mb-2" : "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 mb-2"
-                                        } ps-0 pe-2`}
+                                      className={`${
+                                        advance.includes(item.id)
+                                          ? "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 mb-2"
+                                          : "col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6 mb-2"
+                                      } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1800,8 +1834,11 @@ function CallCenterQueueEdit() {
                                       </div>
                                     </div>
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6 mb-2" : "col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6 mb-2"
-                                        } ps-0 pe-2`}
+                                      className={`${
+                                        advance.includes(item.id)
+                                          ? "col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6 mb-2"
+                                          : "col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6 mb-2"
+                                      } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1833,8 +1870,11 @@ function CallCenterQueueEdit() {
                                       </select>
                                     </div>
                                     <div
-                                      className={`${advance.includes(item.id) ? "col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6 mb-2" : "col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6 mb-2"
-                                        } ps-0 pe-2`}
+                                      className={`${
+                                        advance.includes(item.id)
+                                          ? "col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6 mb-2"
+                                          : "col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-6 col-6 mb-2"
+                                      } ps-0 pe-2`}
                                     >
                                       {index === 0 && (
                                         <div className="formLabel">
@@ -1989,7 +2029,7 @@ function CallCenterQueueEdit() {
                                               name="no_answer_delay_time"
                                               value={
                                                 item.no_answer_delay_time ===
-                                                  null
+                                                null
                                                   ? ""
                                                   : item.no_answer_delay_time
                                               }
@@ -2123,14 +2163,16 @@ function CallCenterQueueEdit() {
                                       >
                                         <button
                                           type="button"
-                                          className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
-                                            }`}
+                                          className={`tableButton edit my-auto ${
+                                            agent.length < 2 ? "me-2" : ""
+                                          }`}
                                         >
                                           <i
-                                            className={`fa-solid fa-${advance.includes(item.id)
-                                              ? "gear"
-                                              : "gears"
-                                              }`}
+                                            className={`fa-solid fa-${
+                                              advance.includes(item.id)
+                                                ? "gear"
+                                                : "gears"
+                                            }`}
                                           ></i>
                                         </button>
                                       </div>
@@ -3021,7 +3063,6 @@ function CallCenterQueueEdit() {
                       })
                     }
                     id="selectFormRow"
-                    defaultValue={0}
                   >
                     <option value={0}>False</option>
                     <option value={1}>True</option>
@@ -3035,7 +3076,7 @@ function CallCenterQueueEdit() {
                   <select
                     className="formItem me-0"
                     style={{ width: "100%" }}
-                    name="truncate-agents-on-load"
+                    name="truncate_agents_on_load"
                     value={settingsForBulkEdit.truncate_agents_on_load}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
@@ -3044,7 +3085,6 @@ function CallCenterQueueEdit() {
                       })
                     }
                     id="selectFormRow"
-                    defaultValue={0}
                   >
                     <option value={0}>False</option>
                     <option value={1}>True</option>
@@ -3067,7 +3107,6 @@ function CallCenterQueueEdit() {
                       })
                     }
                     id="selectFormRow"
-                    defaultValue={0}
                   >
                     <option value={0}>False</option>
                     <option value={1}>True</option>

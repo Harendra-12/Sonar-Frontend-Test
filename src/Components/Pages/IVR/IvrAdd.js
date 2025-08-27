@@ -283,6 +283,7 @@ function IvrAdd() {
                           className="formItem"
                           {...register("ivr_type", {
                             ...requiredValidator,
+                            // setValueAs: (value) => value === "true",
                           })}
                         >
                           <option value="1">Master</option>

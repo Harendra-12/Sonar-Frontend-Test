@@ -1024,10 +1024,12 @@ const RingGroupEdit = () => {
                         <select
                           className="formItem me-0"
                           style={{ width: "100%" }}
-                          // value={watch().recording_enabled}
-                          {...register("recording_enabled")}
+                          {...register("recording_enabled", {
+                            // setValueAs: (value) => value === "true", 
+                          })}
                           id="selectFormRow"
                           name="recording_enabled"
+                          defaultValue="false" 
                         >
                           <option value="1">True</option>
                           <option value="0">False</option>
@@ -1278,8 +1280,6 @@ const RingGroupEdit = () => {
                                   <label>{index + 1}.</label>
                                 </div>
                                 <div className="col-xxl-3 col-xl-3 col-lg-4 col-md-4 col-8 pe-2 mb-2">
-                               
-
                                   {index === 0 ? (
                                     <div className="formLabel">
                                       <label htmlFor="">
