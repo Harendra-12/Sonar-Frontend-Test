@@ -39,6 +39,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
   const [customModule, setCustomModule] = useState([]);
   const ringingState = activeCall.filter(
     (item) =>
+      
       item.b_callstate === "" &&
       (item.callstate === "RINGING" || item.callstate === "RING_WAIT")
   );
