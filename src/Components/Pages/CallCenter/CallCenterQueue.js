@@ -19,6 +19,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+
 function CallCenterQueue() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -256,7 +257,7 @@ function CallCenterQueue() {
 
       <main className="mainContent">
         <section id="phonePage">
-              <Header title="Call Center Queue" />
+          <Header title="Call Center Queue" />
           <div className="container-fluid">
             <div className="row">
               <div className="overviewTableWrapper">

@@ -121,9 +121,11 @@ const WebrtcWrapper = () => {
   const [conferenceInfo, setConferenceInfo] = useState([]);
   const [recipient, setRecipient] = useState([]);
   const [selectedChat, setSelectedChat] = useState("singleChat");
-  const [isGroupCallMessageOpened, setIsGroupCallMessageOpened] = useState(false)
-  const [isSingleCallMessageOpened, setIsSingleCallMessageOpened] = useState(false);
-  const [callStatus, setCallStatus] = useState("")
+  const [isGroupCallMessageOpened, setIsGroupCallMessageOpened] =
+    useState(false);
+  const [isSingleCallMessageOpened, setIsSingleCallMessageOpened] =
+    useState(false);
+  const [callStatus, setCallStatus] = useState("");
   const didAll = useSelector((state) => state.didAll);
   const [did, setDid] = useState();
   const audioRef = useRef(null);
@@ -132,6 +134,8 @@ const WebrtcWrapper = () => {
   const analyserRef = useRef(null);
   const audio = new Audio(ringtone);
   const debouncedSearchTerm = useDebounce(callsearchQuery, 1000);
+
+  console.log(activePage, "activePage");
 
   const { sendMessage } = GoPeerCallSocket();
   useEffect(() => {
@@ -146,10 +150,9 @@ const WebrtcWrapper = () => {
   useEffect(() => {
     dispatch({
       type: ActionType?.SET_SOCKET_SEND_PEER_GROUP_CALL_MESSAGE,
-      socketSendPeerGroupCallMessage: sendGroupMessage
-    })
-  }, [GoPeerGroupCallSocket])
-
+      socketSendPeerGroupCallMessage: sendGroupMessage,
+    });
+  }, [GoPeerGroupCallSocket]);
 
   useEffect(() => {
     if (!audioCtxRef.current) {
@@ -493,13 +496,13 @@ const WebrtcWrapper = () => {
       setInterCallPosition(
         isConferenceCall
           ? {
-            x: screenWidth <= 1366 ? 0 : 210,
-            y: screenWidth <= 1366 ? 0 : 61,
-          }
+              x: screenWidth <= 1366 ? 0 : 210,
+              y: screenWidth <= 1366 ? 0 : 61,
+            }
           : {
-            x: screenWidth <= 1366 ? 0 : 650,
-            y: screenWidth <= 1366 ? 0 : 61,
-          }
+              x: screenWidth <= 1366 ? 0 : 650,
+              y: screenWidth <= 1366 ? 0 : 61,
+            }
       );
     } else if (!interCallMinimize) {
       setInterCallSize({
@@ -614,10 +617,13 @@ const WebrtcWrapper = () => {
         {activePage === "campaign-login" && <CampaignLogin />}
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
-          <AllVoicemails isCustomerAdmin={isCustomerAdmin} setSelectedModule={setSelectedModule}
+          <AllVoicemails
+            isCustomerAdmin={isCustomerAdmin}
+            setSelectedModule={setSelectedModule}
             isMicOn={isMicOn}
             isVideoOn={isVideoOn}
-            allContact={allContact} />
+            allContact={allContact}
+          />
         )}
         {activePage === "on-going-calls" && <OngoingCall />}
         {activePage === "call-dashboard" && <CallDashboard />}
@@ -760,7 +766,7 @@ const WebrtcWrapper = () => {
                   allContact={allContact}
                   accountDetails={accountDetails}
                   didAll={didAll}
-                // globalSession={sessions}
+                  // globalSession={sessions}
                 />
               </div>
             </Rnd>
@@ -886,7 +892,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-              callProgressId ? (
+            callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
@@ -900,8 +906,6 @@ const WebrtcWrapper = () => {
         ) : (
           ""
         )}
-
-
       </SIPProvider>
       {openCallCenterPopUp &&
         initailCallCenterPopup &&

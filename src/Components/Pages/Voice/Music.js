@@ -44,100 +44,7 @@ function Music() {
   const [showAudio, setShowAudio] = useState(false);
   const [showDropDown, setShowDropdown] = useState(false);
   const thisAudioRef = useRef(null);
-  const [recording, setRecording] = useState(false);
-  const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);
   const slugPermissions = useSelector((state) => state?.permissions);
-
-  function audioBufferToWavBlob(buffer) {
-    const numOfChan = buffer.numberOfChannels;
-    const length = buffer.length * numOfChan * 2 + 44;
-    const bufferArray = new ArrayBuffer(length);
-    const view = new DataView(bufferArray);
-
-    // Write WAV header
-    writeString(view, 0, 'RIFF');
-    view.setUint32(4, length - 8, true);
-    writeString(view, 8, 'WAVE');
-    writeString(view, 12, 'fmt ');
-    view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true); // PCM
-    view.setUint16(22, numOfChan, true);
-    view.setUint32(24, buffer.sampleRate, true);
-    view.setUint32(28, buffer.sampleRate * numOfChan * 2, true);
-    view.setUint16(32, numOfChan * 2, true);
-    view.setUint16(34, 16, true);
-    writeString(view, 36, 'data');
-    view.setUint32(40, length - 44, true);
-
-    // Write PCM samples
-    let offset = 44;
-    for (let i = 0; i < buffer.length; i++) {
-      for (let channel = 0; channel < numOfChan; channel++) {
-        const sample = buffer.getChannelData(channel)[i];
-        const clamped = Math.max(-1, Math.min(1, sample));
-        view.setInt16(offset, clamped * 0x7FFF, true);
-        offset += 2;
-      }
-    }
-
-    return new Blob([view], { type: 'audio/wav' });
-  }
-
-  function writeString(view, offset, string) {
-    for (let i = 0; i < string.length; i++) {
-      view.setUint8(offset + i, string.charCodeAt(i));
-    }
-  }
-
-
-  const startRecording = async () => {
-    toast.warn("You have stop recording!")
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
-
-      audioChunksRef.current = [];
-
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-
-      mediaRecorderRef.current.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-
-        const arrayBuffer = await audioBlob.arrayBuffer();
-        const audioContext = new AudioContext();
-
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-        const wavBlob = audioBufferToWavBlob(audioBuffer);
-
-        const wavFile = new File([wavBlob], 'recording.wav', {
-          type: 'audio/wav',
-          lastModified: Date.now(),
-        });
-
-        setNewMusic(wavFile);
-      };
-
-
-      mediaRecorderRef.current.start();
-      setRecording(true);
-    } catch (err) {
-      console.error('Error accessing microphone:', err);
-      alert('Microphone access is required.');
-    }
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-      setRecording(false);
-    }
-  };
 
   async function getData(haveMusilAll) {
     const apiData = await generalGetFunction(`/sound/all`);
@@ -216,8 +123,6 @@ function Music() {
 
   //   Handle new music function to add new music
   async function handleNewMusic() {
-    setNewMusicType("hold")
-    setRecording(false)
     if (newMusic) {
       const maxSizeInKB = 2048;
       const fileSizeInKB = newMusic.size / 1024;
@@ -655,8 +560,7 @@ function Music() {
                       </h5>
                     </div>
                     <div className="card-body">
-
-                      {(newMusic) ? (
+                      {newMusic ? (
                         // Show audio controls if a file is uploaded
                         <div className="audio-container mx-2">
                           <audio
@@ -814,15 +718,6 @@ function Music() {
                             <option value="voicemail"> Voicemail</option>
                           </select>
                         </div>
-                        <div>
-                          {newMusicType === "voicemail" && (
-                            !recording ? (
-                              <i onClick={startRecording} className="fa-solid fa-microphone-lines-slash"></i>
-                            ) : (
-                              <i onClick={stopRecording} className="fa-solid fa-microphone-lines"></i>
-                            )
-                          )}
-                        </div>
                         <div className="d-flex">
                           <button
                             className="panelButton m-0"
@@ -838,8 +733,6 @@ function Music() {
                             onClick={() => {
                               setNewMusicPopup(false);
                               setNewMusic(null);
-                              setNewMusicType("hold")
-                              setRecording(false)
                             }}
                           >
                             <span className="text">Cancel</span>

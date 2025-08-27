@@ -268,6 +268,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
     }
   }
 
+  
   // function to handle time
   function formatTimeWithAMPM(timeString) {
     const [hours, minutes, seconds] = timeString.split(":").map(Number);
@@ -337,7 +338,6 @@ export function LoginComponent({ setLanguageChangePopup }) {
 
   // Function to handle login
   const userLogin = useCallback(async () => {
-    debugger
     setCredsError(false);
     if (userName === "") {
       toast.error("Username is required!");
@@ -457,11 +457,6 @@ export function LoginComponent({ setLanguageChangePopup }) {
           setCredsError(true);
           setCustomErrorText("Invalid username and password. Please try again.")
         }
-      } else if (checkLogin?.response?.status === 451) {
-        toast.error(checkLogin?.response?.data?.message);
-        setCredsError(true);
-        setCustomErrorText(checkLogin?.response?.data?.message)
-        setLoading(false)
       } else {
         if (checkLogin?.message === "Network Error") {
           toast.error("Network Error");

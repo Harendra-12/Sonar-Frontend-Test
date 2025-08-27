@@ -65,7 +65,6 @@ const MailSettings = ({ style }) => {
       // setOpenPopup(false);
       setMailSettings([]);
       toast.success(apiData.message);
-      fetchData()
     } else {
       setLoading(false);
       // setOpenPopup(false);

@@ -2287,11 +2287,8 @@ abbr[title] {
 .input-wrapper .input:focus::placeholder {
     color: #8f8f8f;
 }
-
-.text-success {
-    color: #03900b !important;
-}
-
-.text-warning {
-    color: #fda215 !important;
+.searchBox.tag_search:after {
+    height: 15px;
+    width: 15px;
+    left: 9px;
 }
