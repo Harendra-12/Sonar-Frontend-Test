@@ -469,5 +469,5 @@ list-group-item:first-child {
 }
 
 .text-muted {
-    color: var(--color-subtext);
+    color: var(--color-subtext) !important;
 }

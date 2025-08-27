@@ -359,7 +359,7 @@ const MessageBody = ({
                                       <img src={require("../../assets/images/tag.webp")} alt="tag" />
                                     </div>
                                     <p className="text-center">Add New Tag</p> */}
-                          <div className="searchBox position-relative">
+                          <div className="searchBox position-relative tag_search">
                             {/* <label>Search:</label> */}
                             <input
                               type="search"
