@@ -22,6 +22,7 @@ import { requiredValidator } from "../../../validations/validation";
 import ErrorMessage from "../../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../../Loader/CircularLoader";
 import Tippy from "@tippyjs/react";
+import EmptyPrompt from "../../../Loader/EmptyPrompt";
 
 function Leads() {
   const dispatch = useDispatch();
@@ -329,156 +330,170 @@ function Leads() {
                               </tr>
                             </thead>
                             <tbody>
-                              {leadsList?.data?.map((data, index) => {
-                                return (
-                                  <tr key={data.id}>
-                                    <td>{index + 1}</td>
-                                    <td>{data?.name}</td>
-                                    <td>{data?.description}</td>
-                                    <td style={{ textTransform: "capitalize" }}>
-                                      {data?.status}
-                                    </td>
-                                    <td>
-                                      {/* {data?.campaignlead?.length > 0 ?
+                              {leadsList?.data?.length > 0 ? (
+                                leadsList?.data?.map((data, index) => {
+                                  return (
+                                    <tr key={data.id}>
+                                      <td>{index + 1}</td>
+                                      <td>{data?.name}</td>
+                                      <td>{data?.description}</td>
+                                      <td
+                                        style={{ textTransform: "capitalize" }}
+                                      >
+                                        {data?.status}
+                                      </td>
+                                      <td>
+                                        {/* {data?.campaignlead?.length > 0 ?
                                                                                     <Tippy content={
                                                                                         
                                                                                     } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
                                                                                         <span className='formItem'>Assigned to {data?.campaignlead?.length} Campaign(s)</span>
                                                                                     </Tippy> : <span className='formItem'>Assign to Campaign</span>} */}
 
-                                      <div className="dropdown">
-                                        {campaign.length > 0 ? (
-                                          <button
-                                            className="formItem"
-                                            type="button"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="true"
-                                            data-bs-auto-close="outside"
-                                          >
-                                            Assign to Campaign
-                                          </button>
-                                        ) : (
-                                          "No Campaigns Available"
-                                        )}
-                                        <ul className="dropdown-menu light">
-                                          <li className="col-12">
-                                            <div className="dropdown-item fw-bold disabled bg-transparent">
-                                              Campaigns
-                                            </div>
-                                          </li>
-                                          <div style={{ columnCount: 1 }}>
-                                            {campaign?.map((camp, index) => {
-                                              const isChecked =
-                                                data.campaignlead.some(
-                                                  (campId) =>
-                                                    campId.campaign_id ===
-                                                    camp.id
-                                                );
-                                              return (
-                                                <li key={camp.id}>
-                                                  <div className="dropdown-item d-flex">
-                                                    <div className="my-auto position-relative mx-1">
-                                                      <div className="cl-toggle-switch">
-                                                        <label className="cl-switch">
-                                                          <input
-                                                            type="checkbox"
-                                                            id="showAllCheck"
-                                                            checked={isChecked}
-                                                            onChange={() =>
-                                                              isChecked
-                                                                ? removeLeadFileFromCampaign(
-                                                                    data.campaignlead.find(
-                                                                      (
-                                                                        campId
-                                                                      ) =>
-                                                                        campId.campaign_id ===
-                                                                        camp.id
-                                                                    ).id
-                                                                  )
-                                                                : assignLeadFileToCampaign(
-                                                                    data.id,
-                                                                    camp.id
-                                                                  )
-                                                            }
-                                                          />
-                                                          <span></span>
-                                                        </label>
+                                        <div className="dropdown">
+                                          {campaign.length > 0 ? (
+                                            <button
+                                              className="formItem"
+                                              type="button"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="true"
+                                              data-bs-auto-close="outside"
+                                            >
+                                              Assign to Campaign
+                                            </button>
+                                          ) : (
+                                            "No Campaigns Available"
+                                          )}
+                                          <ul className="dropdown-menu light">
+                                            <li className="col-12">
+                                              <div className="dropdown-item fw-bold disabled bg-transparent">
+                                                Campaigns
+                                              </div>
+                                            </li>
+                                            <div style={{ columnCount: 1 }}>
+                                              {campaign?.map((camp, index) => {
+                                                const isChecked =
+                                                  data.campaignlead.some(
+                                                    (campId) =>
+                                                      campId.campaign_id ===
+                                                      camp.id
+                                                  );
+                                                return (
+                                                  <li key={camp.id}>
+                                                    <div className="dropdown-item d-flex">
+                                                      <div className="my-auto position-relative mx-1">
+                                                        <div className="cl-toggle-switch">
+                                                          <label className="cl-switch">
+                                                            <input
+                                                              type="checkbox"
+                                                              id="showAllCheck"
+                                                              checked={
+                                                                isChecked
+                                                              }
+                                                              onChange={() =>
+                                                                isChecked
+                                                                  ? removeLeadFileFromCampaign(
+                                                                      data.campaignlead.find(
+                                                                        (
+                                                                          campId
+                                                                        ) =>
+                                                                          campId.campaign_id ===
+                                                                          camp.id
+                                                                      ).id
+                                                                    )
+                                                                  : assignLeadFileToCampaign(
+                                                                      data.id,
+                                                                      camp.id
+                                                                    )
+                                                              }
+                                                            />
+                                                            <span></span>
+                                                          </label>
+                                                        </div>
+                                                      </div>
+                                                      <div className="ms-2">
+                                                        {camp?.title}
                                                       </div>
                                                     </div>
-                                                    <div className="ms-2">
-                                                      {camp?.title}
-                                                    </div>
-                                                  </div>
-                                                </li>
-                                              );
-                                            })}
-                                          </div>
-                                        </ul>
-                                      </div>
-                                    </td>
-                                    <td>{data?.lead_rows_count}</td>
-                                    <td>
-                                      <button
-                                        className="tableButton edit mx-auto"
-                                        onClick={() =>
-                                          navigate("/lead-view", {
-                                            state: data,
-                                          })
-                                        }
-                                      >
-                                        <i className="fa-solid fa-eye"></i>
-                                      </button>
-                                    </td>
-                                    <td>
-                                      <button
-                                        className="tableButton mx-auto"
-                                        onClick={() =>
-                                          downloadImage(
-                                            data.file_url,
-                                            `${data.description}`
-                                          )
-                                        }
-                                      >
-                                        <i className="fa-regular fa-download"></i>
-                                      </button>
-                                    </td>
-                                    {checkViewSidebar(
-                                      "Lead",
-                                      slugPermissions,
-                                      account?.sectionPermissions,
-                                      account?.permissions,
-                                      "edit"
-                                    ) && (
+                                                  </li>
+                                                );
+                                              })}
+                                            </div>
+                                          </ul>
+                                        </div>
+                                      </td>
+                                      <td>{data?.lead_rows_count}</td>
                                       <td>
                                         <button
                                           className="tableButton edit mx-auto"
-                                          onClick={() => handleEditConfig(data)}
-                                        >
-                                          <i className="fa-solid fa-pen"></i>
-                                        </button>
-                                      </td>
-                                    )}
-                                    {checkViewSidebar(
-                                      "Lead",
-                                      slugPermissions,
-                                      account?.sectionPermissions,
-                                      account?.permissions,
-                                      "delete"
-                                    ) && (
-                                      <td>
-                                        <button
-                                          className="tableButton delete mx-auto"
                                           onClick={() =>
-                                            handleDeleteConfig(data.id)
+                                            navigate("/lead-view", {
+                                              state: data,
+                                            })
                                           }
                                         >
-                                          <i className="fa-solid fa-trash"></i>
+                                          <i className="fa-solid fa-eye"></i>
                                         </button>
                                       </td>
-                                    )}
-                                  </tr>
-                                );
-                              })}
+                                      <td>
+                                        <button
+                                          className="tableButton mx-auto"
+                                          onClick={() =>
+                                            downloadImage(
+                                              data.file_url,
+                                              `${data.description}`
+                                            )
+                                          }
+                                        >
+                                          <i className="fa-regular fa-download"></i>
+                                        </button>
+                                      </td>
+                                      {checkViewSidebar(
+                                        "Lead",
+                                        slugPermissions,
+                                        account?.sectionPermissions,
+                                        account?.permissions,
+                                        "edit"
+                                      ) && (
+                                        <td>
+                                          <button
+                                            className="tableButton edit mx-auto"
+                                            onClick={() =>
+                                              handleEditConfig(data)
+                                            }
+                                          >
+                                            <i className="fa-solid fa-pen"></i>
+                                          </button>
+                                        </td>
+                                      )}
+                                      {checkViewSidebar(
+                                        "Lead",
+                                        slugPermissions,
+                                        account?.sectionPermissions,
+                                        account?.permissions,
+                                        "delete"
+                                      ) && (
+                                        <td>
+                                          <button
+                                            className="tableButton delete mx-auto"
+                                            onClick={() =>
+                                              handleDeleteConfig(data.id)
+                                            }
+                                          >
+                                            <i className="fa-solid fa-trash"></i>
+                                          </button>
+                                        </td>
+                                      )}
+                                    </tr>
+                                  );
+                                })
+                              ) : (
+                                <tr>
+                                  <td colSpan={99} className="text-center">
+                                    <EmptyPrompt name="Leads" link="lead-add" />
+                                  </td>
+                                </tr>
+                              )}
                             </tbody>
                           </table>
                         )

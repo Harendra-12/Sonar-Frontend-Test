@@ -926,6 +926,8 @@ const MessageBody = ({
                                                       .split(/\s+/)
                                                       .filter(Boolean).length;
 
+                                                    setEditedValue(value); // Always update the edited value first
+
                                                     if (value.trim() === "") {
                                                       setMessageInput(
                                                         (prev) => {
@@ -970,9 +972,7 @@ const MessageBody = ({
                                                         isTypingRef.current = false;
                                                       }, 5000);
 
-                                                    if (wordCount <= 7000) {
-                                                      setEditedValue(value);
-                                                    } else {
+                                                    if (wordCount > 7000) {
                                                       toast.warn(
                                                         "Text is too long!"
                                                       );
