@@ -1881,10 +1881,17 @@ const MessageBody = ({
                                           className="dropdown-item text-danger"
                                           onClick={() =>
                                             handleremoveUserFromGroup(
-                                              item.agentId,
+                                              recipient[1],
                                               setNewGroupLoader,
                                               setSelectedgroupUsers,
-                                              selectedgroupUsers
+                                              selectedgroupUsers,
+                                              { id: item?.id },
+                                              setGroupLeavePopUp,
+                                              setRecipient,
+                                              setGroupRefresh,
+                                              groupRefresh,
+                                              false,
+                                              setManageGroupChat
                                             )
                                           }
                                         >

@@ -1187,19 +1187,32 @@ export const handleremoveUserFromGroup = async (
   setNewGroupLoader,
   setSelectedgroupUsers,
   selectedgroupUsers,
-  account
+  account,
+  setGroupLeavePopUp,
+  setRecipient,
+  setGroupRefresh,
+  groupRefresh,
+  toLeaveGroup,
+  setManageGroupChat
 ) => {
   setNewGroupLoader(true);
   const apiData = await generalGetFunction(
     api_url?.REMOVE_USER_FROM_GROUP_URL(id, account?.id)
   );
-  
+
   if (apiData?.status) {
     toast.success(apiData?.message);
     setSelectedgroupUsers(selectedgroupUsers?.filter((item) => item.id !== id));
     setNewGroupLoader(false);
+    setGroupLeavePopUp(false);
+    if (toLeaveGroup) {
+      setRecipient([]);
+      setManageGroupChat(false)
+    }
+    setGroupRefresh(groupRefresh + 1);
   } else {
     setNewGroupLoader(false);
+    setGroupLeavePopUp(false);
   }
 };
 

@@ -227,7 +227,11 @@ function Messages({
     if (isUpdatedClicked?.message_type === "image") {
       setFileUpload(true);
       setFileType("image");
-    } else if (isUpdatedClicked?.message_type === "file" || isUpdatedClicked?.message_type === "video" || isUpdatedClicked?.message_type === "audio") {
+    } else if (
+      isUpdatedClicked?.message_type === "file" ||
+      isUpdatedClicked?.message_type === "video" ||
+      isUpdatedClicked?.message_type === "audio"
+    ) {
       setFileUpload(true);
       setFileType("all");
     }
@@ -657,7 +661,7 @@ function Messages({
                     time,
                     user_id: agentDetails?.id,
                     user_name: agentDetails?.username,
-                    profile_picture: account?.profile_picture
+                    profile_picture: account?.profile_picture,
                   };
                 }
                 return msg;
@@ -665,10 +669,9 @@ function Messages({
 
               return {
                 ...prevState,
-                [recipient[1]]: updatedMessages
+                [recipient[1]]: updatedMessages,
               };
             });
-
           } else {
             setAllMessage((prevState) => ({
               ...prevState,
@@ -687,7 +690,6 @@ function Messages({
               ],
             }));
           }
-
 
           // Play music when message is received
 
@@ -1167,7 +1169,7 @@ function Messages({
       ActionType,
       dispatch,
       account
-    )
+    );
   }, [groupMessage]);
 
   // Send SMS Function
@@ -1421,6 +1423,7 @@ function Messages({
                 isSingleCallMessageOpened={isSingleCallMessageOpened}
                 typingDetailState={typingDetailState}
                 groupsList={groupsList}
+                setAddMember={setAddMember}
               />
               <MessageBody
                 recipient={recipient}
@@ -1687,11 +1690,14 @@ function Messages({
                               setNewGroupLoader,
                               setSelectedgroupUsers,
                               selectedgroupUsers,
-                              account
+                              account,
+                              setGroupLeavePopUp,
+                              setRecipient,
+                              setGroupRefresh,
+                              groupRefresh,
+                              true,
+                              setManageGroupChat
                             );
-                            setGroupLeavePopUp(false);
-                            setRecipient([]);
-                            setGroupRefresh(groupRefresh + 1);
                           }}
                         >
                           <span className="text">Confirm</span>

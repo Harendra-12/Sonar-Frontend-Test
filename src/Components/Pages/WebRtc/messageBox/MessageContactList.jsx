@@ -79,7 +79,8 @@ const MessageContactList = ({
     isGroupCallMessageOpened,
     isSingleCallMessageOpened,
     typingDetailState,
-    groupsList
+    groupsList,
+    setAddMember
 }) => {
     const dispatch = useDispatch()
     const messageRecipient = useSelector((state) => state.messageRecipient)
@@ -137,6 +138,7 @@ const MessageContactList = ({
         setManageGroupChat(false);
         setAllMessage([]);
         setIsTyping(false)
+        
 
     }
 
@@ -198,6 +200,7 @@ const MessageContactList = ({
         });
         setAllMessage([]);
         setIsTyping(false)
+        setAddMember(false)
     }
 
     useEffect(() => {
