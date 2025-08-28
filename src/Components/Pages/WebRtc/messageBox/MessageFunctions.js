@@ -681,7 +681,7 @@ export const getAllInternalCallsHistory = async (
       setOriginalInternalCallHistory((prev) => {
         const existingIds = new Set(prev.map((item) => item.id));
 
-        const newItems = sortedArr.filter((item) => !existingIds.has(item.id));
+        const newItems = sortedArr?.filter((item) => !existingIds.has(item.id));
 
         return [...prev, ...newItems];
       });
@@ -689,7 +689,7 @@ export const getAllInternalCallsHistory = async (
       setInternalCallHistory((prev) => {
         const existingIds = new Set(prev.map((item) => item.id));
 
-        const newItems = sortedArr.filter((item) => !existingIds.has(item.id));
+        const newItems = sortedArr?.filter((item) => !existingIds.has(item.id));
 
         return [...prev, ...newItems];
       });
@@ -1159,7 +1159,7 @@ export const handleremoveUserFromGroup = async (
   const apiData = await generalGetFunction(
     api_url?.REMOVE_USER_FROM_GROUP_URL(id, account?.id)
   );
-  debugger;
+  
   if (apiData?.status) {
     toast.success(apiData?.message);
     setSelectedgroupUsers(selectedgroupUsers?.filter((item) => item.id !== id));
