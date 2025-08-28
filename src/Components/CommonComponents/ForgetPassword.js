@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from "react";
-import GoogleTranslate from "./GoogleTranslate";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { generalPostFunction } from "../GlobalFunction/globalFunction";
+import {
+  generalGetFunction,
+  generalPostFunction,
+  otpVefity,
+} from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import CircularLoader from "../Loader/CircularLoader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [currentStep, setCurrentStep] = useState("email"); // 'email' or 'otp'
   const [isLoading, setIsLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
-  const account = useSelector((state) => state.account);
-  const userCountry = localStorage.getItem("userCountry");
-  const userLanguage = localStorage.getItem("userLanguage");
   const [languageChangePopup, setLanguageChangePopup] = useState(false);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
   const handleLanguageChange = () => {
     if (!languageChangePopup) {
@@ -46,10 +49,7 @@ const ForgetPassword = () => {
 
     try {
       const apiData = await handleSendOtp(email);
-      //   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // If API is successful, move to OTP step
-      //   setCurrentStep("otp");
       if (apiData?.status) {
         setCurrentStep("otp");
       }
@@ -61,7 +61,7 @@ const ForgetPassword = () => {
   };
 
   const handleOtpChange = (index, value) => {
-    if (value.length > 1) return; // Prevent multiple characters
+    if (value.length > 1) return;
 
     const newOtp = [...otp];
     newOtp[index] = value;
@@ -94,40 +94,100 @@ const ForgetPassword = () => {
     setIsLoading(true);
 
     try {
-      // Simulate OTP verification API call
-      //   await new Promise((resolve) => setTimeout(resolve, 2000));
-      const apiData = await generalPostFunction("/verifyOTP", {
-        email: email,
-        otp: otpValue,
-      });
-      if (apiData?.status) {
-        localStorage.setItem("token", apiData?.token);
-        // const token = localStorage.getItem("token");
-        const token = apiData?.token;
-        if (token && account) {
-          if (account?.user_role?.roles?.name === "Agent") {
-            navigate("/webrtc");
-          } else if (
-            account?.user_role?.roles?.name.toLowerCase() === "employee"
-          ) {
-            navigate("/messages");
-          } else {
-            if (userCountry == "AE" && userLanguage !== "ar") {
-              handleLanguageChange();
+      const data = await otpVefity(email, otpValue);
+
+      if (data.status) {
+        localStorage.setItem("token", data?.token);
+        dispatch({
+          type: "SET_PERMISSION_REFRESH",
+          permissionRefresh: permissionRefresh + 1,
+        });
+        const profile = await generalGetFunction("/user");
+
+        if (profile?.status) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: profile.data,
+          });
+
+          localStorage.setItem("account", JSON.stringify(profile.data));
+          const accountData = await generalGetFunction(
+            `/account/${profile.data.account_id}`
+          );
+          if (accountData?.status) {
+            dispatch({
+              type: "SET_ACCOUNTDETAILS",
+              accountDetails: accountData.data,
+            });
+            localStorage.setItem(
+              "accountDetails",
+              JSON.stringify(accountData.data)
+            );
+            if (Number(accountData.data.company_status) < 6) {
+              dispatch({
+                type: "SET_BILLINGLISTREFRESH",
+                billingListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_CARDLISTREFRESH",
+                cardListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: accountData.data,
+              });
+              localStorage.setItem(
+                "tempAccount",
+                JSON.stringify(accountData.data)
+              );
+              // setLoading(false);
+              window.scrollTo(0, 0);
+              navigate("/temporary-dashboard");
             } else {
-              navigate("/dashboard");
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: null,
+              });
+              // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
+              if (profile.data.user_role?.roles?.name === "Agent") {
+                if (profile.data.extension_id === null) {
+                  toast.error("You are not assigned to any extension");
+                  // setLoading(false);
+                } else {
+                  // setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/webrtc");
+                }
+              } else if (
+                profile.data.user_role?.roles?.name.toLowerCase() === "employee"
+              ) {
+                // setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/messages");
+              } else {
+                // setLoading(false);
+                window.scrollTo(0, 0);
+                // navigate("/dashboard");
+                // if (country == "AE") {
+                //   setLanguageChangePopup(true);
+                // } else {
+                //   navigate("/dashboard");
+                // }
+                navigate("/reset-password");
+              }
             }
+          } else {
+            // setLoading(false);
+            toast.error("Server error !");
           }
-        } else {
-          navigate("/");
         }
-        //   toast.success("Password reset successful! You will be redirected to login.");
+      } else {
+        // setLoading(false);
+        toast.error(data.response.data.message);
       }
-      //   console.log("OTP verified:", otpValue);
-      //   alert("Password reset successful! You will be redirected to login.");
     } catch (error) {
       console.error("Error verifying OTP:", error);
-      alert("Invalid OTP. Please try again.");
+      toast.error("Invalid OTP. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -169,7 +229,6 @@ const ForgetPassword = () => {
                   {/* Email Step */}
                   {currentStep === "email" && (
                     <>
-                      {/* Illustration */}
                       <div className="text-center mb-4">
                         <div className="forgot-password-illustration">
                           <i className="fas fa-key illustration-icon"></i>
@@ -177,7 +236,6 @@ const ForgetPassword = () => {
                         </div>
                       </div>
 
-                      {/* Title and Description */}
                       <div className="text-center mb-4">
                         <h3 className="fw-bold mb-3 forgot-title">
                           Forgot your password?
@@ -247,7 +305,6 @@ const ForgetPassword = () => {
                   {/* OTP Step */}
                   {currentStep === "otp" && (
                     <>
-                      {/* Success Message */}
                       <div className="alert alert-success border-0 mb-4 success-alert">
                         <div className="d-flex align-items-center">
                           <i
@@ -264,7 +321,6 @@ const ForgetPassword = () => {
                         </div>
                       </div>
 
-                      {/* OTP Illustration */}
                       <div className="text-center mb-4">
                         <div className="otp-illustration">
                           <i
@@ -274,7 +330,6 @@ const ForgetPassword = () => {
                         </div>
                       </div>
 
-                      {/* Title */}
                       <div className="text-center mb-4">
                         <h3 className="fw-bold mb-3 forgot-title">
                           Enter Verification Code
@@ -286,7 +341,6 @@ const ForgetPassword = () => {
 
                       {/* OTP Form */}
                       <form onSubmit={handleOtpSubmit}>
-                        {/* OTP Input Fields */}
                         <div className="mb-4">
                           <div className="otp-input-container d-flex justify-content-between">
                             {otp.map((digit, index) => (
@@ -308,7 +362,6 @@ const ForgetPassword = () => {
                           </div>
                         </div>
 
-                        {/* Resend OTP */}
                         <div className="text-center mb-4">
                           <span className="text-muted small">
                             Didn't receive the code?{" "}
@@ -323,7 +376,6 @@ const ForgetPassword = () => {
                           </button>
                         </div>
 
-                        {/* Submit Button */}
                         <div className="mb-4">
                           <button
                             type="submit"
@@ -341,7 +393,6 @@ const ForgetPassword = () => {
                           </button>
                         </div>
 
-                        {/* Back to Email */}
                         <div className="text-center">
                           <button
                             type="button"
@@ -357,7 +408,7 @@ const ForgetPassword = () => {
                   )}
 
                   {/* Footer */}
-                  <div className="text-center mt-5">
+                  {/* <div className="text-center mt-5">
                     <small className="text-muted">
                       <a
                         href="#"
@@ -369,7 +420,7 @@ const ForgetPassword = () => {
                         Privacy Policy
                       </a>
                     </small>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

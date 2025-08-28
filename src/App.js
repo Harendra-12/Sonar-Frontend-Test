@@ -211,6 +211,7 @@ import RecordingPage from "./Components/RecordingPage";
 import ErrorBoundary from "./ErrorBoundaryWithoutNavigate";
 import DashboardData from "./Components/GlobalFunction/DashboardData";
 import ForgetPassword from "./Components/CommonComponents/ForgetPassword";
+import ResetPassword from "./Components/CommonComponents/ResetPassword";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -379,6 +380,7 @@ function App() {
             />
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route
               path="/phone-dashboard"
               element={

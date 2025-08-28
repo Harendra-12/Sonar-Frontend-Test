@@ -197,6 +197,26 @@ export async function login(userName, password) {
     });
 }
 
+// verify OTP function
+export async function otpVefity(userEmail, otp) {
+  const parsedData = {
+    email: userEmail,
+    otp: otp,
+  };
+
+  return axios
+    .post(`${baseName}/verifyOTP`, parsedData)
+    .then((res) => {
+      const token = res.data.token;
+      localStorage.setItem("token", token);
+      setAuthToken(token);
+      return res.data;
+    })
+    .catch((error) => {
+      return error;
+    });
+}
+
 export async function generalGetFunction(endpoint) {
   // if(!token){
   //   return({
@@ -229,7 +249,7 @@ export async function generalGetFunction(endpoint) {
           sessionExpiredToastShown = true;
           toast.error(
             err?.response?.data?.message ||
-            "Session expired. Please login again."
+              "Session expired. Please login again."
           );
           // Optional: reset the flag after a delay (e.g., 5s)
           setTimeout(() => {
@@ -250,7 +270,6 @@ export async function generalGetFunction(endpoint) {
         } else {
           toast.error(err?.response?.data?.error);
         }
-
       } else {
         return err;
       }
