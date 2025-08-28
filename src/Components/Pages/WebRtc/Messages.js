@@ -588,6 +588,7 @@ function Messages({
             [from]: [
               ...(prevState[from] || []),
               {
+                ...incomingMessage,
                 from,
                 body,
                 time,
@@ -636,6 +637,7 @@ function Messages({
               [from]: [
                 ...(prevState[from] || []),
                 {
+                  ...incomingMessage,
                   from,
                   body,
                   time,
