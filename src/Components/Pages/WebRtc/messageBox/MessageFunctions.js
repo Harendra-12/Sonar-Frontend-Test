@@ -1207,7 +1207,7 @@ export const handleremoveUserFromGroup = async (
     setGroupLeavePopUp(false);
     if (toLeaveGroup) {
       setRecipient([]);
-      setManageGroupChat(false)
+      setManageGroupChat(false);
     }
     setGroupRefresh(groupRefresh + 1);
   } else {
@@ -1278,7 +1278,8 @@ export const handleDeleteGroup = async (
   setSelectedChat,
   setRecipient,
   setLoading,
-  groupRefresh
+  groupRefresh,
+  setManageGroupChat
 ) => {
   setLoading(true);
   const apiData = await generalDeleteFunction(api_url?.DELETE_GROUP_URL(id));
@@ -1288,6 +1289,7 @@ export const handleDeleteGroup = async (
     setSelectedChat("");
     setRecipient([]);
     setLoading(false);
+    setManageGroupChat(false);
   } else {
     setLoading(false);
     toast.error(apiData.message);

@@ -685,7 +685,8 @@ const MessageBody = ({
                                 setSelectedChat,
                                 setRecipient,
                                 setLoading,
-                                groupRefresh
+                                groupRefresh,
+                                setManageGroupChat
                               )
                             }
                           >
@@ -700,6 +701,7 @@ const MessageBody = ({
                           onClick={() => {
                             setRecipient([]);
                             setSelectedChat("");
+                            setManageGroupChat(false);
                           }}
                         >
                           Close this chat
