@@ -243,7 +243,8 @@ export async function generalGetFunction(endpoint) {
       } else if (err?.response?.status === 429) {
         toast.error("Too many attempts. Please wait before trying again.");
       } else if (err.response?.status >= 500) {
-        toast.error("Something went wrong. Please try again later.");
+        toast.error(err?.response?.data?.message);
+        return err
       } else if (err?.response?.status == 422) {
         if (err?.response?.data?.message) {
           toast.error(err?.response?.data?.message);
