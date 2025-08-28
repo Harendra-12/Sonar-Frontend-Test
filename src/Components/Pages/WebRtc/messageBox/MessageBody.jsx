@@ -701,7 +701,6 @@ const MessageBody = ({
                           onClick={() => {
                             setRecipient([]);
                             setSelectedChat("");
-                            setManageGroupChat(false);
                           }}
                         >
                           Close this chat
@@ -816,9 +815,7 @@ const MessageBody = ({
                                       isUpdatedClicked?.id != item?.id ? (
                                         <div className=" ms-3 ">
                                           <h6>
-                                            {item?.edit_status === 1 && (
-                                              <>Updated</>
-                                            )}
+                                            {item?.edit_status && <>edited</>}
                                             <span>
                                               {item.time
                                                 ?.split(" ")[1]
@@ -892,7 +889,12 @@ const MessageBody = ({
                                                       )
                                                     }
                                                   >
-                                                    Delete
+                                                    {recipient[2] ===
+                                                    "groupChat" ? (
+                                                      <>Delete for me</>
+                                                    ) : (
+                                                      <>Delete</>
+                                                    )}
                                                   </div>
                                                 </li>
                                               </ul>
@@ -928,7 +930,7 @@ const MessageBody = ({
                                                       .split(/\s+/)
                                                       .filter(Boolean).length;
 
-                                                    setEditedValue(value); // Always update the edited value first
+                                                    setEditedValue(value);
 
                                                     if (value.trim() === "") {
                                                       setMessageInput(
@@ -1111,60 +1113,42 @@ const MessageBody = ({
                                           ?.split(":")
                                           .slice(0, 2)
                                           .join(":")}
-                                      </span>
+                                      </span>{" "}
+                                      {item?.edit_status && <>edited</>}
                                     </h6>
-                                    <div
-                                      className={`message-text-container active-${item?.id}`}
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                      }}
-                                    >
-                                      <div className="videoSize">
-                                        <DisplayFile item={item.body} />
-                                        {/* <div className='pinBox'>
+                                    {item?.deleted_at == null ? (
+                                      <div
+                                        className={`message-text-container active-${item?.id}`}
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <div className="videoSize">
+                                          <DisplayFile item={item.body} />
+                                          {/* <div className='pinBox'>
                                                                                     <button className='roundPinButton' onClick={() => handlePinMessage(item, setAllMessage, allMessage, recipient, selectedChat)}>
                                                                                         <i className={`fas fa-thumbtack ${item?.is_pinned == 1 ? "text-danger" : ""}`}></i>
                                                                                     </button>
                                                                                 </div> */}
-                                      </div>
-                                      {/* TODO : FIX PIN UI */}
-                                      <div className="dropdown">
-                                        <button
-                                          className="clearButton2"
-                                          type="button"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        >
-                                          <i className="fa-solid fa-ellipsis-vertical"></i>
-                                        </button>
-                                        <ul className="dropdown-menu">
-                                          <li>
-                                            <div
-                                              className="dropdown-item"
-                                              href="#"
-                                              onClick={() =>
-                                                handlePinMessage(
-                                                  item,
-                                                  setAllMessage,
-                                                  allMessage,
-                                                  recipient,
-                                                  selectedChat
-                                                )
-                                              }
-                                            >
-                                              {item?.is_pinned == 1
-                                                ? "Unpin"
-                                                : "Pin"}
-                                            </div>
-                                          </li>
-                                          {selectedChat == "groupChat" && (
+                                        </div>
+                                        {/* TODO : FIX PIN UI */}
+                                        <div className="dropdown">
+                                          <button
+                                            className="clearButton2"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                          >
+                                            <i className="fa-solid fa-ellipsis-vertical"></i>
+                                          </button>
+                                          <ul className="dropdown-menu">
                                             <li>
                                               <div
                                                 className="dropdown-item"
                                                 href="#"
                                                 onClick={() =>
-                                                  handleDeleteMessage(
+                                                  handlePinMessage(
                                                     item,
                                                     setAllMessage,
                                                     allMessage,
@@ -1173,13 +1157,47 @@ const MessageBody = ({
                                                   )
                                                 }
                                               >
-                                                Delete
+                                                {item?.is_pinned == 1
+                                                  ? "Unpin"
+                                                  : "Pin"}
                                               </div>
                                             </li>
-                                          )}
-                                        </ul>
+                                            {selectedChat == "groupChat" && (
+                                              <li>
+                                                <div
+                                                  className="dropdown-item"
+                                                  href="#"
+                                                  onClick={() =>
+                                                    handleDeleteMessage(
+                                                      item,
+                                                      setAllMessage,
+                                                      allMessage,
+                                                      recipient,
+                                                      selectedChat
+                                                    )
+                                                  }
+                                                >
+                                                  {recipient[2] ===
+                                                  "groupChat" ? (
+                                                    <>Delete for me</>
+                                                  ) : (
+                                                    <>Delete</>
+                                                  )}
+                                                </div>
+                                              </li>
+                                            )}
+                                          </ul>
+                                        </div>
                                       </div>
-                                    </div>
+                                    ) : (
+                                      <div className=" ms-3 ">
+                                        {recipient[2] === "groupChat" ? (
+                                          <>Message deleted</>
+                                        ) : (
+                                          <>Message deleted</>
+                                        )}
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                               </div>
