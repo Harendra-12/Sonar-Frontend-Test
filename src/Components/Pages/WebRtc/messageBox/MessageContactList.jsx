@@ -75,6 +75,7 @@ const MessageContactList = ({
     setChatHistory,
     setPageLoader,
     setIsTyping,
+    socketSendPeerGroupCallMessage,
     isGroupCallMessageOpened,
     isSingleCallMessageOpened,
     typingDetailState,
@@ -933,6 +934,8 @@ const MessageContactList = ({
                             pageNumber={internalCallsPageNumber}
                             setPageNumber={setInternalCallsPageNumber}
                             rawData={rawInternalCallHistory}
+                            recipient={recipient}
+                            socketSendPeerGroupCallMessage={socketSendPeerGroupCallMessage}
                         />
                     </div>
                 ) : (
