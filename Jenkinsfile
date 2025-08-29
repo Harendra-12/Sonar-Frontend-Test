@@ -59,20 +59,24 @@ pipeline {
             }
         }
 
-        stage('Deploy to Web Server') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sshPublisher(publishers: [
-                        sshPublisherDesc(
-                            configName: "${WEB_SERVER_CONFIG}",
-                            transfers: [],
-                            execCommand: """
-                                echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin
-                                docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
-                                docker rm -f ${CONTAINER_NAME} || true
-                                docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
-                                docker image prune -f
-                            """
+stage('Deploy to Web Server') {
+    steps {
+        sshagent(credentials: ['ae6cf6e8-edfc-429b-8f0b-88121457d75a']) {
+            withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                sh """
+                    ssh -o StrictHostKeyChecking=no user@${WEB_SERVER_IP} '
+                        echo \$DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USER --password-stdin &&
+                        docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
+                        docker rm -f ${CONTAINER_NAME} || true &&
+                        docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
+                        docker image prune -f
+                    '
+                """
+            }
+        }
+    }
+}
+
                         )
                     ])
                 }
