@@ -16,7 +16,7 @@ pipeline {
 
         // ===== Remote Web Server =====
  		WEB_SERVER_CONFIG = 'ae6cf6e8-edfc-429b-8f0b-88121457d75a'
-        WEB_SERVER_IP     = '18.220.117.31'
+        WEB_SERVER_IP     = '10.0.24.129'
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
     }
@@ -65,7 +65,7 @@ stage('Deploy to Web Server') {
         sshagent(credentials: ['ae6cf6e8-edfc-429b-8f0b-88121457d75a']) {
             withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                 sh """
-                    ssh -o StrictHostKeyChecking=no user@${WEB_SERVER_IP} '
+                    ssh -o StrictHostKeyChecking=no admin@${WEB_SERVER_IP} '
                         echo \$DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USER --password-stdin &&
                         docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
                         docker rm -f ${CONTAINER_NAME} || true &&
