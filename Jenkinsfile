@@ -81,5 +81,9 @@ stage('Deploy to Web Server') {
 }
                 verbose: true
         
+	)
+        ])
+    }
+}
 	}
 }
