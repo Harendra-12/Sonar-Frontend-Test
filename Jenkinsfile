@@ -19,6 +19,8 @@ pipeline {
         WEB_SERVER_IP     = '10.0.24.129'
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
+        DOCKER_BUILDKIT = "1"
+
     }
 
     stages {
