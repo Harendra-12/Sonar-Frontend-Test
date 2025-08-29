@@ -4,7 +4,7 @@ pipeline {
     environment {
         // ===== GitHub =====
         GIT_REPO       = 'https://github.com/AngelPbx/UcaaS-Frontend.git'
-        GIT_BRANCH     = 'Jenkinsfile'
+        GIT_BRANCH     = 'DevOps-Testing'
         GIT_CREDENTIAL = 'aaf11c10-a58c-44a6-bf63-2bf01cc80f03'   // Jenkins Credential ID
 
         // ===== Docker Registry (Hub or ECR) =====
