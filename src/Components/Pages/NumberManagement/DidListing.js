@@ -20,6 +20,7 @@ import Tippy from "@tippyjs/react";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import ThreeDotedLoader from "../../Loader/ThreeDotedLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 
 function DidListing({ page }) {
   const [did, setDid] = useState();
@@ -713,8 +714,8 @@ function DidListing({ page }) {
                           </thead>
                           <tbody>
                             <>
-                              {did &&
-                                did.map((item) => {
+                              {did && did?.length > 0 ? (
+                                did?.map((item) => {
                                   return (
                                     <tr>
                                       <td style={{ cursor: "default" }}>
@@ -1287,7 +1288,14 @@ function DidListing({ page }) {
                                       )}
                                     </tr>
                                   );
-                                })}
+                                })
+                              ) : (
+                                <tr>
+                                  <td colSpan={99} className="text-center">
+                                    <EmptyPrompt name="All Number" />
+                                  </td>
+                                </tr>
+                              )}
                             </>
                           </tbody>
                         </table>

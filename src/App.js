@@ -210,6 +210,8 @@ import GoConferenceNotificationSocket from "./Components/GlobalFunction/GoConfer
 import RecordingPage from "./Components/RecordingPage";
 import ErrorBoundary from "./ErrorBoundaryWithoutNavigate";
 import DashboardData from "./Components/GlobalFunction/DashboardData";
+import ForgetPassword from "./Components/CommonComponents/ForgetPassword";
+import ResetPassword from "./Components/CommonComponents/ResetPassword";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -241,7 +243,7 @@ function App() {
   const slugPermissions = useSelector((state) => state?.permissions);
   // const { sendMessage } = Socket();
   // Socket();
-  const { sendMessage } = GoMessageSocket()
+  const { sendMessage } = GoMessageSocket();
   GoConferenceNotificationSocket();
   GoSocket();
   GoSocketActiveCall();
@@ -282,6 +284,7 @@ function App() {
         {/* <MissedCallPopup /> */}
         <ErrorBoundary>
           <Routes>
+            <Route path="/forget-password" element={<ForgetPassword />} />
             <Route path="/layout" element={<RecordingPage />} />
             <Route path="/click-to-call" element={<ClickToCall />} />
             <Route path="/call-flow" element={<Reactflow />} />
@@ -292,39 +295,54 @@ function App() {
             <Route path="/messages" element={<Messages />} />
             <Route path="/ai-dashboard" element={<AIDashboard />} />
             <Route path="/ai-search-cdr" element={<AICDRSearch />} />
-            <Route path="/meeting-room" element={
-              checkViewSidebar(
-                "Conference",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <Meeting /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/meeting-add" element={
-              checkViewSidebar(
-                "Conference",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ?
-                <MeetingAdd /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/meeting-edit" element={
-              checkViewSidebar(
-                "Conference",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "edit"
-              ) ?
-                <MeetingEdit /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/meeting-room"
+              element={
+                checkViewSidebar(
+                  "Conference",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <Meeting />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/meeting-add"
+              element={
+                checkViewSidebar(
+                  "Conference",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ? (
+                  <MeetingAdd />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/meeting-edit"
+              element={
+                checkViewSidebar(
+                  "Conference",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
+                ) ? (
+                  <MeetingEdit />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/temporary-dashboard" element={<TempDashboard />} />
             <Route
@@ -336,9 +354,11 @@ function App() {
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ?
+                ) ? (
                   <AgentDispositionManage />
-                  : <Navigate to="/dashboard" replace />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
               }
             />
 
@@ -360,39 +380,55 @@ function App() {
             />
             <Route path="/master" element={<Master />} />
             <Route path="/change-password" element={<ChangePassword />} />
-            <Route path="/phone-dashboard" element={
-              checkViewSidebar(
-                "phoneDashboard",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <PhoneDashboard /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/active-calls" element={
-              checkViewSidebar(
-                "ActiveCall",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <ActiveCallsPage /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/custom-dashboard" element={
-              checkViewSidebar(
-                "CustomDashboard",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <CustomDashboardPage /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/phone-dashboard"
+              element={
+                checkViewSidebar(
+                  "phoneDashboard",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <PhoneDashboard />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/active-calls"
+              element={
+                checkViewSidebar(
+                  "ActiveCall",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <ActiveCallsPage />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/custom-dashboard"
+              element={
+                checkViewSidebar(
+                  "CustomDashboard",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <CustomDashboardPage />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             <Route
               path="/custom-module"
               element={
@@ -466,7 +502,8 @@ function App() {
               element={
                 accountDetails?.add_on_subscription?.find(
                   (item) => item?.addon_id == 6
-                ) && (checkViewSidebar(
+                ) &&
+                (checkViewSidebar(
                   "AccessControl",
                   slugPermissions,
                   account?.sectionPermissions,
@@ -492,20 +529,20 @@ function App() {
                 accountDetails?.add_on_subscription?.find(
                   (item) => item?.addon_id == 7
                 ) &&
-                  (checkViewSidebar(
-                    "AccessControl",
+                (checkViewSidebar(
+                  "AccessControl",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ||
+                  checkViewSidebar(
+                    "AccessControlNode",
                     slugPermissions,
                     account?.sectionPermissions,
                     account?.permissions,
                     "add"
-                  ) ||
-                    checkViewSidebar(
-                      "AccessControlNode",
-                      slugPermissions,
-                      account?.sectionPermissions,
-                      account?.permissions,
-                      "add"
-                    )) ? (
+                  )) ? (
                   <AccessControlAdd />
                 ) : (
                   <Navigate to="/dashboard" replace />
@@ -517,7 +554,8 @@ function App() {
               element={
                 accountDetails?.add_on_subscription?.find(
                   (item) => item?.addon_id == 6
-                ) && (checkViewSidebar(
+                ) &&
+                (checkViewSidebar(
                   "AccessControl",
                   slugPermissions,
                   account?.sectionPermissions,
@@ -657,17 +695,22 @@ function App() {
                 )
               }
             />
-            <Route path="/users-config" element={
-              checkViewSidebar(
-                "User",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "edit"
-              ) ?
-                <UserConfiguration /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/users-config"
+              element={
+                checkViewSidebar(
+                  "User",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
+                ) ? (
+                  <UserConfiguration />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* Users Path End */}
 
             {/* Extensions Path Start */}
@@ -723,77 +766,107 @@ function App() {
             {/* Extensions Path End */}
 
             {/*Agents path */}
-            <Route path="/agents" element={
-              checkViewSidebar(
-                "User",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <AgentsPbx /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/agents-dialer" element={
-              checkViewSidebar(
-                "User",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <AgentsDialer /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/agents-edit" element={
-              checkViewSidebar(
-                "User",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "edit"
-              ) ?
-                <AgentsEdits /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/agents-edit-dialer" element={
-              checkViewSidebar(
-                "User",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "edit"
-              ) ?
-                <AgentsEdits /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/agents-add" element={
-              checkViewSidebar(
-                "User",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ?
-                <AgentsAdd /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/agents"
+              element={
+                checkViewSidebar(
+                  "User",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <AgentsPbx />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/agents-dialer"
+              element={
+                checkViewSidebar(
+                  "User",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <AgentsDialer />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/agents-edit"
+              element={
+                checkViewSidebar(
+                  "User",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
+                ) ? (
+                  <AgentsEdits />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/agents-edit-dialer"
+              element={
+                checkViewSidebar(
+                  "User",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
+                ) ? (
+                  <AgentsEdits />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/agents-add"
+              element={
+                checkViewSidebar(
+                  "User",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ? (
+                  <AgentsAdd />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             <Route path="/meeting-reports" element={<MeetingReports />} />
             <Route path="/agent-dashboard" element={<AgentDashboard />} />
             {/*Agents path */}
 
             {/* Rate Card Path */}
-            <Route path="/rate-card" element={
-              checkViewSidebar(
-                "Ratecard",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <RateCardView /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/rate-card"
+              element={
+                checkViewSidebar(
+                  "Ratecard",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <RateCardView />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             <Route
               path="/global-permission-config"
               element={<PermissionConfigForUser />}
@@ -812,32 +885,45 @@ function App() {
 
             {/* Settings Path */}
             <Route path="/fax-settings" element={<FaxSettings />} />
-            <Route path="/call-recording-settings" element={<CallRecording />} />
+            <Route
+              path="/call-recording-settings"
+              element={<CallRecording />}
+            />
             {/* Settings Path */}
 
             {/* Voice path start */}
-            <Route path="/voicemail-report" element={
-              checkViewSidebar(
-                "VoicemailRecording",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <VoiceMailReport /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/voice-music" element={
-              checkViewSidebar(
-                "Sound",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <Music /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/voicemail-report"
+              element={
+                checkViewSidebar(
+                  "VoicemailRecording",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <VoiceMailReport />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/voice-music"
+              element={
+                checkViewSidebar(
+                  "Sound",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <Music />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* Voice path End */}
 
             {/* Dialplan path start */}
@@ -912,16 +998,16 @@ function App() {
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ?
-                  <CdrFilterReport page="ringgroup" /> :
+                ) ? (
+                  <CdrFilterReport page="ringgroup" />
+                ) : (
                   <Navigate to="/dashboard" replace />
+                )
               }
             />
             <Route
               path="/click-to-call-report"
-              element={
-                <ClickToCallReport />
-              }
+              element={<ClickToCallReport />}
             />
             <Route
               path="/call-center-report"
@@ -932,9 +1018,11 @@ function App() {
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ?
-                  <CdrFilterReport page="callcenter" /> :
+                ) ? (
+                  <CdrFilterReport page="callcenter" />
+                ) : (
                   <Navigate to="/dashboard" replace />
+                )
               }
             />
             <Route
@@ -946,9 +1034,11 @@ function App() {
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ?
-                  <CdrFilterReport page="billing" /> :
+                ) ? (
+                  <CdrFilterReport page="billing" />
+                ) : (
                   <Navigate to="/dashboard" replace />
+                )
               }
             />
             <Route
@@ -982,62 +1072,87 @@ function App() {
             {/* <Route path="/rate-card" element={<RateCharge />} /> */}
             <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
             <Route path="/get-did" element={<GetDid />} />
-            <Route path="/did-listing-pbx" element={
-              checkViewSidebar(
-                "DidDetail",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <DidListing page="pbx" /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/did-listing" element={
-              checkViewSidebar(
-                "DidDetail",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <DidListing page="number" /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/did-listing-dialer" element={
-              checkViewSidebar(
-                "DidDetail",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <DidListing page="dialer" /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/did-listing-pbx"
+              element={
+                checkViewSidebar(
+                  "DidDetail",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <DidListing page="pbx" />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/did-listing"
+              element={
+                checkViewSidebar(
+                  "DidDetail",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <DidListing page="number" />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/did-listing-dialer"
+              element={
+                checkViewSidebar(
+                  "DidDetail",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <DidListing page="dialer" />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
 
-            <Route path="/did-config" element={
-              checkViewSidebar(
-                "DidConfigure",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <DidConfig /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/management-get-did" element={
-              checkViewSidebar(
-                "DidDetail",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ?
-                <NewGetDid /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/did-config"
+              element={
+                checkViewSidebar(
+                  "DidConfigure",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <DidConfig />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/management-get-did"
+              element={
+                checkViewSidebar(
+                  "DidDetail",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ? (
+                  <NewGetDid />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* <Route path="/add-number" element={<AddNumber />} /> */}
             <Route
               path="/port-number"
@@ -1087,25 +1202,39 @@ function App() {
                 )
               }
             />
-            <Route path="/did-add" element={
-              checkViewSidebar(
-                "DidDetail",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ?
-                <DidListingAdd /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/did-add"
+              element={
+                checkViewSidebar(
+                  "DidDetail",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ? (
+                  <DidListingAdd />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
 
-            <Route path="/number-compliances" element={<NumberCompliancesHome />} />
-            <Route path="/number-compliances/:country" element={<AlgeriaCompliance />} />
+            <Route
+              path="/number-compliances"
+              element={<NumberCompliancesHome />}
+            />
+            <Route
+              path="/number-compliances/:country"
+              element={<AlgeriaCompliance />}
+            />
 
             {/* Number Management Path End */}
 
             {/* Payment path start */}
-            <Route path="/add-payment-gateway" element={<PaymentGatewayAdd />} />
+            <Route
+              path="/add-payment-gateway"
+              element={<PaymentGatewayAdd />}
+            />
             <Route path="/payment-gateway" element={<PaymentGateway />} />
             <Route
               path="/payment-gateway-edit"
@@ -1203,13 +1332,13 @@ function App() {
                   account?.permissions,
                   "browse"
                 ) &&
-                  checkViewSidebar(
-                    "BillingAddress",
-                    slugPermissions,
-                    account?.sectionPermissions,
-                    account?.permissions,
-                    "browse"
-                  ) ? (
+                checkViewSidebar(
+                  "BillingAddress",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
                   <CardAndBilling />
                 ) : (
                   <Navigate to="/dashboard" replace />
@@ -1227,15 +1356,18 @@ function App() {
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) && checkViewSidebar(
+                ) &&
+                checkViewSidebar(
                   "Payment",
                   slugPermissions,
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ?
-                  <BillingCardAndWallet /> :
+                ) ? (
+                  <BillingCardAndWallet />
+                ) : (
                   <Navigate to="/dashboard" replace />
+                )
               }
             />
             <Route
@@ -1283,9 +1415,11 @@ function App() {
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ?
-                  <PackageAndSubscriptionDetails /> :
+                ) ? (
+                  <PackageAndSubscriptionDetails />
+                ) : (
                   <Navigate to="/dashboard" replace />
+                )
               }
             />
             {/* Billing Pages End */}
@@ -1375,21 +1509,29 @@ function App() {
                 )
               }
             />
-            <Route path="/ivr-options" element={
-              checkViewSidebar(
-                "IvrOptions",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <IvrOptions /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/ivr-options"
+              element={
+                checkViewSidebar(
+                  "IvrOptions",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <IvrOptions />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* Ivr Page End */}
 
             {/* Device Provisioning Start */}
-            <Route path="/device-provisioning" element={<DeviceProvisioning />} />
+            <Route
+              path="/device-provisioning"
+              element={<DeviceProvisioning />}
+            />
             <Route
               path="/device-provisioning-add"
               element={<DeviceProvisioningAdd />}
@@ -1405,44 +1547,59 @@ function App() {
             <Route path="/all-devices" element={<AvailableDeviceList />} />
             {/* Device Profisioning End  */}
             {/* Spam Filter start */}
-            <Route path="/call-blocking" element={
-              checkViewSidebar(
-                "Spam",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <CallBlocking /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/call-blocking-add" element={
-              checkViewSidebar(
-                "Spam",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ?
-                <CallBlockingAdd /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/call-blocking"
+              element={
+                checkViewSidebar(
+                  "Spam",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <CallBlocking />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/call-blocking-add"
+              element={
+                checkViewSidebar(
+                  "Spam",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ? (
+                  <CallBlockingAdd />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* Spam Filter end */}
 
-            <Route path="click-to-call-edit" element={
-              accountDetails?.add_on_subscription?.find(
-                (item) => item?.addon_id == 2
-              ) &&
+            <Route
+              path="click-to-call-edit"
+              element={
+                accountDetails?.add_on_subscription?.find(
+                  (item) => item?.addon_id == 2
+                ) &&
                 checkViewSidebar(
                   "Clicktocall",
                   slugPermissions,
                   account?.sectionPermissions,
                   account?.permissions,
                   "edit"
-                ) ?
-                <ClickToCallEdit /> :
-                <Navigate to="/dashboard" replace />
-            } />
+                ) ? (
+                  <ClickToCallEdit />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
 
             <Route
               path="click-to-call-listing"
@@ -1450,81 +1607,108 @@ function App() {
                 accountDetails?.add_on_subscription?.find(
                   (item) => item?.addon_id == 2
                 ) &&
-                  checkViewSidebar(
-                    "Clicktocall",
-                    slugPermissions,
-                    account?.sectionPermissions,
-                    account?.permissions,
-                    "browse"
-                  ) ?
-                  <ClickToCallListing /> :
+                checkViewSidebar(
+                  "Clicktocall",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <ClickToCallListing />
+                ) : (
                   <Navigate to="/dashboard" replace />
+                )
               }
             />
-            <Route path="click-to-call-add" element={
-              accountDetails?.add_on_subscription?.find(
-                (item) => item?.addon_id == 2
-              ) &&
+            <Route
+              path="click-to-call-add"
+              element={
+                accountDetails?.add_on_subscription?.find(
+                  (item) => item?.addon_id == 2
+                ) &&
                 checkViewSidebar(
                   "Clicktocall",
                   slugPermissions,
                   account?.sectionPermissions,
                   account?.permissions,
                   "add"
-                ) ?
-                <ClickToCallSetup /> :
-                <Navigate to="/dashboard" replace />
-            } />
+                ) ? (
+                  <ClickToCallSetup />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
 
             {/* Dialer Modules */}
 
-            <Route path="/dialer-dashboard" element={
-              checkViewSidebar(
-                "Dashboard",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <DialerDashboard /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/dialer-dashboard"
+              element={
+                checkViewSidebar(
+                  "Dashboard",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <DialerDashboard />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             <Route path="/call-desposition" element={<CallDesposition />} />
 
             {/* ------ Leads */}
-            <Route path="/leads" element={
-              checkViewSidebar(
-                "Lead",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <Leads /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/lead-view" element={
-              checkViewSidebar(
-                "Lead",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "read"
-              ) ?
-                <LeadEdit /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/lead-add" element={
-              checkViewSidebar(
-                "Lead",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ?
-                <LeadAdd /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/leads"
+              element={
+                checkViewSidebar(
+                  "Lead",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <Leads />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/lead-view"
+              element={
+                checkViewSidebar(
+                  "Lead",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "read"
+                ) ? (
+                  <LeadEdit />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/lead-add"
+              element={
+                checkViewSidebar(
+                  "Lead",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ? (
+                  <LeadAdd />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* ------ Leads */}
 
             {/* ------ Support  */}
@@ -1535,53 +1719,73 @@ function App() {
 
             {/* ------ Support  */}
             {/* ------ Campaigns */}
-            <Route path="/campaigns" element={
-              checkViewSidebar(
-                "Campaign",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <Campaigns /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/campaigns"
+              element={
+                checkViewSidebar(
+                  "Campaign",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <Campaigns />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* <Route path="/campaign-create" element={<CampaignCreate />} /> */}
             {/* <Route path="/campaign-edit" element={<CampaignEdit />} /> */}
-            <Route path="/dialer-cdr-report" element={
-              checkViewSidebar(
-                "Campaignlead",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "browse"
-              ) ?
-                <DialerCdrReport /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/dialer-cdr-report"
+              element={
+                checkViewSidebar(
+                  "Campaignlead",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "browse"
+                ) ? (
+                  <DialerCdrReport />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
 
-            <Route path="/campaign-create" element={
-              checkViewSidebar(
-                "Campaign",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "add"
-              ) ?
-                <CampaignCreateNEW /> :
-                <Navigate to="/dashboard" replace />
-            } />
-            <Route path="/campaign-edit" element={
-              checkViewSidebar(
-                "Campaign",
-                slugPermissions,
-                account?.sectionPermissions,
-                account?.permissions,
-                "edit"
-              ) ?
-                <CampaignEditNEW /> :
-                <Navigate to="/dashboard" replace />
-            } />
+            <Route
+              path="/campaign-create"
+              element={
+                checkViewSidebar(
+                  "Campaign",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "add"
+                ) ? (
+                  <CampaignCreateNEW />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
+            <Route
+              path="/campaign-edit"
+              element={
+                checkViewSidebar(
+                  "Campaign",
+                  slugPermissions,
+                  account?.sectionPermissions,
+                  account?.permissions,
+                  "edit"
+                ) ? (
+                  <CampaignEditNEW />
+                ) : (
+                  <Navigate to="/dashboard" replace />
+                )
+              }
+            />
             {/* ------ Campaigns */}
 
             {/* ------ Call Tracker */}
@@ -1645,18 +1849,9 @@ function App() {
               path="call-forwarding-campaign-edit"
               element={<FportalCampaignEdit />}
             />
-            <Route
-              path="elastic-trunk"
-              element={<ElasticTrunk />}
-            />
-            <Route
-              path="elastic-trunk-edit"
-              element={<ElasticTrunkEdit />}
-            />
-            <Route
-              path="elastic-trunk-add"
-              element={<ElasticTrunkAdd />}
-            />
+            <Route path="elastic-trunk" element={<ElasticTrunk />} />
+            <Route path="elastic-trunk-edit" element={<ElasticTrunkEdit />} />
+            <Route path="elastic-trunk-add" element={<ElasticTrunkAdd />} />
             <Route path="source-add" element={<SourceAdd />} />
             {/* ---------------- source */}
 
@@ -1670,9 +1865,11 @@ function App() {
                   account?.sectionPermissions,
                   account?.permissions,
                   "browse"
-                ) ?
-                  <CdrReport page="callrecording" /> :
+                ) ? (
+                  <CdrReport page="callrecording" />
+                ) : (
                   <Navigate to="/dashboard" replace />
+                )
               }
             />
             <Route path="/agent-report" element={<AgentReports />} />

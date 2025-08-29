@@ -10,6 +10,7 @@ function NotificationBellApp() {
     const deletedNotificationId = useSelector((state) => state.deletedNotificationId);
     const confNotif = useSelector((data) => data?.confNotif)
     const allNotificationState = useSelector((data) => data?.allNotificationState);
+    const account = useSelector((state) => state?.account);
     // const [incomingMessageList, setIncomingMessageList] = useState([]);
     const accountDetails = useSelector((state) => state.accountDetails);
     const [allNotification, setAllNotification] = useState(allNotificationState || []);
@@ -36,29 +37,31 @@ function NotificationBellApp() {
         if (incomingMessage) {
             const currentMessageId = incomingMessage.uuid;
             if (currentMessageId !== prevMessageIdRef.current) {
-                if (!deletedNotificationId?.has(currentMessageId)) {
-                    // setIncomingMessageList((prevList) => {
-                    //     const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
-                    //     if (!exists) {
-                    //         return [...prevList, incomingMessage];
-                    //     }
-                    //     return prevList;
-                    // });
+                if (account?.id != incomingMessage?.sender_id) {
+                    if (!deletedNotificationId?.has(currentMessageId)) {
+                        // setIncomingMessageList((prevList) => {
+                        //     const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
+                        //     if (!exists) {
+                        //         return [...prevList, incomingMessage];
+                        //     }
+                        //     return prevList;
+                        // });
 
-                    setAllNotification((prevList) => {
-                        const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
-                        const updatedList = exists ? prevList : [...prevList, incomingMessage];
-                        dispatch({
-                            type: ActionType?.SET_NOTIFICATION_STATE,
-                            allNotificationState: updatedList,
-                        });
+                        setAllNotification((prevList) => {
+                            const exists = prevList.some(msg => msg.uuid === incomingMessage.uuid);
+                            const updatedList = exists ? prevList : [...prevList, incomingMessage];
+                            dispatch({
+                                type: ActionType?.SET_NOTIFICATION_STATE,
+                                allNotificationState: updatedList,
+                            });
 
-                        return updatedList;
-                    });
-                    if (userHasInteracted) {
-                        audio.play().catch(err => {
-                            console.warn("Audio play blocked:", err);
+                            return updatedList;
                         });
+                        if (userHasInteracted) {
+                            audio.play().catch(err => {
+                                console.warn("Audio play blocked:", err);
+                            });
+                        }
                     }
                 }
                 prevMessageIdRef.current = currentMessageId;
@@ -70,24 +73,26 @@ function NotificationBellApp() {
         if (Object?.keys(groupMessage)?.length > 0) {
             const currentMessageId = groupMessage.uuid;
             if (currentMessageId !== prevMessageIdRef.current) {
-                if (!deletedNotificationId?.has(currentMessageId)) {
-                    setAllNotification((prevList) => {
-                        const exists = prevList?.some(msg => msg.uuid === groupMessage.uuid);
-                        const updatedList = exists ? prevList : [...prevList, groupMessage];
+                if (account?.id != groupMessage?.sender_id) {
+                    if (!deletedNotificationId?.has(currentMessageId)) {
+                        setAllNotification((prevList) => {
+                            const exists = prevList?.some(msg => msg.uuid === groupMessage.uuid);
+                            const updatedList = exists ? prevList : [...prevList, groupMessage];
 
-                        dispatch({
-                            type: ActionType?.SET_NOTIFICATION_STATE,
-                            allNotificationState: updatedList,
-                        });
-
-                        if (userHasInteracted) {
-                            audio.play().catch(err => {
-                                console.warn("Audio play blocked:", err);
+                            dispatch({
+                                type: ActionType?.SET_NOTIFICATION_STATE,
+                                allNotificationState: updatedList,
                             });
-                        }
 
-                        return updatedList;
-                    });
+                            if (userHasInteracted) {
+                                audio.play().catch(err => {
+                                    console.warn("Audio play blocked:", err);
+                                });
+                            }
+
+                            return updatedList;
+                        });
+                    }
                 }
                 prevMessageIdRef.current = currentMessageId;
             }

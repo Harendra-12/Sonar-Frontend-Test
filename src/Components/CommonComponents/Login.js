@@ -11,9 +11,8 @@ import { toast } from "react-toastify";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import languages from './ListOfLanguage.json';
+import languages from "./ListOfLanguage.json";
 import GoogleTranslate from "./GoogleTranslate";
-
 
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
@@ -40,9 +39,9 @@ function Login() {
 
   const handleLanguageChange = () => {
     if (!languageChangePopup) {
-      setLanguageChangePopup(true)
+      setLanguageChangePopup(true);
     }
-  }
+  };
 
   return (
     <>
@@ -55,16 +54,22 @@ function Login() {
         <main className="login">
           <nav className="navbar navbar-expand-lg fixedTop">
             <div className="container">
-              <Link className="navbar-brand" href="#home">  <img src={require('../assets/images/site-logo.png')} alt="logo" className='img' /></Link>
+              <Link className="navbar-brand" href="#home">
+                {" "}
+                <img
+                  src={require("../assets/images/site-logo.png")}
+                  alt="logo"
+                  className="img"
+                />
+              </Link>
               {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <i className="fa-solid fa-bars"></i>
                     </button> */}
               {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
                        
                     </div> */}
-              <div className='d-flex rightSide_group ms-auto'>
+              <div className="d-flex rightSide_group ms-auto">
                 <GoogleTranslate />
-
               </div>
             </div>
           </nav>
@@ -74,10 +79,15 @@ function Login() {
               <div className="row h-100">
                 <div className="col-xl-6 h-100 position-relative d-flex align-items-center">
                   <div className="content col-xxl-7 col-xl-8 mx-auto py-5">
-                    <h3>Login now to get introduced <br />to AngelPBX.ai</h3>
+                    <h3>
+                      Login now to get introduced <br />
+                      to AngelPBX.ai
+                    </h3>
                     <p>Enter your credentials to access your account</p>
                     <div className="border-bottom my-4"></div>
-                    <LoginComponent setLanguageChangePopup={setLanguageChangePopup} />
+                    <LoginComponent
+                      setLanguageChangePopup={setLanguageChangePopup}
+                    />
                   </div>
                   <div
                     className="text-center position-absolute w-100"
@@ -100,11 +110,15 @@ function Login() {
                 </div>
                 <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
-                    <img src={require('../assets/images/login_bg.webp')} className="loginbg" />
+                    <img
+                      src={require("../assets/images/login_bg.webp")}
+                      className="loginbg"
+                    />
                     <div className="content">
                       <h3 className="login_text">
                         You are one step <br />
-                        closer to <span className="loginGradient">AI-Powered</span> <br />
+                        closer to{" "}
+                        <span className="loginGradient">AI-Powered</span> <br />
                         Communication
                       </h3>
                       <div
@@ -121,9 +135,10 @@ function Login() {
                         />
                       </div>
                       <div className="loginFooter">
-                        <span className="first">AngelECHO (AI) - </span><span className="last">Your AI Assistant</span>
+                        <span className="first">AngelECHO (AI) - </span>
+                        <span className="last">Your AI Assistant</span>
                       </div>
-                      <div className="loginGirlsImg" >
+                      <div className="loginGirlsImg">
                         <img
                           src={"/login_girl.svg"}
                           className="loginChat w-100"
@@ -141,7 +156,9 @@ function Login() {
           </div>
         </main>
       </div>
-      {languageChangePopup && <LanguagePromptPopup setLanguageChangePopup={setLanguageChangePopup} />}
+      {languageChangePopup && (
+        <LanguagePromptPopup setLanguageChangePopup={setLanguageChangePopup} />
+      )}
     </>
   );
 }
@@ -173,7 +190,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
     if (data) {
       if (data.status) {
         const country = JSON.parse(data.details).countryCode;
-        localStorage.setItem('userCountry', country)
+        localStorage.setItem("userCountry", country);
 
         dispatch({
           type: "SET_PERMISSION_REFRESH",
@@ -248,7 +265,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
                 if (country == "AE") {
                   setLanguageChangePopup(true);
                 } else {
-                  navigate("/dashboard")
+                  navigate("/dashboard");
                 }
               }
             }
@@ -268,7 +285,6 @@ export function LoginComponent({ setLanguageChangePopup }) {
     }
   }
 
-  
   // function to handle time
   function formatTimeWithAMPM(timeString) {
     const [hours, minutes, seconds] = timeString.split(":").map(Number);
@@ -354,7 +370,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
       if (checkLogin?.status) {
         setCredsError(false);
         const country = JSON.parse(checkLogin.details).countryCode;
-        localStorage.setItem('userCountry', country)
+        localStorage.setItem("userCountry", country);
 
         dispatch({
           type: "SET_PERMISSION_REFRESH",
@@ -431,7 +447,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
                 if (country == "AE") {
                   setLanguageChangePopup(true);
                 } else {
-                  navigate("/dashboard")
+                  navigate("/dashboard");
                 }
               }
             }
@@ -439,7 +455,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
             setLoading(false);
             toast.error("Server error !");
             setCredsError(true);
-            setCustomErrorText("Server error !")
+            setCustomErrorText("Server error !");
           }
         } else {
           setLoading(false);
@@ -452,22 +468,24 @@ export function LoginComponent({ setLanguageChangePopup }) {
         setLoading(false);
         toast.error(checkLogin?.response?.data?.message);
         setCredsError(true);
-        setCustomErrorText(checkLogin?.response?.data?.message)
+        setCustomErrorText(checkLogin?.response?.data?.message);
         if (checkLogin?.response?.status === 401) {
           setCredsError(true);
-          setCustomErrorText("Invalid username and password. Please try again.")
+          setCustomErrorText(
+            "Invalid username and password. Please try again."
+          );
         }
       } else {
         if (checkLogin?.message === "Network Error") {
           toast.error("Network Error");
           setCredsError(true);
-          setCustomErrorText("Network Error")
+          setCustomErrorText("Network Error");
           return;
         }
         if (checkLogin?.response?.data?.message === "user is disabled.") {
           toast.error("Your account is disabled. Please contact Admin.");
           setCredsError(true);
-          setCustomErrorText("Your account is disabled. Please contact Admin.")
+          setCustomErrorText("Your account is disabled. Please contact Admin.");
           return;
         }
         setLoading(false);
@@ -531,8 +549,8 @@ export function LoginComponent({ setLanguageChangePopup }) {
       console.error("Logout all error:", error);
       toast.error(
         error.response?.message ||
-        error.message ||
-        "An unexpected error occurred"
+          error.message ||
+          "An unexpected error occurred"
       );
     }
   }
@@ -546,7 +564,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
           <i className="fa-regular fa-user" />
         </div> */}
           <label>Username</label>
-          <div className="position-relative" style={{ marginBottom: '20px' }}>
+          <div className="position-relative" style={{ marginBottom: "20px" }}>
             <i className="fa-thin fa-user" />
             <input
               type="text"
@@ -561,7 +579,7 @@ export function LoginComponent({ setLanguageChangePopup }) {
             </div>} */}
           </div>
           <label>Password</label>
-          <div className="position-relative" style={{ marginBottom: '20px' }}>
+          <div className="position-relative" style={{ marginBottom: "20px" }}>
             <i className="fa-thin fa-lock" />
             <input
               type={passwordMask ? "password" : "text"}
@@ -574,10 +592,22 @@ export function LoginComponent({ setLanguageChangePopup }) {
             {/* {credsError && <div class="invalid-feedback d-block">
               <i class="fa-regular fa-circle-info position-static text-danger me-1"></i> Incorrect Password.
             </div>} */}
-            <button className="clearButton2" onClick={() => setPasswordMask(!passwordMask)} type="button">
-              <i className={`fa-solid fa-eye${passwordMask ? "" : "-slash"} position-static`} />
+            <button
+              className="clearButton2"
+              onClick={() => setPasswordMask(!passwordMask)}
+              type="button"
+            >
+              <i
+                className={`fa-solid fa-eye${
+                  passwordMask ? "" : "-slash"
+                } position-static`}
+              />
             </button>
           </div>
+
+          <Link className="textUrl" to="/forget-password">
+            Forget password
+          </Link>
           <div onClick={backToTop}>
             <button
               disabled={loading}
@@ -783,20 +813,22 @@ export function LoginComponent({ setLanguageChangePopup }) {
 export function LanguagePromptPopup({ setLanguageChangePopup }) {
   const [changeLanguage, setChangeLanguage] = useState(false);
   const [selectLanguage, setSelectLanguage] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function setCookie(key, value, expiry) {
     var expires = new Date();
-    expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
-    document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+    expires.setTime(expires.getTime() + expiry * 24 * 60 * 60 * 1000);
+    document.cookie = key + "=" + value + ";expires=" + expires.toUTCString();
   }
 
   const handleSaveLanguage = () => {
     if (selectLanguage) {
-      setCookie('googtrans', `/en/${selectLanguage}`, 1);
+      setCookie("googtrans", `/en/${selectLanguage}`, 1);
 
       // Check if select exists and set its value
-      const selectElement = document.querySelector("#google_translate_element select");
+      const selectElement = document.querySelector(
+        "#google_translate_element select"
+      );
       if (selectElement) {
         selectElement.value = selectLanguage;
         const event = new Event("change");
@@ -815,7 +847,7 @@ export function LanguagePromptPopup({ setLanguageChangePopup }) {
   };
 
   return (
-    <div className="popup" >
+    <div className="popup">
       <div className="container h-100">
         <div className="d-flex h-100 justify-content-center align-items-center">
           <div className="row content col-xxl-4 col-xl-5 col-md-6">
@@ -826,54 +858,75 @@ export function LanguagePromptPopup({ setLanguageChangePopup }) {
             </div>
             <div className="col-12 ps-0 pe-0 text-center">
               <h4 className="text-center text-orange">Confirmation!</h4>
-              {!changeLanguage ?
+              {!changeLanguage ? (
                 <>
                   <p className="mb-2">
-                    The default language is set to English! Do you want to change it to something else?
+                    The default language is set to English! Do you want to
+                    change it to something else?
                   </p>
                   <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
-                    <button className="panelButton m-0" onClick={() => setChangeLanguage(true)}>
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => setChangeLanguage(true)}
+                    >
                       <span className="text">Yes!</span>
                       <span className="icon">
                         <i className="fa-solid fa-check" />
                       </span>
                     </button>
-                    <button className="panelButton gray m-0 float-end" onClick={() => { setLanguageChangePopup(false); navigate("/dashboard") }}>
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => {
+                        setLanguageChangePopup(false);
+                        navigate("/dashboard");
+                      }}
+                    >
                       <span className="text">No</span>
                       <span className="icon">
                         <i className="fa-solid fa-xmark" />
                       </span>
                     </button>
                   </div>
-                </> : <>
+                </>
+              ) : (
+                <>
                   <p className="mb-2">
                     Please choose your language from the dropdown below
                   </p>
                   <div className="formRow">
-                    <select className="formItem" onChange={(e) => setSelectLanguage(e.target.value)}>
+                    <select
+                      className="formItem"
+                      onChange={(e) => setSelectLanguage(e.target.value)}
+                    >
                       <option value={""}>Select Language</option>
                       {languages.map((lang, index) => {
                         return (
-                          <option key={index} value={lang.code}>{lang.name}</option>
-                        )
+                          <option key={index} value={lang.code}>
+                            {lang.name}
+                          </option>
+                        );
                       })}
                     </select>
                   </div>
                   <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
-                    <button className="panelButton m-0" onClick={handleSaveLanguage}>
+                    <button
+                      className="panelButton m-0"
+                      onClick={handleSaveLanguage}
+                    >
                       <span className="text">Save</span>
                       <span className="icon">
                         <i className="fa-solid fa-floppy-disk" />
                       </span>
                     </button>
                   </div>
-                </>}
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export function CustomLoginError({ errorText }) {
@@ -888,5 +941,5 @@ export function CustomLoginError({ errorText }) {
           </div> */}
       </div>
     </div>
-  )
+  );
 }

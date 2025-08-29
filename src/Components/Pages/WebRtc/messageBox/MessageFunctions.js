@@ -681,7 +681,7 @@ export const getAllInternalCallsHistory = async (
       setOriginalInternalCallHistory((prev) => {
         const existingIds = new Set(prev.map((item) => item.id));
 
-        const newItems = sortedArr.filter((item) => !existingIds.has(item.id));
+        const newItems = sortedArr?.filter((item) => !existingIds.has(item.id));
 
         return [...prev, ...newItems];
       });
@@ -689,7 +689,7 @@ export const getAllInternalCallsHistory = async (
       setInternalCallHistory((prev) => {
         const existingIds = new Set(prev.map((item) => item.id));
 
-        const newItems = sortedArr.filter((item) => !existingIds.has(item.id));
+        const newItems = sortedArr?.filter((item) => !existingIds.has(item.id));
 
         return [...prev, ...newItems];
       });
@@ -1005,7 +1005,7 @@ export const receiveGroupMessage = (
   recipient,
   ActionType,
   dispatch,
-  allAgents
+  account
 ) => {
   const isNewMessage = !allNotificationState?.some(
     (data) => data?.uuid === groupMessage?.uuid
@@ -1018,42 +1018,76 @@ export const receiveGroupMessage = (
       const from = groupMessage?.user_id;
       const body = groupMessage?.message_text;
       const time = formatDateTime(new Date());
-      setAllMessage((prevState) => ({
-        ...prevState,
-        [groupMessage.group_name]: [
-          ...(prevState[groupMessage.group_name] || []),
-          {
-            from,
-            body,
-            time,
-            user_id: from,
-            user_name: groupMessage?.user_name,
-            profile_picture: groupMessage?.profile_picture,
-            message_type: groupMessage.message_type,
-          },
-        ],
-      }));
-      if (groupMessage?.group_name != undefined) {
-        const contactIndex = groups.findIndex(
-          (contact) => contact?.group_name === groupMessage?.group_name
-        );
-        if (contactIndex !== -1) {
-          const newGroups = [...groups];
-          newGroups[contactIndex].last_message_data.message_text = body;
-          newGroups[contactIndex].last_message_data.created_at = time;
-          newGroups[contactIndex].last_message_data.user_id = from;
-          newGroups?.splice(contactIndex, 1);
-          newGroups.unshift(groups[contactIndex]);
-          setGroups(newGroups);
-          setOriginalGroupsList(newGroups);
-        }
-        setActiveTab("all");
-        setUnreadMessage((prevState) => ({
+      if (account?.id == groupMessage?.sender_id) {
+        setAllMessage((prevState) => {
+          const groupName = groupMessage?.group_name;
+          const groupMessages = prevState[groupName] || [];
+          const updatedMessages = groupMessages.map((msg) => {
+            if (!msg.id && msg?.body == groupMessage?.message_text) {
+              return {
+                id: groupMessage?.id,
+                user_id: groupMessage?.user_id,
+                message_group_id: groupMessage?.message_group_id,
+                message_type: groupMessage?.message_type,
+                message_text: groupMessage?.message_text,
+                edit_status: groupMessage?.edit_status,
+                is_pinned: groupMessage?.is_pinned,
+                created_at: groupMessage?.created_at,
+                updated_at: groupMessage?.updated_at,
+                user_name: account?.username,
+                extension: groupMessage?.extension,
+                deleted_at: groupMessage?.deleted_at,
+                pinned_message: groupMessage?.pinned_message,
+                from: groupMessage?.user_id,
+                body: groupMessage?.message_text,
+                time: groupMessage?.created_at,
+                profile_picture: account?.profile_picture,
+              };
+            }
+            return msg;
+          });
+
+          return {
+            ...prevState,
+            [groupName]: updatedMessages,
+          };
+        });
+      } else {
+        setAllMessage((prevState) => ({
           ...prevState,
-          [groupMessage?.group_name]:
-            (prevState[groupMessage?.group_name] || 0) + 1,
+          [groupMessage.group_name]: [
+            ...(prevState[groupMessage.group_name] || []),
+            {
+              ...groupMessage,
+              from,
+              body,
+              time,
+              user_id: from,
+            },
+          ],
         }));
-        audio.play();
+        if (groupMessage?.group_name != undefined) {
+          const contactIndex = groups.findIndex(
+            (contact) => contact?.group_name === groupMessage?.group_name
+          );
+          if (contactIndex !== -1) {
+            const newGroups = [...groups];
+            newGroups[contactIndex].last_message_data.message_text = body;
+            newGroups[contactIndex].last_message_data.created_at = time;
+            newGroups[contactIndex].last_message_data.user_id = from;
+            newGroups?.splice(contactIndex, 1);
+            newGroups.unshift(groups[contactIndex]);
+            setGroups(newGroups);
+            setOriginalGroupsList(newGroups);
+          }
+          setActiveTab("all");
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [groupMessage?.group_name]:
+              (prevState[groupMessage?.group_name] || 0) + 1,
+          }));
+          audio.play();
+        }
       }
     }
 
@@ -1153,19 +1187,32 @@ export const handleremoveUserFromGroup = async (
   setNewGroupLoader,
   setSelectedgroupUsers,
   selectedgroupUsers,
-  account
+  account,
+  setGroupLeavePopUp,
+  setRecipient,
+  setGroupRefresh,
+  groupRefresh,
+  toLeaveGroup,
+  setManageGroupChat
 ) => {
   setNewGroupLoader(true);
   const apiData = await generalGetFunction(
     api_url?.REMOVE_USER_FROM_GROUP_URL(id, account?.id)
   );
-  debugger;
+
   if (apiData?.status) {
     toast.success(apiData?.message);
     setSelectedgroupUsers(selectedgroupUsers?.filter((item) => item.id !== id));
     setNewGroupLoader(false);
+    setGroupLeavePopUp(false);
+    if (toLeaveGroup) {
+      setRecipient([]);
+      setManageGroupChat(false);
+    }
+    setGroupRefresh(groupRefresh + 1);
   } else {
     setNewGroupLoader(false);
+    setGroupLeavePopUp(false);
   }
 };
 
@@ -1231,7 +1278,8 @@ export const handleDeleteGroup = async (
   setSelectedChat,
   setRecipient,
   setLoading,
-  groupRefresh
+  groupRefresh,
+  setManageGroupChat
 ) => {
   setLoading(true);
   const apiData = await generalDeleteFunction(api_url?.DELETE_GROUP_URL(id));
@@ -1241,6 +1289,7 @@ export const handleDeleteGroup = async (
     setSelectedChat("");
     setRecipient([]);
     setLoading(false);
+    setManageGroupChat(false);
   } else {
     setLoading(false);
     toast.error(apiData.message);

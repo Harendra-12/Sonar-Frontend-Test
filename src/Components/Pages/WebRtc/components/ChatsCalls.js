@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { formatTimeWithAMPM } from '../../../GlobalFunction/globalFunction';
 import EmptyPrompt from '../../../Loader/EmptyPrompt';
 
-const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, onlineUser, callHistory, pageNumber, setPageNumber, rawData }) => {
+const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeetingPage, setToUser, setCalling, socketSendMessage, account, onlineUser, callHistory, pageNumber, setPageNumber, rawData, recipient, socketSendPeerGroupCallMessage }) => {
     const callListRef = useRef(null);
 
     const handleScroll = () => {
@@ -14,7 +14,6 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
             }
         }
     };
-
 
     return (
         <>
@@ -66,13 +65,25 @@ const ChatsCalls = ({ loading, doomScrollLoading, setDoomScrollLoading, setMeeti
                                                 setMeetingPage("message");
                                                 setToUser(item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id);
                                                 setCalling(true);
-                                                socketSendMessage({
-                                                    action: "peercallInitiate",
-                                                    from: account.id,
-                                                    to: item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id,
-                                                    room_id: `${account.id}-${item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id}`,
-                                                    call_type: `audio`,
-                                                });
+                                                if (item?.type == "group") {
+                                                    socketSendPeerGroupCallMessage({
+                                                        action: "initiate_peer_group_call",
+                                                        room_id: `${account.id}-${recipient?.[1]}`,
+                                                        call_type: "audio",
+                                                        message_group_id: recipient[1],
+                                                        group_name: recipient[0],
+                                                        user_id: account?.id,
+                                                    });
+                                                } else {
+                                                    socketSendMessage({
+                                                        action: "peercallInitiate",
+                                                        from: account.id,
+                                                        to: item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id,
+                                                        room_id: `${account.id}-${item?.sender_id == account?.id ? item?.receiver_id : item?.sender_id}`,
+                                                        call_type: `audio`,
+                                                    });
+                                                }
+
 
                                             }}>
                                                 <button className="btn_call"><i className={`fa-regular fa-${item.call_type === "audio" ? 'phone' : 'video'}`}></i></button>
