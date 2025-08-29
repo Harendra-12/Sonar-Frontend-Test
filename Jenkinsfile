@@ -77,10 +77,5 @@ stage('Deploy to Web Server') {
     }
 }
 
-                        )
-                    ])
                 }
             }
-        }
-    }
-}
