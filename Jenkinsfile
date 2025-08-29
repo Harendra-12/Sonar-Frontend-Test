@@ -51,12 +51,10 @@ pipeline {
             }
         }
 
-        stage('Clean Up Local Docker Cache') {
+        stage('Clean Up Local Docker Image') {
             steps {
                 sh """
                 docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} || true
-                docker image prune -f   # removes dangling images only
-                docker builder prune -f || true
                 """
             }
         }
