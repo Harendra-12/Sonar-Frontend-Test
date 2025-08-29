@@ -63,7 +63,7 @@ pipeline {
 
         stage('Deploy to Web Server') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'DOCKER_CREDENTIAL', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sshPublisher(publishers: [
                         sshPublisherDesc(
                             configName: "${WEB_SERVER_CONFIG}",
