@@ -75,9 +75,8 @@ pipeline {
                             docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
                             docker rm -f ${CONTAINER_NAME} || true
                             docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
-                        """
-                    )
-                ],
+                        """ 
+    })],
                 verbose: true
             )
         ])
