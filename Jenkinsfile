@@ -30,35 +30,35 @@ pipeline {
             }
        }
 
-//          stage('Build Docker Image') {
-//            steps {
-//                 sh """
-//                 docker build -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
-//                 docker tag ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest
-//                """
-//            }
-//       }
+          stage('Build Docker Image') {
+            steps {
+                 sh """
+                 docker build -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
+                 docker tag ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest
+                """
+            }
+       }
 
-//        stage('Docker Login & Push') {
-//            steps {
-//                withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-//                    sh """
-//                    echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin
-//                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
-//                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest		
-//                    docker logout ${DOCKER_REGISTRY}
-//                    """
-//                }
-//           }
-//        }
+        stage('Docker Login & Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """
+                    echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin
+                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest		
+                    docker logout ${DOCKER_REGISTRY}
+                    """
+                }
+           }
+        }
 
-//        stage('Clean Up Local Docker Image') {
-//            steps {
-//                sh """
-//                docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest || true
-//                """
-//            }
-//        }
+        stage('Clean Up Local Docker Image') {
+            steps {
+                sh """
+                docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest || true
+                """
+            }
+        }
 
 stage('Deploy to Web Server') {
     steps {
