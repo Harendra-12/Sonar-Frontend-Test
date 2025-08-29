@@ -11,7 +11,7 @@ pipeline {
         DOCKER_REGISTRY   = 'docker.io'
         DOCKER_NAMESPACE  = 'hare12'   // e.g. username or org
         IMAGE_NAME        = 'ucaas-frontend'
-        IMAGE_TAG         = "latest"
+        IMAGE_TAG         = "${BUILD_NUMBER}"
         DOCKER_CREDENTIAL = 'c8ca2715-c702-4275-bf41-cc9a4ac8f987'     // Jenkins Credential ID
 
         // ===== Remote Web Server =====
@@ -55,7 +55,7 @@ pipeline {
         stage('Clean Up Local Docker Image') {
             steps {
                 sh """
-                docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest || true
+                docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:"${BUILD_NUMBER}" || true
                 """
             }
         }
@@ -67,9 +67,9 @@ stage('Deploy to Web Server') {
                 sh """
                     ssh -o StrictHostKeyChecking=no admin@10.0.24.129 '
                         echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
-                        sudo docker pull hare12/ucaas-frontend:latest &&
+                        sudo docker pull hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
                         sudo docker rm -f ucaas-frontend || true &&
-                        sudo docker run -d --name ucaas-frontend -p 80:80 hare12/ucaas-frontend:latest &&
+                        sudo docker run -d --name ucaas-frontend -p 80:80 hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
                         sudo docker image prune -f
                     '
                 """
