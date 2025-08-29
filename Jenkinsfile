@@ -24,41 +24,41 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: "${env.GIT_BRANCH}", 
+               git branch: "${env.GIT_BRANCH}", 
                     credentialsId: "${env.GIT_CREDENTIAL}", 
                     url: "${env.GIT_REPO}"
             }
-        }
+       }
 
-          stage('Build Docker Image') {
-             steps {
-                 sh """
-                 docker build -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
-                 docker tag ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest
-                """
-            }
-        }
+//          stage('Build Docker Image') {
+//            steps {
+//                 sh """
+//                 docker build -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
+//                 docker tag ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest
+//                """
+//            }
+//       }
 
-        stage('Docker Login & Push') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh """
-                    echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin
-                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
-                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest		
-                    docker logout ${DOCKER_REGISTRY}
-                    """
-                }
-            }
-        }
+//        stage('Docker Login & Push') {
+//            steps {
+//                withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+//                    sh """
+//                    echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin
+//                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+//                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest		
+//                    docker logout ${DOCKER_REGISTRY}
+//                    """
+//                }
+//           }
+//        }
 
-        stage('Clean Up Local Docker Image') {
-            steps {
-                sh """
-                docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} || true
-                """
-            }
-        }
+//        stage('Clean Up Local Docker Image') {
+//            steps {
+//                sh """
+//                docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} || true
+//                """
+//            }
+//        }
 
 stage('Deploy to Web Server') {
     steps {
@@ -67,10 +67,10 @@ stage('Deploy to Web Server') {
                 sh """
                     ssh -o StrictHostKeyChecking=no admin@${WEB_SERVER_IP} '
                         echo \$DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USER --password-stdin &&
-                        docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
-                        docker rm -f ${CONTAINER_NAME} || true &&
-                        docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
-                        docker image prune -f
+                       sudo docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
+                       sudo docker rm -f ${CONTAINER_NAME} || true &&
+                       sudo docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
+                       sudo docker image prune -f
                     '
                 """
             }
