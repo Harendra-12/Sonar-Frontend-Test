@@ -67,9 +67,9 @@ stage('Deploy to Web Server') {
                 sh """
                     ssh -o StrictHostKeyChecking=no admin@10.0.24.129 '
                         echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
-                        sudo docker pull hare12/ucaas-frontend:19 &&
+                        sudo docker pull hare12/ucaas-frontend:latest &&
                         sudo docker rm -f ucaas-frontend || true &&
-                        sudo docker run -d --name ucaas-frontend -p 80:80 hare12/ucaas-frontend:19 &&
+                        sudo docker run -d --name ucaas-frontend -p 80:80 hare12/ucaas-frontend:latest &&
                         sudo docker image prune -f
                     '
                 """
