@@ -55,7 +55,8 @@ pipeline {
             steps {
                 sh """
                 docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} || true
-                docker system prune -a || true
+                docker image prune -f   # removes dangling images only
+                docker builder prune -f || true
                 """
             }
         }
