@@ -15,8 +15,7 @@ pipeline {
         DOCKER_CREDENTIAL = 'c8ca2715-c702-4275-bf41-cc9a4ac8f987'     // Jenkins Credential ID
 
         // ===== Remote Web Server =====
-        SSH_CREDENTIAL    = 'ae6cf6e8-edfc-429b-8f0b-88121457d75a'        // Jenkins Credential ID (SSH key)
-        WEB_SERVER_IP     = '10.0.24.129'
+ 	WEB_SERVER_CONFIG = Docker_Host
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
     }
@@ -61,19 +60,25 @@ pipeline {
             }
         }
 
-        stage('Deploy to Web Server') {
-            steps {
-                sshagent (credentials: ["${env.SSH_CREDENTIAL}"]) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@${WEB_SERVER_IP} '
-                        docker login ${DOCKER_REGISTRY} -u ${DOCKER_NAMESPACE} -p <DOCKER_PASSWORD> &&
-                        docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
-                        docker rm -f ${CONTAINER_NAME} || true &&
-                        docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
-                    '
-                    """
-                }
-            }
-        }
+       stage('Deploy to Web Server') {
+    steps {
+        sshPublisher(publishers: [
+            sshPublisherDesc(
+                configName: "${WEB_SERVER_CONFIG}",   // Jenkins "Publish over SSH" server name
+                transfers: [
+                    sshTransfer(
+                        sourceFiles: '',  // leave empty if no files are being copied
+                        execCommand: """
+                            docker login ${DOCKER_REGISTRY} -u ${DOCKER_NAMESPACE} -p ${DOCKER_PASSWORD}
+                            docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+                            docker rm -f ${CONTAINER_NAME} || true
+                            docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
+                        """
+                    )
+                ],
+                verbose: true
+            )
+        ])
     }
 }
+
