@@ -62,15 +62,15 @@ pipeline {
 
 stage('Deploy to Web Server') {
     steps {
-        sshagent(credentials: ["${env.WEB_SERVER_CONFIG}"]) {
-            withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+        sshagent (credentials: ['ae6cf6e8-edfc-429b-8f0b-88121457d75a']) {
+            withCredentials([usernamePassword(credentialsId: 'c8ca2715-c702-4275-bf41-cc9a4ac8f987', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                 sh """
-                    ssh -o StrictHostKeyChecking=no admin@${WEB_SERVER_IP} '
-                        echo \$DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USER --password-stdin &&
-                       sudo docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest &&
-                       sudo docker rm -f ${CONTAINER_NAME} || true &&
-                       sudo docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} &&
-                       sudo docker image prune -f
+                    ssh -o StrictHostKeyChecking=no admin@10.0.24.129 '
+                        echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
+                        sudo docker pull hare12/ucaas-frontend:19 &&
+                        sudo docker rm -f ucaas-frontend || true &&
+                        sudo docker run -d --name ucaas-frontend -p 80:80 hare12/ucaas-frontend:19 &&
+                        sudo docker image prune -f
                     '
                 """
             }
