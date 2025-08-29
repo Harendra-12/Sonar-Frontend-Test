@@ -16,7 +16,7 @@ pipeline {
 
         // ===== Remote Web Server =====
  		WEB_SERVER_CONFIG = 'ae6cf6e8-edfc-429b-8f0b-88121457d75a'
-        WEB_SERVER_IP = '18.220.117.31'
+        WEB_SERVER_IP     = '18.220.117.31'
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
     }
