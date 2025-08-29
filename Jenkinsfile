@@ -15,7 +15,7 @@ pipeline {
         DOCKER_CREDENTIAL = 'c8ca2715-c702-4275-bf41-cc9a4ac8f987'     // Jenkins Credential ID
 
         // ===== Remote Web Server =====
- 		WEB_SERVER_CONFIG = '9148794c-3118-4a39-a208-58be14568ded'
+ 		WEB_SERVER_CONFIG = 'ae6cf6e8-edfc-429b-8f0b-88121457d75a'
         WEB_SERVER_IP     = '10.0.24.129'
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
@@ -64,7 +64,7 @@ pipeline {
 
 stage('Deploy to Web Server') {
     steps {
-        sshagent (credentials: ['ae6cf6e8-edfc-429b-8f0b-88121457d75a']) {
+        sshagent (credentials: ["${env.WEB_SERVER_CONFIG}"]) {
             withCredentials([usernamePassword(credentialsId: 'c8ca2715-c702-4275-bf41-cc9a4ac8f987', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                 sh """
                     ssh -o StrictHostKeyChecking=no admin@10.0.24.129 '
