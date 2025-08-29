@@ -68,8 +68,10 @@ pipeline {
                 transfers: [
                     sshTransfer(
                         sourceFiles: '',  // leave empty if no files are being copied
-                        execCommand: """
-                            docker login ${DOCKER_REGISTRY} -u ${DOCKER_NAMESPACE} -p ${DOCKER_PASSWORD}
+
+						withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh """					
+                        	echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin
                             docker pull ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
                             docker rm -f ${CONTAINER_NAME} || true
                             docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
