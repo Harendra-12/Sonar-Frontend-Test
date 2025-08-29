@@ -15,7 +15,7 @@ pipeline {
         DOCKER_CREDENTIAL = 'c8ca2715-c702-4275-bf41-cc9a4ac8f987'     // Jenkins Credential ID
 
         // ===== Remote Web Server =====
- 	WEB_SERVER_CONFIG = Docker_Host
+ 		WEB_SERVER_CONFIG = 'Docker_Host'
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
     }
