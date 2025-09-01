@@ -35,7 +35,7 @@ pipeline {
           stage('Build Docker Image') {
             steps {
                  sh """
-                 docker build --memory=2g --memory-swap=2g -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
+                 docker build --memory=2g --memory-swap=4g -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
                  docker tag ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest
                 """
             }
@@ -58,6 +58,7 @@ pipeline {
             steps {
                 sh """
                 docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:"${BUILD_NUMBER}" || true
+                docker system prune -a
                 """
             }
         }
