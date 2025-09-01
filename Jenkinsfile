@@ -58,7 +58,6 @@ pipeline {
             steps {
                 sh """
                 docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:"${BUILD_NUMBER}" || true
-                docker system prune -a
                 """
             }
         }
