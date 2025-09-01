@@ -35,7 +35,7 @@ pipeline {
           stage('Build Docker Image') {
             steps {
                  sh """
-                 docker build -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
+                 docker build --memory=2g --memory-swap=2g -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
                  docker tag ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest
                 """
             }
