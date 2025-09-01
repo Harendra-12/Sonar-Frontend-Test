@@ -72,7 +72,7 @@ stage('Deploy to Web Server') {
                         sudo docker pull hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
                         sudo docker rm -f ucaas-frontend || true &&
                         sudo docker run -d --name ucaas-frontend -p 80:80 hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
-                        sudo docker image prune -f
+                        sudo docker image prune -af
                     '
                 """
             }
