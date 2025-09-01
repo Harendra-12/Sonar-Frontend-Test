@@ -18,7 +18,7 @@ pipeline {
  		WEB_SERVER_CONFIG = 'ae6cf6e8-edfc-429b-8f0b-88121457d75a'
         WEB_SERVER_IP     = '10.0.24.129'
         CONTAINER_NAME    = 'ucaas-frontend'
-        APP_PORT          = '80'   // Change depending on React app port
+        APP_PORT          = '443'   // Change depending on React app port
         DOCKER_BUILDKIT = "1"
 
     }
@@ -71,7 +71,7 @@ stage('Deploy to Web Server') {
                         echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
                         sudo docker pull hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
                         sudo docker rm -f ucaas-frontend || true &&
-                        sudo docker run -d --name ucaas-frontend -p 80:80 hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
+                        sudo docker run -d --name ucaas-frontend -p ${APP_PORT}:${APP_PORT} hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
                         sudo docker image prune -af
                     '
                 """
