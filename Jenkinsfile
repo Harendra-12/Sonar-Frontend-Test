@@ -19,6 +19,7 @@ pipeline {
         WEB_SERVER_IP     = '10.0.24.129'
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
+        CONTAINER_PORT    = '80'
         DOCKER_BUILDKIT = "1"
 
     }
@@ -35,8 +36,8 @@ pipeline {
           stage('Build Docker Image') {
             steps {
                  sh """
-                 docker build --memory=2g --memory-swap=4g -t ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} .
-                 docker tag ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest
+                 docker build --memory=2g --memory-swap=4g -t "${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}" .
+                 docker tag "${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}" "${DOCKER_NAMESPACE}/${IMAGE_NAME}":latest
                 """
             }
        }
@@ -45,10 +46,10 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh """
-                    echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin
-                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}
-                    docker push ${DOCKER_NAMESPACE}/${IMAGE_NAME}:latest		
-                    docker logout ${DOCKER_REGISTRY}
+                    echo $DOCKER_PASS | docker login "${DOCKER_REGISTRY}" -u $DOCKER_USER --password-stdin
+                    docker push "${DOCKER_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}"
+                    docker push "${DOCKER_NAMESPACE}/${IMAGE_NAME}":latest		
+                    docker logout "${DOCKER_REGISTRY}"
                     """
                 }
            }
@@ -57,7 +58,7 @@ pipeline {
         stage('Clean Up Local Docker Image') {
             steps {
                 sh """
-                docker rmi ${DOCKER_NAMESPACE}/${IMAGE_NAME}:"${BUILD_NUMBER}" || true
+                docker rmi "${DOCKER_NAMESPACE}"/"${IMAGE_NAME}":"${BUILD_NUMBER}" || true
                 """
             }
         }
@@ -71,7 +72,7 @@ stage('Deploy to Web Server') {
                         echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
                         sudo docker pull hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
                         sudo docker rm -f ucaas-frontend || true &&
-                        sudo docker run -d --name ucaas-frontend -p ${APP_PORT}:${APP_PORT} hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
+                        sudo docker run -d --name ucaas-frontend -p "${APP_PORT}:${APP_PORT}" hare12/ucaas-frontend:"${BUILD_NUMBER}" &&
                         sudo docker image prune -af
                     '
                 """
