@@ -1,18 +1,21 @@
-
 version: '3.9'
 
 services:
   frontend:
     image: docker.io/hare12/ucaas-frontend:latest
     container_name: react-frontend
+    expose:
+      - "80"
     depends_on:
       - backend
     networks:
       - app-network
 
   backend:
-    image: docker.io/hare12/ucaas-backend:latest
+    image: docker.io/hare12/ucaas-backend:1
     container_name: php-backend
+    expose:
+      - "80"
     networks:
       - app-network
 
@@ -31,4 +34,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
