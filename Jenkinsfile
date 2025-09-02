@@ -70,11 +70,11 @@ stage('Deploy to Web Server') {
                 sh """
                     ssh -o StrictHostKeyChecking=no admin@10.0.24.129 '
                         echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
-                        sudo cd /root/Ucaas-Docker &&
+                        sudo sh -c "cd /root/Ucaas-Docker &&
                         sudo docker-compose pull && \
                         sudo docker-compose down && \
                         sudo docker-compose up -d --remove-orphans && \
-                        sudo docker image prune -af
+                        sudo docker image prune -af"
                         
                     '
                 """
