@@ -15,7 +15,7 @@ pipeline {
         DOCKER_CREDENTIAL = 'c8ca2715-c702-4275-bf41-cc9a4ac8f987'     // Jenkins Credential ID
 
         // ===== Remote Web Server =====
- 		WEB_SERVER_CONFIG = 'ae6cf6e8-edfc-429b-8f0b-88121457d75a'
+ 		WEB_SERVER_CONFIG = '7daaaf07-a062-4621-a522-9fe7e11a2223'
         WEB_SERVER_IP     = '10.0.6.100'
         CONTAINER_NAME    = 'ucaas-frontend'
         APP_PORT          = '80'   // Change depending on React app port
