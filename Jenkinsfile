@@ -66,22 +66,25 @@ pipeline {
 stage('Deploy to Web Server') {
     steps {
         sshagent (credentials: ["${env.WEB_SERVER_CONFIG}"]) {
-            withCredentials([usernamePassword(credentialsId: 'c8ca2715-c702-4275-bf41-cc9a4ac8f987', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                sh """
+            withCredentials([usernamePassword(credentialsId: "${env.DOCKER_CREDENTIAL}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                sh '''
                     ssh -o StrictHostKeyChecking=no admin@"${WEB_SERVER_IP}" '
-                        echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
-                        sudo sh -c "cd /root/Ucaas-Docker &&
-                        sudo docker-compose pull && \
-                        sudo docker-compose down && \
-                        sudo docker-compose up -d --remove-orphans && \
-                        sudo docker image prune -af"
-                        
+                        # Run everything in a single sudo shell so login is available to docker-compose
+                        sudo DOCKER_USER=$DOCKER_USER DOCKER_PASS=$DOCKER_PASS sh -c "
+                            echo \\\"$DOCKER_PASS\\\" | docker login docker.io -u \\\"$DOCKER_USER\\\" --password-stdin
+                            cd /root/Ucaas-Docker
+                            docker-compose pull
+                            docker-compose down
+                            docker-compose up -d --remove-orphans
+                            docker image prune -af
+                        "
                     '
-                """
+                '''
             }
         }
     }
 }
+
 
                 }
             }
