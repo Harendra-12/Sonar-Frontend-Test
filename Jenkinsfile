@@ -70,10 +70,11 @@ stage('Deploy to Web Server') {
                 sh """
                     ssh -o StrictHostKeyChecking=no admin@10.0.24.129 '
                         echo "${DOCKER_PASS}" | docker login docker.io -u "${DOCKER_USER}" --password-stdin &&
-                        sudo docker pull "${DOCKER_NAMESPACE}/${IMAGE_NAME}":latest &&
-                        sudo docker rm -f "${IMAGE_NAME}" || true &&
-                        sudo docker run -d --name "${IMAGE_NAME}" -p "${APP_PORT}:${APP_PORT}" "${DOCKER_NAMESPACE}/${IMAGE_NAME}":latest &&
-                        sudo docker image prune -a
+                        sudo docker-compose pull && \
+                        sudo docker-compose down && \
+                        sudo docker-compose up -d --remove-orphans && \
+                        sudo docker image prune -af
+                        
                     '
                 """
             }
