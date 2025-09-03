@@ -4,6 +4,7 @@ services:
   frontend:
     image: docker.io/hare12/ucaas-frontend:latest
     container_name: react-frontend
+    restart: always
     expose:
       - "80"
     depends_on:
@@ -12,8 +13,15 @@ services:
       - app-network
 
   backend:
-    image: docker.io/hare12/ucaas-backend:1
+    image: docker.io/hare12/ucaas-backend:latest
     container_name: php-backend
+    restart: always
+    environment:
+      DB_HOST: ucaas-db.cjcyy0acil8j.us-east-2.rds.amazonaws.com
+      DB_PORT: 5432
+      DB_NAME: backend_db
+      DB_USER: backend_user
+      DB_PASS: BackendPass123
     expose:
       - "80"
     networks:
@@ -34,3 +42,4 @@ services:
 networks:
   app-network:
     driver: bridge
+
