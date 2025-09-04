@@ -6,13 +6,6 @@ pipeline {
         GIT_REPO       = 'https://github.com/AngelPbx/UcaasS-Backend.git'
         GIT_BRANCH     = 'Devops-backend'
         GIT_CREDENTIAL = 'aaf11c10-a58c-44a6-bf63-2bf01cc80f03'   // Jenkins Credential ID
-
-        // ===== Docker Registry (Hub or ECR) =====
-        DOCKER_REGISTRY   = 'docker.io'
-        DOCKER_NAMESPACE  = 'hare12'   // e.g. username or org
-        IMAGE_NAME        = 'ucaas-backend'
-        IMAGE_TAG         = "${BUILD_NUMBER}"
-        DOCKER_CREDENTIAL = 'c8ca2715-c702-4275-bf41-cc9a4ac8f987'     // 
         
         // ===== Remote Web Server =====
  		WEB_SERVER_CONFIG = '7daaaf07-a062-4621-a522-9fe7e11a2223'
