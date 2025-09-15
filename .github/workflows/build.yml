@@ -5,77 +5,23 @@ on:
     branches:
       - main
 
+
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repo (full history)
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      - name: Set up Node.js (for building the frontend)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
-      - name: Install dependencies
-        run: |
-          npm ci
-
-      - name: Build (run your project build)
-        run: |
-          # adjust to your project's build command if different
-          npm run build
-
-      - name: Show large files (diagnostic)
-        run: |
-          echo "Files > 1MB (before cleanup):"
-          find . -type f -size +1M -print || true
-
-      - name: Remove large build artifacts (maps / bundles)
-        run: |
-          # show and delete large source maps and large bundles
-          find . -name '*.map' -type f -size +1M -print -delete || true
-          # remove common build output dirs if generated into repo workspace
-          rm -rf build dist static || true
-          echo "Files > 1MB (after cleanup):"
-          find . -type f -size +1M -print || true
-
-      - name: Create sonar-project.properties (safe defaults)
-        run: |
-          cat > sonar-project.properties <<'EOF'
-          sonar.projectKey=Ucaas-Frontend
-          # Analyze source folder(s) only
-          sonar.sources=src
-          # If tests live inside src, restrict test file patterns so they're disjoint
-          sonar.tests=src
-          sonar.test.inclusions=**/*.test.js,**/*.spec.js,**/__tests__/**
-          sonar.sourceEncoding=UTF-8
-          # Exclude build outputs and heavy files (maps, node_modules, minified bundles)
-          sonar.exclusions=**/build/**,**/dist/**,**/node_modules/**,**/*.map,**/static/**,**/*.min.js,**/*.bundle.js
-          EOF
-          echo "Created sonar-project.properties"
-          sed -n '1,200p' sonar-project.properties
-
-      - name: Run SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          # extra-args ensures exclusions are applied even if sonar-project.properties missing
-          extra-args: >
-            -Dsonar.sources=src
-            -Dsonar.tests=src
-            -Dsonar.test.inclusions=**/*.test.js,**/*.spec.js,**/__tests__/**
-            -Dsonar.exclusions=**/build/**,**/dist/**,**/node_modules/**,**/*.map,**/static/**,**/*.min.js,**/*.bundle.js
-
-      # Optional: fail pipeline if Quality Gate fails (uncomment to enable)
-      # - name: Wait for Quality Gate
-      #   uses: SonarSource/sonarqube-quality-gate-action@v1
+      # If you wish to fail your job when the Quality Gate is red, uncomment the
+      # following lines. This would typically be used to fail a deployment.
+      # - uses: SonarSource/sonarqube-quality-gate-action@v1
       #   timeout-minutes: 5
       #   env:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
